@@ -3,6 +3,7 @@ package com.example.suc.suc_android_solution.Models;
 import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Date;
  */
 
 public class User {
-    private BigDecimal idUser;
+    private BigInteger idUser;
     private String name;
     private String surname;
     private String phone;
@@ -25,7 +26,7 @@ public class User {
     private String door;
     private UserRoles role;
 
-    private User(){}
+    public User(){}
 
     public User.Builder asBuilder(){
         return new User.Builder()
@@ -45,7 +46,7 @@ public class User {
                 .setUserRole(this.role);
     }
 
-    public BigDecimal getIdUser(){
+    public BigInteger getIdUser(){
         return this.idUser;
     }
 
@@ -103,7 +104,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("name: %s, surname: %s, phone: %s, phone, mail: %s, role: %s", this.name, this.surname, this.phone, this.mail, this.role.getRole());
+        return String.format("name: %s, surname: %s", this.name, this.surname);
     }
 
     public static class Builder{
@@ -119,7 +120,7 @@ public class User {
             return builtUser;
         }
 
-        public Builder setIdUser(BigDecimal idUser){
+        public Builder setIdUser(BigInteger idUser){
             userToBuild.idUser = idUser;
             return this;
         }
