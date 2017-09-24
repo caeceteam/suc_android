@@ -9,10 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.suc.suc_android_solution.Enumerations.UserRoles;
+import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.User;
+import com.example.suc.suc_android_solution.Models.UsersResponse;
 import com.example.suc.suc_android_solution.Services.UserService;
 
+import java.math.BigInteger;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 public class UserActivity extends AppCompatActivity {
@@ -29,7 +37,7 @@ public class UserActivity extends AppCompatActivity {
         new FetchUsersTask().execute();
     }
 
-    public class FetchUsersTask extends AsyncTask<String, Void, List<User>> {
+    public class FetchUsersTask extends AsyncTask<String, Void, DeleteResponse> {
 
         @Override
         protected void onPreExecute() {
@@ -37,12 +45,15 @@ public class UserActivity extends AppCompatActivity {
         }
 
         @Override
-        protected List<User> doInBackground(String... params) {
+        protected DeleteResponse doInBackground(String... params) {
 
             try {
-                List<User> users = userService.getAllUsers();
+                //Collection<User> users = userService.getAllUsers();
+                DeleteResponse response = userService.deleteUser(BigInteger.valueOf(58));
 
-                return users;
+                return response;
+
+                //return (List<User>) users;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -51,12 +62,12 @@ public class UserActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<User> usersData) {
+        protected void onPostExecute(DeleteResponse usersData) {
             if (usersData != null) {
-                for (User user:usersData
-                     ) {
-                    tvDisplayUsers.append(user.toString() + "/n");
-                }
+                //for (User user:usersData
+                  //   ) {
+                    tvDisplayUsers.append(usersData.toString() + "/n");
+               // }
             }
         }
     }

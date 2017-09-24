@@ -4,21 +4,20 @@ package com.example.suc.suc_android_solution.Services;
  * Created by efridman on 27/8/17.
  */
 
-import android.util.JsonReader;
 
+import com.example.suc.suc_android_solution.Clients.UsersClient;
+import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.User;
+import com.example.suc.suc_android_solution.Models.UsersResponse;
 import com.example.suc.suc_android_solution.Utils.Network;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.math.BigInteger;
+import java.util.Collection;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Servicio utilizado para obtener informacion de usuarios, como por ejemplo, colaboradores.
@@ -27,43 +26,115 @@ public class UserService {
 
     private static final String USERS_API_BASE_URL = "/api/users";
 
-    public List<User> getAllUsers(){
-        List<User> results = new ArrayList<User>();
-
-        URL userRequestUrl = Network.buildUrl(USERS_API_BASE_URL, new HashMap<String,Object>());
-
+    public Collection<User> getAllUsers(){
         try {
-            String jsonUsersResponse = Network
-                    .getResponseFromHttpUrl(userRequestUrl);
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
 
-            JSONObject jsonResult = new JSONObject(jsonUsersResponse);
-            JSONArray jsonUsersResult = jsonResult.getJSONArray("users");
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
 
-            for(int i=0; i < jsonUsersResult.length(); i++){
-                JSONObject jsonUser = jsonUsersResult.getJSONObject(i);
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<UsersResponse> call = usersClient.getAll();
 
-                User.Builder userBuilder = new User.Builder();
-                userBuilder
-                        .setName(jsonUser.getString("name"))
-                        .setUserRole(jsonUser.getInt("role"))
-                        .setDoor(jsonUser.getString("door"))
-                        .setStreet(jsonUser.getString("street"))
-                .setFloor(jsonUser.getString("floor"))
-                .setPhone(jsonUser.getString("phone"))
-                .setPass(jsonUser.getString("pass"))
-                .setAlias(jsonUser.getString("alias"))
-                .setBornDate(new SimpleDateFormat("yyyy-MM-dd").parse(jsonUser.getString("bornDate").split("T")[0]))
-                .setDocNumber(jsonUser.opt("docNum") != null ? jsonUser.getString("docNum") : "")
-                .setStreetNumber(jsonUser.opt("streetNumber").toString().matches("-?\\d+(\\.\\d+)?") ? jsonUser.getInt("streetNumber") : null)
-                .setMail(jsonUser.getString("mail"))
-                .setSurname(jsonUser.getString("surname"));
+            UsersResponse usersResponse = call.execute().body();
+            return usersResponse.getUsers();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-                results.add(userBuilder.build());
+    public User getUser(BigInteger idUser){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
 
-            }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
 
-            return results;
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<User> call = usersClient.get(idUser);
 
+            User userResponse = call.execute().body();
+            return userResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User postUser(User user){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<User> call = usersClient.post(user);
+
+            User userResponse = call.execute().body();
+            return userResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User putUser(BigInteger idUser, User user){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<User> call = usersClient.put(idUser, user);
+
+            User userResponse = call.execute().body();
+            return userResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public DeleteResponse deleteUser(BigInteger idUser){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<DeleteResponse> call = usersClient.delete(idUser);
+
+            DeleteResponse userResponse = call.execute().body();
+            return userResponse;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
