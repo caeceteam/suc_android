@@ -7,8 +7,10 @@ import android.content.res.Resources;
  */
 
 public enum UserRoles {
-    EMPLOYEE("employee",1),
-    COLABORATOR("colaborator",2);
+    SYS_ADMIN("sysAdmin",0),
+    DINER_ADMIN("dinerAdmin",1),
+    EMPLOYEE("employee",2),
+    COLABORATOR("colaborator",3);
 
     private final String role;
     private final Integer roleValue;
