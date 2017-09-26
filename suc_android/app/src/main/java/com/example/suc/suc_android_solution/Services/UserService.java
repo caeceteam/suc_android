@@ -24,8 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class UserService {
 
-    private static final String USERS_API_BASE_URL = "/api/users";
-
     public Collection<User> getAllUsers(){
         try {
             Gson gson = new GsonBuilder()
