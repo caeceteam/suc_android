@@ -5,7 +5,13 @@ package com.example.suc.suc_android_solution.Services;
  */
 
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.SharedPreferences;
+
+import com.example.suc.suc_android_solution.AuthConfig;
 import com.example.suc.suc_android_solution.Clients.UsersClient;
+import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Models.UsersResponse;
@@ -23,8 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Servicio utilizado para obtener informacion de usuarios, como por ejemplo, colaboradores.
  */
 public class UserService {
-
-    public Collection<User> getAllUsers(){
+    public Collection<User> getAllUsers(AccountManager accountManager){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -36,8 +41,10 @@ public class UserService {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
+            Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<UsersResponse> call = usersClient.getAll();
+            Call<UsersResponse> call = usersClient.getAll(accountManager.peekAuthToken(accounts[0], UserRoles.COLABORATOR.getRole()));
 
             UsersResponse usersResponse = call.execute().body();
             return usersResponse.getUsers();

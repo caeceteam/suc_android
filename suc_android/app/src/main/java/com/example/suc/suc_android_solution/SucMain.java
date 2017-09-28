@@ -27,7 +27,7 @@ public class SucMain extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Context context = SucMain.this;
-                Class destinationActivity = AuthenticationActivity.class;
+                Class destinationActivity = UserActivity.class;
                 Intent startChildActivityIntent = new Intent(context, destinationActivity);
 
                 startActivity(startChildActivityIntent);
