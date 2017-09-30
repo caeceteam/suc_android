@@ -27,7 +27,7 @@ import java.util.List;
 public class UserActivity extends AppCompatActivity {
 
     TextView tvDisplayUsers;
-    UserService userService = new UserService();
+    UserService userService = new UserService(getBaseContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class UserActivity extends AppCompatActivity {
 
             try {
                 //Collection<User> users = userService.getAllUsers();
-                Collection<User> response = userService.getAllUsers(AccountManager.get(getBaseContext()));
+                Collection<User> response = userService.getAllUsers();
 
                 return response;
 

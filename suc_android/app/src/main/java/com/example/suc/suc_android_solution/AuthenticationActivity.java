@@ -7,7 +7,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
@@ -32,14 +31,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import static android.content.ContentValues.TAG;
 
@@ -56,7 +53,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     private AuthenticationTask mAuthTask = null;
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private AutoCompleteTextView mUserNameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -66,17 +63,11 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         accountManager = AccountManager.get(getBaseContext());
-        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-        if (accounts.length > 0) {
-            Intent intent = new Intent(getApplicationContext(), SucMain.class);
-            startActivity(intent);
-        }
 
         setContentView(R.layout.activity_authentication);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -90,8 +81,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button mUserSignInButton = (Button) findViewById(R.id.user_sign_in_button);
+        mUserSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -114,11 +105,11 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         }
 
         // Reset errors.
-        mEmailView.setError(null);
+        mUserNameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
+        String username = mUserNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -132,13 +123,13 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+        if (TextUtils.isEmpty(username)) {
+            mUserNameView.setError(getString(R.string.error_field_required));
+            focusView = mUserNameView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isEmailValid(username)) {
+            mUserNameView.setError(getString(R.string.error_invalid_email));
+            focusView = mUserNameView;
             cancel = true;
         }
 
@@ -150,7 +141,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new AuthenticationTask(email, password);
+            mAuthTask = new AuthenticationTask(username, password);
             mAuthTask.execute((Void) null);
         }
     }
@@ -239,7 +230,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
                 new ArrayAdapter<>(AuthenticationActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        mUserNameView.setAdapter(adapter);
     }
 
 
@@ -259,11 +250,11 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
      */
     public class AuthenticationTask extends AsyncTask<Void, Void, Intent> {
 
-        private final String mEmail;
+        private final String mUserName;
         private final String mPassword;
 
-        AuthenticationTask(String email, String password) {
-            mEmail = email;
+        AuthenticationTask(String userName, String password) {
+            mUserName = userName;
             mPassword = password;
         }
 
@@ -271,10 +262,10 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         protected Intent doInBackground(Void... params) {
             Bundle data = new Bundle();
             try {
-                AuthCredentials credentials = new AuthCredentials(mEmail, mPassword);
+                AuthCredentials credentials = new AuthCredentials(mUserName, mPassword);
                 AuthenticationResponse authResponse = new AuthenticationService().authenticate(credentials);
-                data.putString(AccountManager.KEY_ACCOUNT_NAME, mEmail);
-                data.putString(AccountManager.KEY_ACCOUNT_TYPE, UserRoles.COLABORATOR.getRole());
+                data.putString(AccountManager.KEY_ACCOUNT_NAME, mUserName);
+                data.putString(AccountManager.KEY_ACCOUNT_TYPE, authResponse.getUser().getRole().getRole());
                 data.putString(AccountManager.KEY_AUTHTOKEN, authResponse.getToken());
                 data.putString(AuthConfig.PARAM_USER_PASS.getConfig(), mPassword);
             } catch (Exception ex) {
@@ -292,10 +283,10 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
                 Toast.makeText(getBaseContext(), intent.getStringExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig()), Toast.LENGTH_SHORT).show();
             } else {
                 if (finishLogin(intent)) {
-                    Intent mainIntent = new Intent(getBaseContext(), UserActivity.class);
-                    startActivity(intent);
+                    Intent mainIntent = new Intent(getBaseContext(), SucStart.class);
+                    startActivity(mainIntent);
                 } else {
-                    Toast.makeText(getBaseContext(), "Uy la cagamos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Ocurrio un error durante el ingreso. Intente nuevamente!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -308,14 +299,18 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     }
 
     private boolean finishLogin(Intent intent) {
-        Log.d("suc", TAG + "> finishLogin");
+        Log.d("sucapp", TAG + "> finishLogin");
 
         String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
         String accountPassword = intent.getStringExtra(AuthConfig.PARAM_USER_PASS.getConfig());
         final Account account = new Account(accountName, AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
         Log.d("sucapp", TAG + "> finishLogin > addAccountExplicitly");
         String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
-        String authtokenType = intent.getStringExtra(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+        String authtokenType = intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE);
+
+        if(accountManager == null){
+            accountManager = AccountManager.get(getBaseContext());
+        }
 
         // Creating the account on the device and setting the auth token we got
         // (Not setting the auth token will cause another call to the server to authenticate the user)

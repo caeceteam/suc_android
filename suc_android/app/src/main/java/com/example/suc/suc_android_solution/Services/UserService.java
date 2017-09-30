@@ -7,6 +7,7 @@ package com.example.suc.suc_android_solution.Services;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.suc.suc_android_solution.AuthConfig;
@@ -29,7 +30,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Servicio utilizado para obtener informacion de usuarios, como por ejemplo, colaboradores.
  */
 public class UserService {
-    public Collection<User> getAllUsers(AccountManager accountManager){
+    private Context mContext;
+    private AccountManager accountManager;
+    private String userToken;
+
+    public UserService(Context context){
+        this.mContext = context;
+        accountManager = AccountManager.get(context);
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+        userToken = accountManager.peekAuthToken(accounts[0], AuthConfig.KEY_SUC_TOKEN.getConfig());
+    }
+
+    public Collection<User> getAllUsers(){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -41,10 +53,9 @@ public class UserService {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
-            Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<UsersResponse> call = usersClient.getAll(accountManager.peekAuthToken(accounts[0], UserRoles.COLABORATOR.getRole()));
+            Call<UsersResponse> call = usersClient.getAll(userToken);
 
             UsersResponse usersResponse = call.execute().body();
             return usersResponse.getUsers();
@@ -67,7 +78,7 @@ public class UserService {
                     .build();
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<User> call = usersClient.get(idUser);
+            Call<User> call = usersClient.get(userToken,idUser);
 
             User userResponse = call.execute().body();
             return userResponse;
@@ -90,7 +101,7 @@ public class UserService {
                     .build();
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<User> call = usersClient.post(user);
+            Call<User> call = usersClient.post(userToken,user);
 
             User userResponse = call.execute().body();
             return userResponse;
@@ -113,7 +124,7 @@ public class UserService {
                     .build();
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<User> call = usersClient.put(idUser, user);
+            Call<User> call = usersClient.put(userToken,idUser, user);
 
             User userResponse = call.execute().body();
             return userResponse;
@@ -136,7 +147,7 @@ public class UserService {
                     .build();
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<DeleteResponse> call = usersClient.delete(idUser);
+            Call<DeleteResponse> call = usersClient.delete(userToken,idUser);
 
             DeleteResponse userResponse = call.execute().body();
             return userResponse;

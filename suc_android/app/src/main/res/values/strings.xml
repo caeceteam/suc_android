@@ -1,18 +1,17 @@
 <resources>
-    <string name="app_name">Suc_Android_Solution</string>
-    <string name="title_activity_user">UserActivity</string>
-    <string name="title_activity_authentication">Sign in</string>
+    <string name="app_name">SUC - Sistema único de comedores</string>
+    <string name="title_activity_user">Usuarios</string>
+    <string name="title_activity_authentication">Ingresar</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
+    <string name="prompt_email">Ingresé nombre de usuario o mail</string>
+    <string name="prompt_password">Ingresé contraseña</string>
+    <string name="action_sign_in">Ingresé o registrese</string>
+    <string name="action_sign_in_short">Ingresar</string>
+    <string name="error_invalid_email">El nombre de usuario es invalido</string>
+    <string name="error_invalid_password">La contraseña es muy corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="permission_rationale">"Para permitir autocompletar este campo debe darnos permisos para leer sus contactos"
     </string>
 </resources>

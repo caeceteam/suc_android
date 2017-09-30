@@ -53,13 +53,6 @@ public class SucAuthenticator extends AbstractAccountAuthenticator{
 
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) throws NetworkErrorException {
-        // If the caller requested an authToken type we don't support, then
-        // return an error
-        if (!authTokenType.equals(UserRoles.COLABORATOR.getRole())) {
-            final Bundle result = new Bundle();
-            result.putString(AccountManager.KEY_ERROR_MESSAGE, "invalid authTokenType");
-            return result;
-        }
 
         // Extract the username and password from the Account Manager, and ask
         // the server for an appropriate AuthToken.
@@ -102,7 +95,7 @@ public class SucAuthenticator extends AbstractAccountAuthenticator{
 
     @Override
     public String getAuthTokenLabel(String authTokenType) {
-        return "suc_token" + " (Label)";
+        return authTokenType + " (AuthTokenLabel)";
     }
 
     @Override
