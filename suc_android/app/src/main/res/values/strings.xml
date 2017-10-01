@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">SUC - Sistema único de comedores</string>
+    <string name="title_activity_user">Usuarios</string>
+    <string name="title_activity_authentication">Ingresar</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Ingresé nombre de usuario o mail</string>
+    <string name="prompt_password">Ingresé contraseña</string>
+    <string name="action_sign_in">Ingresar</string>
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_sign_in_short">Ingresar</string>
+    <string name="error_invalid_email">El nombre de usuario es invalido</string>
+    <string name="error_invalid_password">La contraseña es muy corta</string>
+    <string name="error_incorrect_password">La contraseña es incorrecta</string>
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="permission_rationale">"Para permitir autocompletar este campo debe darnos permisos para leer sus contactos"
+    </string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="closing_session">Cerrando...</string>
+
+</resources>
