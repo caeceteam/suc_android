@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -22,19 +23,19 @@ import retrofit2.http.Path;
 
 public interface UsersClient {
     @GET("/api/users")
-    Call<UsersResponse> getAll();
+    Call<UsersResponse> getAll(@Header("x-access-token") String token);
 
     @GET("/api/users/{idUser}")
-    Call<User> get(@Path("idUser") BigInteger idUser);
+    Call<User> get(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser);
 
     @POST("/api/users")
-    Call<User> post(@Body User user);
+    Call<User> post(@Header("x-access-token") String token, @Body User user);
 
     @PUT("/api/users/{idUser}")
-    Call<User> put(@Path("idUser") BigInteger idUser, @Body User user);
+    Call<User> put(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser, @Body User user);
 
     @DELETE("/api/users/{idUser}")
-    Call<DeleteResponse> delete(@Path("idUser") BigInteger idUser);
+    Call<DeleteResponse> delete(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser);
 
 
 

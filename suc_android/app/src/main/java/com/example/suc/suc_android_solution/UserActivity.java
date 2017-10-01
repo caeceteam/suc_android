@@ -1,5 +1,6 @@
 package com.example.suc.suc_android_solution;
 
+import android.accounts.AccountManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +27,7 @@ import java.util.List;
 public class UserActivity extends AppCompatActivity {
 
     TextView tvDisplayUsers;
-    UserService userService = new UserService();
+    UserService userService = new UserService(getBaseContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class UserActivity extends AppCompatActivity {
         new FetchUsersTask().execute();
     }
 
-    public class FetchUsersTask extends AsyncTask<String, Void, DeleteResponse> {
+    public class FetchUsersTask extends AsyncTask<String, Void, Collection<User>> {
 
         @Override
         protected void onPreExecute() {
@@ -45,11 +46,11 @@ public class UserActivity extends AppCompatActivity {
         }
 
         @Override
-        protected DeleteResponse doInBackground(String... params) {
+        protected Collection<User> doInBackground(String... params) {
 
             try {
                 //Collection<User> users = userService.getAllUsers();
-                DeleteResponse response = userService.deleteUser(BigInteger.valueOf(58));
+                Collection<User> response = userService.getAllUsers();
 
                 return response;
 
@@ -62,12 +63,12 @@ public class UserActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(DeleteResponse usersData) {
+        protected void onPostExecute(Collection<User> usersData) {
             if (usersData != null) {
-                //for (User user:usersData
-                  //   ) {
+                for (User user:usersData
+                           ) {
                     tvDisplayUsers.append(usersData.toString() + "/n");
-               // }
+                }
             }
         }
     }
