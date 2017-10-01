@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="140dp"
+    android:paddingTop="10dp"
+    android:background="@color/colorPrimary"
+    android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/im_person_pin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleX="2.5"
+        android:scaleY="2.5"
+        android:adjustViewBounds="false"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@mipmap/ic_person_pin_white_24dp" />
+
+    <TextView
+        android:id="@+id/tv_header_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingTop="5dp"
+        android:text="{Nombre de usuario}"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="24dp" />
+    <TextView
+        android:id="@+id/tv_header_user_role"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="21dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:text="{Rol del user}" />
+</LinearLayout>
