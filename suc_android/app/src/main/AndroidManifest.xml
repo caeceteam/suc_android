@@ -34,8 +34,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AuthenticationActivity"
-            android:label="@string/title_activity_authentication">
-        </activity>
+            android:label="@string/title_activity_authentication"></activity>
 
         <service
             android:name=".Services.AuthService"
@@ -50,7 +49,7 @@
                 android:resource="@xml/authenticator" />
         </service>
 
-        <activity android:name=".SucStart"></activity>
+        <activity android:name=".SucStart" />
     </application>
 
 </manifest>

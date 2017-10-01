@@ -15,4 +15,8 @@
     <string name="error_field_required">Este campo es requerido</string>
     <string name="permission_rationale">"Para permitir autocompletar este campo debe darnos permisos para leer sus contactos"
     </string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="closing_session">Cerrando...</string>
+
 </resources>

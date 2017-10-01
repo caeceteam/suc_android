@@ -10,13 +10,13 @@ import com.google.gson.annotations.SerializedName;
 
 public enum UserRoles {
     @SerializedName("0")
-    SYS_ADMIN("sysAdmin",0),
+    SYS_ADMIN("Administrador",0),
     @SerializedName("1")
-    DINER_ADMIN("dinerAdmin",1),
+    DINER_ADMIN("Administrador del comedor",1),
     @SerializedName("2")
-    EMPLOYEE("employee",2),
+    EMPLOYEE("Empleado",2),
     @SerializedName("3")
-    COLABORATOR("colaborator",3);
+    COLABORATOR("Colaborador",3);
 
     private final String role;
     private final Integer roleValue;

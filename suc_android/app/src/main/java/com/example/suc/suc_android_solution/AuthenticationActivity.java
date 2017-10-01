@@ -316,6 +316,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         // (Not setting the auth token will cause another call to the server to authenticate the user)
         boolean added = accountManager.addAccountExplicitly(account, accountPassword, null);
         accountManager.setAuthToken(account, authtokenType, authtoken);
+        accountManager.setUserData(account, AuthConfig.ARG_ACCOUNT_TYPE.getConfig(), intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
 
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
