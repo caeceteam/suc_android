@@ -27,9 +27,9 @@ public class SucStart extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
     private AccountManager accountManager;
-    private TextView tvHeaderUserName;
-    private TextView tvHeaderUserRole;
     private NavigationView navigationView;
+    private TextView tvToolbarTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,8 @@ public class SucStart extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(myToolbar);
+
+        myToolbar.setTitle(R.string.title_activity_start);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_nav_suc);
         mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);

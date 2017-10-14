@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -46,6 +47,7 @@ import static android.content.ContentValues.TAG;
 public class AuthenticationActivity extends AccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
 
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
+    private static final int REQUEST_SIGNUP = 0;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -63,9 +65,13 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountManager = AccountManager.get(getBaseContext());
 
         setContentView(R.layout.activity_authentication);
+
+        validateSession();
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
+        myToolbar.setTitle(R.string.title_activity_authentication);
+        accountManager = AccountManager.get(getBaseContext());
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
 
@@ -89,8 +95,28 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             }
         });
 
+        Button mUserSignUpButton = (Button) findViewById(R.id.user_sign_up_button);
+        mUserSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signUpActivity = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivityForResult(signUpActivity, REQUEST_SIGNUP);
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void validateSession() {
+        accountManager = AccountManager.get(getBaseContext());
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+        Intent intent;
+        if (accounts.length == 1) { // Si hay un usuario logueado, inicio la app desde el comienzo.
+            intent = new Intent(getApplicationContext(), SucStart.class);
+            startActivity(intent);
+        }
+
     }
 
 
@@ -242,6 +268,22 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SIGNUP) {
+            if (resultCode == RESULT_OK) {
+
+                String username = data.getStringExtra("username");
+                String password = data.getStringExtra("password");
+                // Show a progress spinner, and kick off a background task to
+                // perform the user login attempt.
+                showProgress(true);
+                mAuthTask = new AuthenticationTask(username, password);
+                mAuthTask.execute((Void) null);
+            }
+        }
     }
 
     /**
