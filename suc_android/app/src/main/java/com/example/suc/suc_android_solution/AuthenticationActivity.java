@@ -36,6 +36,8 @@ import com.example.suc.suc_android_solution.Models.Authentication.AuthCredential
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
     private static final int REQUEST_SIGNUP = 0;
+    private static final int REQUEST_FORGOT_PASSWORD = 1;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -59,6 +62,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mForgotPassword;
 
     private AccountManager accountManager;
 
@@ -74,6 +78,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         accountManager = AccountManager.get(getBaseContext());
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
+
+        mForgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -101,6 +107,14 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             public void onClick(View v) {
                 Intent signUpActivity = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivityForResult(signUpActivity, REQUEST_SIGNUP);
+            }
+        });
+
+        mForgotPassword.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent forgotPasswordActivity = new Intent(getApplicationContext(), SucForgotPassword.class);
+                startActivityForResult(forgotPasswordActivity, REQUEST_FORGOT_PASSWORD);
             }
         });
 
@@ -272,17 +286,24 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
+        switch (requestCode){
+            case REQUEST_SIGNUP:
+                if (resultCode == RESULT_OK) {
 
-                String username = data.getStringExtra("username");
-                String password = data.getStringExtra("password");
-                // Show a progress spinner, and kick off a background task to
-                // perform the user login attempt.
-                showProgress(true);
-                mAuthTask = new AuthenticationTask(username, password);
-                mAuthTask.execute((Void) null);
-            }
+                    String username = data.getStringExtra("username");
+                    String password = data.getStringExtra("password");
+                    // Show a progress spinner, and kick off a background task to
+                    // perform the user login attempt.
+                    showProgress(true);
+                    mAuthTask = new AuthenticationTask(username, password);
+                    mAuthTask.execute((Void) null);
+                }
+                break;
+            case REQUEST_FORGOT_PASSWORD:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(getApplicationContext(),"Se ha enviado a su correo su nueva contraseña", Toast.LENGTH_SHORT);
+                }
+                break;
         }
     }
 

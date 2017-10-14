@@ -69,4 +69,27 @@ public class AuthenticationService {
             return null;
         }
     }
+
+    public AuthenticationResponse clearPassword(AuthCredentials credentials){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            AuthenticationClient authClient = retrofit.create(AuthenticationClient.class);
+            Call<AuthenticationResponse> call = authClient.put(credentials, "xsc");
+
+            AuthenticationResponse authResponse = call.execute().body();
+            return authResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
