@@ -8,17 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.suc.suc_android_solution.Enumerations.MailType;
-import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
-import com.example.suc.suc_android_solution.Models.MailParams;
-import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
 
-public class SucForgotPassword extends AppCompatActivity {
+public class SucForgotPasswordActivity extends AppCompatActivity {
 
     EditText mUserMail;
     Button mSignUpButton;
@@ -30,7 +27,7 @@ public class SucForgotPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suc_forgot_password);
 
-        authenticationService = new AuthenticationService();
+        authenticationService = new AuthenticationService(getApplicationContext());
 
         mUserMail = (EditText) findViewById(R.id.user_name) ;
         mSignUpButton = (Button) findViewById(R.id.user_forgot_password_button);
@@ -43,14 +40,14 @@ public class SucForgotPassword extends AppCompatActivity {
 
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
-        myToolbar.setTitle(R.string.title_activity_forgot_password);
+        ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_forgot_password);
     }
 
     private void clearPassword(){
 
         String[] parameters = new String[5];
         parameters[0] = mUserMail.getText().toString();
-        new SucForgotPassword.ClearPasswordTask().execute(parameters);
+        new SucForgotPasswordActivity.ClearPasswordTask().execute(parameters);
     }
 
 

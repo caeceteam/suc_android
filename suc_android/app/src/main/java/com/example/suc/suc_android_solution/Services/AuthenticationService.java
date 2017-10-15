@@ -1,11 +1,15 @@
 package com.example.suc.suc_android_solution.Services;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import com.example.suc.suc_android_solution.Clients.AuthenticationClient;
 import com.example.suc.suc_android_solution.Clients.UsersClient;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
 import com.example.suc.suc_android_solution.Models.Authentication.UpdateCredentials;
 import com.example.suc.suc_android_solution.Models.User;
+import com.example.suc.suc_android_solution.R;
 import com.example.suc.suc_android_solution.Utils.Network;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -23,6 +27,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AuthenticationService {
 
+    Context mContext;
+
+    public AuthenticationService(Context appContext){
+        mContext = appContext;
+    }
 
     public AuthenticationResponse authenticate(AuthCredentials credentials){
         try {
@@ -40,11 +49,18 @@ public class AuthenticationService {
             Call<AuthenticationResponse> call = authClient.post(credentials);
 
             AuthenticationResponse authResponse = call.execute().body();
-            return authResponse;
+            return authResponse != null ? authResponse : getInvalidUserParamsResponse();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @NonNull
+    private AuthenticationResponse getInvalidUserParamsResponse() {
+        AuthenticationResponse response = new AuthenticationResponse();
+        response.setResult(mContext.getString(R.string.error_invalid_login_fields));
+        return response;
     }
 
     public AuthenticationResponse changePassword(UpdateCredentials credentials){

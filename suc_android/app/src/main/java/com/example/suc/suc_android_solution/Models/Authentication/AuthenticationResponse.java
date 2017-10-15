@@ -13,6 +13,7 @@ public class AuthenticationResponse {
     private String token;
     private Collection<Diner> diners;
     private User user;
+    private String result;
 
     public String getToken() {
         return token;
@@ -37,4 +38,13 @@ public class AuthenticationResponse {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
 }

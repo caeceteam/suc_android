@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.suc.suc_android_solution.Enumerations.MailType;
@@ -56,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
-        myToolbar.setTitle(R.string.title_activity_sign_up);
+        ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_sign_up);
     }
 
     private void registerUser(){

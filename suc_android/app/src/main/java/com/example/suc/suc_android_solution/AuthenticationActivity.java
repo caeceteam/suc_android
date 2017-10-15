@@ -35,8 +35,7 @@ import android.widget.Toast;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
-
-import org.w3c.dom.Text;
+import com.example.suc.suc_android_solution.Utils.Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +73,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 
         validateSession();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
-        myToolbar.setTitle(R.string.title_activity_authentication);
+        ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_authentication);
         accountManager = AccountManager.get(getBaseContext());
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
@@ -113,7 +112,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         mForgotPassword.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent forgotPasswordActivity = new Intent(getApplicationContext(), SucForgotPassword.class);
+                Intent forgotPasswordActivity = new Intent(getApplicationContext(), SucForgotPasswordActivity.class);
                 startActivityForResult(forgotPasswordActivity, REQUEST_FORGOT_PASSWORD);
             }
         });
@@ -301,7 +300,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
                 break;
             case REQUEST_FORGOT_PASSWORD:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(getApplicationContext(),"Se ha enviado a su correo su nueva contraseña", Toast.LENGTH_SHORT);
+                    Notifications.sendForgotPasswordNotification(getApplicationContext());
+                    //Toast.makeText(getApplicationContext(),"Se ha enviado a su correo su nueva contraseña", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -326,13 +326,18 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             Bundle data = new Bundle();
             try {
                 AuthCredentials credentials = new AuthCredentials(mUserName, mPassword);
-                AuthenticationResponse authResponse = new AuthenticationService().authenticate(credentials);
-                data.putString(AccountManager.KEY_ACCOUNT_NAME, mUserName);
-                data.putString(AccountManager.KEY_ACCOUNT_TYPE, authResponse.getUser().getRole().getRole());
-                data.putString(AccountManager.KEY_AUTHTOKEN, authResponse.getToken());
-                data.putString(AuthConfig.PARAM_USER_PASS.getConfig(), mPassword);
+                AuthenticationResponse authResponse = new AuthenticationService(getApplicationContext()).authenticate(credentials);
+                if(authResponse.getResult() == "" || authResponse.getResult() == null){
+                    data.putString(AccountManager.KEY_ACCOUNT_NAME, mUserName);
+                    data.putString(AccountManager.KEY_ACCOUNT_TYPE, authResponse.getUser().getRole().getRole());
+                    data.putString(AccountManager.KEY_AUTHTOKEN, authResponse.getToken());
+                    data.putString(AuthConfig.PARAM_USER_PASS.getConfig(), mPassword);
+                }else{
+                    data.putString(AuthConfig.KEY_ERROR_MESSAGE.getConfig(), authResponse.getResult());
+                }
+
             } catch (Exception ex) {
-                data.putString(AuthConfig.KEY_ERROR_MESSAGE.getConfig(), ex.getMessage());
+                data.putString(AuthConfig.KEY_ERROR_MESSAGE.getConfig(), getString(R.string.error_api_communication));
             }
 
             final Intent res = new Intent();
@@ -343,13 +348,15 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         @Override
         protected void onPostExecute(final Intent intent) {
             if (intent.hasExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig())) {
-                Toast.makeText(getBaseContext(), intent.getStringExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), intent.getStringExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig()), Toast.LENGTH_LONG).show();
+                onCancelled();
             } else {
                 if (finishLogin(intent)) {
                     Intent mainIntent = new Intent(getBaseContext(), SucStart.class);
                     startActivity(mainIntent);
                 } else {
-                    Toast.makeText(getBaseContext(), "Ocurrio un error durante el ingreso. Intente nuevamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Ocurrio un error durante el ingreso. Intente nuevamente!", Toast.LENGTH_SHORT).show();
+                    onCancelled();
                 }
             }
         }

@@ -7,7 +7,7 @@
     <string name="title_activity_start">Principal</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Ingresé nombre de usuario o mail</string>
+    <string name="prompt_email">Ingresé su mail</string>
     <string name="prompt_password">Ingresé contraseña</string>
     <string name="action_sign_in">Ingresar</string>
     <string name="action_sign_up">Soy nuevo</string>
@@ -36,4 +36,9 @@
     <string name="prompt_floor_optional">Piso (Opcional)</string>
     <string name="prompt_street_number_optional">Ingrese número de calle (Opcional)</string>
     <string name="prompt_street_optional">Ingresé su calle (Opcional)</string>
+    <string name="forgot_password_mail_notification">Se ha enviado a su correo su nueva contraseña</string>
+    <string name="forgot_password_notification_title">SUC - Admin</string>
+    <string name="prompt_user_or_email">Ingresé su usuario ó mail</string>
+    <string name="error_invalid_login_fields">Los datos ingresados no son correctos. Reviselos y vuelva a intentar</string>
+    <string name="error_api_communication">Estamos temporalmente con problemas en el servicio. Intente en unos minutos!</string>
 </resources>

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
 
@@ -64,7 +63,7 @@ public class SucAuthenticator extends AbstractAccountAuthenticator{
             final String password = am.getPassword(account);
             if (password != null) {
                 try {
-                    authToken = new AuthenticationService().authenticate(new AuthCredentials(account.name, password)).getToken();
+                    authToken = new AuthenticationService(mContext).authenticate(new AuthCredentials(account.name, password)).getToken();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
