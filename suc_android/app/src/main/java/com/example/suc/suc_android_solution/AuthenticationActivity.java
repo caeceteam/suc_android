@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
+import com.example.suc.suc_android_solution.Utils.Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,8 @@ import static android.content.ContentValues.TAG;
 public class AuthenticationActivity extends AccountAuthenticatorActivity implements LoaderCallbacks<Cursor> {
 
     public final static String ARG_IS_ADDING_NEW_ACCOUNT = "IS_ADDING_ACCOUNT";
+    private static final int REQUEST_SIGNUP = 0;
+    private static final int REQUEST_FORGOT_PASSWORD = 1;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -57,17 +61,24 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private TextView mForgotPassword;
 
     private AccountManager accountManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountManager = AccountManager.get(getBaseContext());
 
         setContentView(R.layout.activity_authentication);
+
+        validateSession();
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
+        ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_authentication);
+        accountManager = AccountManager.get(getBaseContext());
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
+
+        mForgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -89,8 +100,36 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             }
         });
 
+        Button mUserSignUpButton = (Button) findViewById(R.id.user_sign_up_button);
+        mUserSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signUpActivity = new Intent(getApplicationContext(), SignUpActivity.class);
+                startActivityForResult(signUpActivity, REQUEST_SIGNUP);
+            }
+        });
+
+        mForgotPassword.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent forgotPasswordActivity = new Intent(getApplicationContext(), SucForgotPasswordActivity.class);
+                startActivityForResult(forgotPasswordActivity, REQUEST_FORGOT_PASSWORD);
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void validateSession() {
+        accountManager = AccountManager.get(getBaseContext());
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+        Intent intent;
+        if (accounts.length == 1) { // Si hay un usuario logueado, inicio la app desde el comienzo.
+            intent = new Intent(getApplicationContext(), SucStart.class);
+            startActivity(intent);
+        }
+
     }
 
 
@@ -244,6 +283,30 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         int IS_PRIMARY = 1;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case REQUEST_SIGNUP:
+                if (resultCode == RESULT_OK) {
+
+                    String username = data.getStringExtra("username");
+                    String password = data.getStringExtra("password");
+                    // Show a progress spinner, and kick off a background task to
+                    // perform the user login attempt.
+                    showProgress(true);
+                    mAuthTask = new AuthenticationTask(username, password);
+                    mAuthTask.execute((Void) null);
+                }
+                break;
+            case REQUEST_FORGOT_PASSWORD:
+                if (resultCode == RESULT_OK) {
+                    Notifications.sendForgotPasswordNotification(getApplicationContext());
+                    //Toast.makeText(getApplicationContext(),"Se ha enviado a su correo su nueva contraseña", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -263,13 +326,18 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             Bundle data = new Bundle();
             try {
                 AuthCredentials credentials = new AuthCredentials(mUserName, mPassword);
-                AuthenticationResponse authResponse = new AuthenticationService().authenticate(credentials);
-                data.putString(AccountManager.KEY_ACCOUNT_NAME, mUserName);
-                data.putString(AccountManager.KEY_ACCOUNT_TYPE, authResponse.getUser().getRole().getRole());
-                data.putString(AccountManager.KEY_AUTHTOKEN, authResponse.getToken());
-                data.putString(AuthConfig.PARAM_USER_PASS.getConfig(), mPassword);
+                AuthenticationResponse authResponse = new AuthenticationService(getApplicationContext()).authenticate(credentials);
+                if(authResponse.getResult() == "" || authResponse.getResult() == null){
+                    data.putString(AccountManager.KEY_ACCOUNT_NAME, mUserName);
+                    data.putString(AccountManager.KEY_ACCOUNT_TYPE, authResponse.getUser().getRole().getRole());
+                    data.putString(AccountManager.KEY_AUTHTOKEN, authResponse.getToken());
+                    data.putString(AuthConfig.PARAM_USER_PASS.getConfig(), mPassword);
+                }else{
+                    data.putString(AuthConfig.KEY_ERROR_MESSAGE.getConfig(), authResponse.getResult());
+                }
+
             } catch (Exception ex) {
-                data.putString(AuthConfig.KEY_ERROR_MESSAGE.getConfig(), ex.getMessage());
+                data.putString(AuthConfig.KEY_ERROR_MESSAGE.getConfig(), getString(R.string.error_api_communication));
             }
 
             final Intent res = new Intent();
@@ -280,13 +348,15 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         @Override
         protected void onPostExecute(final Intent intent) {
             if (intent.hasExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig())) {
-                Toast.makeText(getBaseContext(), intent.getStringExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), intent.getStringExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig()), Toast.LENGTH_LONG).show();
+                onCancelled();
             } else {
                 if (finishLogin(intent)) {
                     Intent mainIntent = new Intent(getBaseContext(), SucStart.class);
                     startActivity(mainIntent);
                 } else {
-                    Toast.makeText(getBaseContext(), "Ocurrio un error durante el ingreso. Intente nuevamente!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Ocurrio un error durante el ingreso. Intente nuevamente!", Toast.LENGTH_SHORT).show();
+                    onCancelled();
                 }
             }
         }

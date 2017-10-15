@@ -6,6 +6,7 @@ import com.example.suc.suc_android_solution.Models.Authentication.UpdateCredenti
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
@@ -19,4 +20,7 @@ public interface AuthenticationClient {
 
     @PUT("/authentication")
     Call<AuthenticationResponse> put(@Body UpdateCredentials credentials);
+
+    @PUT("/authentication")
+    Call<AuthenticationResponse> put(@Body AuthCredentials credentials, @Header("x-cleaning-pass") String cleaning_pass);
 }

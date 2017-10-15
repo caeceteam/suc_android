@@ -38,7 +38,9 @@ public class UserService {
         this.mContext = context;
         accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-        userToken = accountManager.peekAuthToken(accounts[0], AuthConfig.KEY_SUC_TOKEN.getConfig());
+        if(accounts.length > 0){
+            userToken = accountManager.peekAuthToken(accounts[0], AuthConfig.KEY_SUC_TOKEN.getConfig());
+        }
     }
 
     public Collection<User> getAllUsers(){
