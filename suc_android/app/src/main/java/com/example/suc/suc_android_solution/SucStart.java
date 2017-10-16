@@ -26,7 +26,9 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 public class SucStart extends AppCompatActivity
-        implements MyAccountFragment.OnFragmentInteractionListener, ChangePasswordFragment.OnFragmentInteractionListener
+        implements MyAccountFragment.OnFragmentInteractionListener,
+        ChangePasswordFragment.OnFragmentInteractionListener,
+        MainFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout mDrawerLayout;
@@ -48,6 +50,9 @@ public class SucStart extends AppCompatActivity
         setSupportActionBar(myToolbar);
         setTitle(R.string.title_activity_start);
 
+        //iniciamos la app en el main
+        showMain();
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_nav_suc);
         mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
 
@@ -60,6 +65,9 @@ public class SucStart extends AppCompatActivity
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int selectedId = item.getItemId();
                 switch (selectedId){
+                    case R.id.action_main:
+                        showMain();
+                        break;
                     case R.id.action_logout:
                         logout();
                         break;
@@ -127,6 +135,20 @@ public class SucStart extends AppCompatActivity
 
     }
 
+    private void showMain() {
+
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        MainFragment mainFragment = MainFragment.newInstance(accounts[0].name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, mainFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+    }
+
     private void changePassword() {
 
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
@@ -158,6 +180,7 @@ public class SucStart extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 myAccount();
+                mDrawerLayout.closeDrawer(Gravity.START);
             }
         });
 

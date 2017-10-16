@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_main"
+        android:icon="@mipmap/ic_pages_black_24dp"
+        android:title="@string/action_main"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_my_account"
         android:icon="@mipmap/ic_person_black_24dp"
         android:title="@string/action_my_account"

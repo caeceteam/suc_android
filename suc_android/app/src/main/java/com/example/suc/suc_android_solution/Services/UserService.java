@@ -15,6 +15,7 @@ import com.example.suc.suc_android_solution.Clients.UsersClient;
 import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.User;
+import com.example.suc.suc_android_solution.Models.UserResponse;
 import com.example.suc.suc_android_solution.Models.UsersResponse;
 import com.example.suc.suc_android_solution.Utils.Network;
 import com.google.gson.FieldNamingPolicy;
@@ -82,10 +83,10 @@ public class UserService {
                     .build();
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<User> call = usersClient.get(userToken,idUser);
+            Call<UserResponse> call = usersClient.get(userToken,idUser);
 
-            User userResponse = call.execute().body();
-            return userResponse;
+            UserResponse userResponse = call.execute().body();
+            return userResponse.getUser();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -105,10 +106,10 @@ public class UserService {
                     .build();
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
-            Call<User> call = usersClient.get(userToken,alias);
+            Call<UserResponse> call = usersClient.get(userToken,alias);
 
-            User userResponse = call.execute().body();
-            return userResponse;
+            UserResponse userResponse = call.execute().body();
+            return userResponse.getUser();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
