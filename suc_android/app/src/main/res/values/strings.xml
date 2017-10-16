@@ -64,4 +64,10 @@
     <string name="action_update_user">Actualizar datos</string>
     <string name="update_successful">Tus datos han sido actualizados correctamente</string>
     <string name="update_error">Ocurrio un error actualizando tus datos</string>
+    <string name="action_change_password">Cambiar contraseña</string>
+    <string name="title_change_password">Cambiar contraseña</string>
+    <string name="prompt_old_password">Contraseña actual</string>
+    <string name="prompt_new_password">Nueva contraseña</string>
+    <string name="prompt_new_password_validate">Repita su nueva contraseña</string>
+    <string name="password_missmatch">Revise la nueva contraseña</string>
 </resources>
