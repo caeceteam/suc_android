@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,17 +14,11 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.suc.suc_android_solution.Enumerations.MailType;
-import com.example.suc.suc_android_solution.Enumerations.UserRoles;
-import com.example.suc.suc_android_solution.Models.MailParams;
 import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Services.UserService;
 
-import java.sql.Date;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;

@@ -25,7 +25,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
-public class SucStart extends AppCompatActivity implements MyAccountFragment.OnFragmentInteractionListener {
+public class SucStart extends AppCompatActivity
+        implements MyAccountFragment.OnFragmentInteractionListener, ChangePasswordFragment.OnFragmentInteractionListener
+{
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
@@ -63,6 +65,9 @@ public class SucStart extends AppCompatActivity implements MyAccountFragment.OnF
                         break;
                     case R.id.action_my_account:
                         myAccount();
+                        break;
+                    case R.id.action_change_password:
+                        changePassword();
                         break;
                 }
 
@@ -116,6 +121,20 @@ public class SucStart extends AppCompatActivity implements MyAccountFragment.OnF
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MyAccountFragment myAccountFragment = MyAccountFragment.newInstance(accounts[0].name, getTitle().toString());
         fragmentTransaction.replace(R.id.suc_content, myAccountFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+    }
+
+    private void changePassword() {
+
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ChangePasswordFragment changePasswordFragment = ChangePasswordFragment.newInstance(accounts[0].name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, changePasswordFragment);
         fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();

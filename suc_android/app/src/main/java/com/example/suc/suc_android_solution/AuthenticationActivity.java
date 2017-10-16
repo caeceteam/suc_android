@@ -190,7 +190,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     }
 
     private boolean isPasswordValid(String password) {
-        return password.length() > 4;
+        return password.length() >= 8;
     }
 
     /**
