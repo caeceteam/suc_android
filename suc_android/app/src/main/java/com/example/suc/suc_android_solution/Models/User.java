@@ -1,6 +1,7 @@
 package com.example.suc.suc_android_solution.Models;
 
 import com.example.suc.suc_android_solution.Enumerations.UserRoles;
+import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,11 +17,19 @@ public class User {
     private String surname;
     private String phone;
     private String mail;
+
+    @SerializedName("bornDate")
+
     private Date bornDate;
     private String alias;
     private String pass;
+
+    @SerializedName("docNum")
     private String docNumber;
+
     private String street;
+
+    @SerializedName("streetNumber")
     private Integer streetNumber;
     private String floor;
     private String door;

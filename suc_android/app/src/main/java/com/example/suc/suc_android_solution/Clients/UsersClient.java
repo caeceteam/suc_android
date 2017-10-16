@@ -28,11 +28,18 @@ public interface UsersClient {
     @GET("/api/users/{idUser}")
     Call<User> get(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser);
 
+    @GET("/api/users/{alias}")
+    Call<User> get(@Header("x-access-token") String token, @Path("alias") String alias);
+
     @POST("/api/users")
     Call<User> post(@Header("x-access-token") String token, @Body User user);
 
     @PUT("/api/users/{idUser}")
     Call<User> put(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser, @Body User user);
+
+    @PUT("/api/users/{alias}")
+    Call<User> put(@Header("x-access-token") String token, @Path("alias") String alias, @Body User user);
+
 
     @DELETE("/api/users/{idUser}")
     Call<DeleteResponse> delete(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser);
