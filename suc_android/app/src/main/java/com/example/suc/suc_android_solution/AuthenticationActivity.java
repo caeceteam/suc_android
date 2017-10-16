@@ -387,7 +387,6 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         boolean added = accountManager.addAccountExplicitly(account, accountPassword, null);
         accountManager.setAuthToken(account, authtokenType, authtoken);
         accountManager.setUserData(account, AuthConfig.ARG_ACCOUNT_TYPE.getConfig(), intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
-
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         return added;

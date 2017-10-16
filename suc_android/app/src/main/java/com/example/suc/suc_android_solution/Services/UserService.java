@@ -39,7 +39,9 @@ public class UserService {
         accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
         if(accounts.length > 0){
-            userToken = accountManager.peekAuthToken(accounts[0], AuthConfig.KEY_SUC_TOKEN.getConfig());
+            Account account = accounts[0];
+            String type = accountManager.getUserData(account, AuthConfig.ARG_ACCOUNT_TYPE.getConfig());
+            userToken = accountManager.peekAuthToken(account, type);
         }
     }
 
@@ -90,6 +92,30 @@ public class UserService {
         }
     }
 
+    public User getUser(String alias){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<User> call = usersClient.get(userToken,alias);
+
+            User userResponse = call.execute().body();
+            return userResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public User postUser(User user){
         try {
             Gson gson = new GsonBuilder()
@@ -127,6 +153,29 @@ public class UserService {
 
             UsersClient usersClient = retrofit.create(UsersClient.class);
             Call<User> call = usersClient.put(userToken,idUser, user);
+
+            User userResponse = call.execute().body();
+            return userResponse;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User putUser(String alias, User user){
+        try {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                    .setLenient()
+                    .create();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Network.STATIC_API_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
+
+            UsersClient usersClient = retrofit.create(UsersClient.class);
+            Call<User> call = usersClient.put(userToken,alias, user);
 
             User userResponse = call.execute().body();
             return userResponse;

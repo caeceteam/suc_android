@@ -4,8 +4,10 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.os.Build;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,16 +15,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SucStart extends AppCompatActivity {
+import org.w3c.dom.Text;
+
+public class SucStart extends AppCompatActivity implements MyAccountFragment.OnFragmentInteractionListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
@@ -39,11 +42,9 @@ public class SucStart extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nv_suc_start);
 
         setNavigationHeaderContent();
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(myToolbar);
-
-        myToolbar.setTitle(R.string.title_activity_start);
+        setTitle(R.string.title_activity_start);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_nav_suc);
         mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
@@ -56,10 +57,16 @@ public class SucStart extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int selectedId = item.getItemId();
-                if(selectedId == R.id.action_logout){
-                    logout();
+                switch (selectedId){
+                    case R.id.action_logout:
+                        logout();
+                        break;
+                    case R.id.action_my_account:
+                        myAccount();
+                        break;
                 }
 
+                mDrawerLayout.closeDrawer(Gravity.START);
                 return true;
             }
         });
@@ -101,6 +108,20 @@ public class SucStart extends AppCompatActivity {
         accountManager.removeAccount(accounts[0],callback,null);
     }
 
+    private void myAccount() {
+
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        MyAccountFragment myAccountFragment = MyAccountFragment.newInstance(accounts[0].name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, myAccountFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+    }
+
     private void setNavigationHeaderContent() {
 
         View nav_header = LayoutInflater.from(this).inflate(R.layout.navigation_header, null);
@@ -114,6 +135,18 @@ public class SucStart extends AppCompatActivity {
         ((TextView) nav_header.findViewById(R.id.tv_header_user_name)).setText(loggedAccount.name);
         ((TextView) nav_header.findViewById(R.id.tv_header_user_role)).setText(role);
 
+        ((ImageView) nav_header.findViewById(R.id.im_person_pin)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myAccount();
+            }
+        });
+
         navigationView.addHeaderView(nav_header);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }

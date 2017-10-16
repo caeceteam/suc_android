@@ -26,6 +26,8 @@
     <string name="closing_session">Cerrando...</string>
     <string name="login_forgot_password">No se mi clave</string>
     <string name="login_is_new">¿Eres nuevo?</string>
+
+
     <string name="prompt_alias">Ingresé un alias</string>
     <string name="prompt_surname">Ingresé su apellido</string>
     <string name="prompt_name">Ingresé su nombre</string>
@@ -36,9 +38,30 @@
     <string name="prompt_floor_optional">Piso (Opcional)</string>
     <string name="prompt_street_number_optional">Ingrese número de calle (Opcional)</string>
     <string name="prompt_street_optional">Ingresé su calle (Opcional)</string>
+
+    <string name="alias">Alias</string>
+    <string name="surname">Apellido</string>
+    <string name="name">Nombre</string>
+    <string name="phone">Telefono</string>
+    <string name="document">Numero de documento</string>
+    <string name="born_date">Fecha de nacimiento</string>
+    <string name="door">Puerta</string>
+    <string name="floor">Piso</string>
+    <string name="street_number">Número de calle</string>
+    <string name="street">Calle</string>
+
     <string name="forgot_password_mail_notification">Se ha enviado a su correo su nueva contraseña</string>
     <string name="forgot_password_notification_title">SUC - Admin</string>
     <string name="prompt_user_or_email">Ingresé su usuario ó mail</string>
     <string name="error_invalid_login_fields">Los datos ingresados no son correctos. Reviselos y vuelva a intentar</string>
     <string name="error_api_communication">Estamos temporalmente con problemas en el servicio. Intente en unos minutos!</string>
+    <string name="action_my_account">Mi cuenta</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_my_account">Mi cuenta</string>
+    <string name="mail">Mail</string>
+    <string name="action_update_user">Actualizar datos</string>
+    <string name="update_successful">Tus datos han sido actualizados correctamente</string>
+    <string name="update_error">Ocurrio un error actualizando tus datos</string>
 </resources>
