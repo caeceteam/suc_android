@@ -70,4 +70,5 @@
     <string name="prompt_new_password">Nueva contraseña</string>
     <string name="prompt_new_password_validate">Repita su nueva contraseña</string>
     <string name="password_missmatch">Revise la nueva contraseña</string>
+    <string name="action_main">Principal</string>
 </resources>

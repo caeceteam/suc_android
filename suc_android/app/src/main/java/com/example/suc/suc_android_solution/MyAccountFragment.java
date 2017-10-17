@@ -39,7 +39,6 @@ public class MyAccountFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private String mAccountName;
-
     private String lastActivityTitle;
 
     private UserService userService;

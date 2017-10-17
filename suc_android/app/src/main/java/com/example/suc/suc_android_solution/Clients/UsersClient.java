@@ -2,6 +2,7 @@ package com.example.suc.suc_android_solution.Clients;
 
 import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.User;
+import com.example.suc.suc_android_solution.Models.UserResponse;
 import com.example.suc.suc_android_solution.Models.UsersResponse;
 
 import java.math.BigDecimal;
@@ -26,10 +27,10 @@ public interface UsersClient {
     Call<UsersResponse> getAll(@Header("x-access-token") String token);
 
     @GET("/api/users/{idUser}")
-    Call<User> get(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser);
+    Call<UserResponse> get(@Header("x-access-token") String token, @Path("idUser") BigInteger idUser);
 
     @GET("/api/users/{alias}")
-    Call<User> get(@Header("x-access-token") String token, @Path("alias") String alias);
+    Call<UserResponse> get(@Header("x-access-token") String token, @Path("alias") String alias);
 
     @POST("/api/users")
     Call<User> post(@Header("x-access-token") String token, @Body User user);
