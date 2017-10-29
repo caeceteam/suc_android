@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SUC - Sistema único de comedores</string>
+    <string name="app_name">SUC</string>
     <string name="title_activity_user">Usuarios</string>
     <string name="title_activity_authentication">Bienvenido</string>
     <string name="title_activity_sign_up">Registrarse</string>
@@ -23,7 +23,7 @@
     </string>
     <string name="open">Abrir</string>
     <string name="close">Cerrar</string>
-    <string name="closing_session">Cerrando...</string>
+    <string name="closing_session">Cerrando…</string>
     <string name="login_forgot_password">No se mi clave</string>
     <string name="login_is_new">¿Eres nuevo?</string>
 
