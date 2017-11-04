@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#004d40</color>
     <color name="colorLoginButton">#2196f3</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorText">#FFFFFF</color>
+    <color name="colorText">#ffffff</color>
     <color name="colorLink">#0000EE</color>
 </resources>

@@ -69,4 +69,8 @@
     <string name="prompt_new_password_validate">Repita su nueva contraseña</string>
     <string name="password_missmatch">Revise la nueva contraseña</string>
     <string name="action_main">Principal</string>
+    <string name="home_see_all">Ver todos</string>
+    <string name="home_near_me">Cerca de mí</string>
+    <string name="home_more_nedeed">Más necesitados</string>
+    <string name="home_button_donate">Quiero donar</string>
 </resources>
