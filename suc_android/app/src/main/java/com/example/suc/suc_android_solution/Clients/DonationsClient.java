@@ -23,7 +23,7 @@ import retrofit2.http.Path;
  * Created by Marco Cupo on 5/11/2017.
  */
 
-public interface DonationClient {
+public interface DonationsClient {
     @GET("/api/donations")
     Call<DonationsResponse> getAll(@Header("x-access-token") String token);
 
