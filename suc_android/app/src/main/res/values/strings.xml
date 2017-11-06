@@ -71,4 +71,11 @@
     <string name="prompt_new_password_validate">Repita su nueva contraseña</string>
     <string name="password_missmatch">Revise la nueva contraseña</string>
     <string name="action_main">Principal</string>
+    <string name="action_nearest_diners">Comedores cercanos</string>
+    <string name="searching_position">Buscando úbicacion!</string>
+    <string name="gps_disabled">El GPS se encuentra apagado!</string>
+    <string name="title_nearest_diners">Comedores cercanos</string>
+    <string name="map_search_again">Buscar en esta área</string>
+    <string name="map_geo_search_input_hint">Buscar</string>
+    <string name="map_list_header_txt">Borrar</string>
 </resources>

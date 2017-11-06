@@ -7,6 +7,11 @@
         android:title="@string/action_main"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_nearest_diners"
+        android:icon="@mipmap/ic_pages_black_24dp"
+        android:title="@string/action_nearest_diners"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_my_account"
         android:icon="@mipmap/ic_person_black_24dp"
         android:title="@string/action_my_account"

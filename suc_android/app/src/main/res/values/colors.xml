@@ -6,4 +6,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorLink">#0000EE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="form_input">#333333</color>
 </resources>
