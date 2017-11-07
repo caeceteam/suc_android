@@ -84,7 +84,7 @@ public class MapViewPager extends SmartViewPager {
         if (adapter instanceof MapPagerAdapter) {
             super.setAdapter(adapter);
         } else {
-            throw new IllegalArgumentException("Adapter should be of type CheckoutMapPagerAdapter");
+            throw new IllegalArgumentException("Adapter should be of type MapPagerAdapter");
         }
     }
 
