@@ -2,41 +2,47 @@ package com.example.suc.suc_android_solution;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.renderscript.ScriptGroup;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
-import com.example.suc.suc_android_solution.Models.Diner;
-import com.example.suc.suc_android_solution.Models.Diners;
+import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
+import com.example.suc.suc_android_solution.Maps.MapNavigator;
+import com.example.suc.suc_android_solution.Maps.MapPagerAdapter;
+import com.example.suc.suc_android_solution.Maps.MapViewPager;
 import com.example.suc.suc_android_solution.Services.DinerService;
 import com.example.suc.suc_android_solution.Tasks.GetNearestDinersMarkers;
 import com.example.suc.suc_android_solution.Tasks.TaskListener;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -45,11 +51,22 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.VisibleRegion;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -61,7 +78,7 @@ import java.util.Map;
  * Use the {@link NearestDinersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NearestDinersFragment extends Fragment implements OnMapReadyCallback, LocationListener {
+public class NearestDinersFragment extends Fragment implements OnMapReadyCallback, LocationListener, ClusterManager.OnClusterItemClickListener<MapMarkerViewModel>, MapNavigator.ViewPortChecker {
 
     private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
@@ -70,13 +87,10 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         put("longitude", "-58.6421107");
     }};
     private static final String TAG = "SARLANGA";
-
-
     private String mAccountName;
     private String lastActivityTitle;
 
     PlacePicker placePicker;
-
     LocationManager locationManager;
     Location location;
 
@@ -88,6 +102,60 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
     GetNearestDinersMarkers getterTask;
 
     private OnFragmentInteractionListener mListener;
+
+    public static final String STATUS_MARKER_KEY = "status_marker_key";
+    public static final String STATUS_ZOOM_LEVEL = "status_zoom_level";
+
+    public static final float DEFAULT_MAP_ZOOM = 15f;
+
+    private static final int DRAWABLE_LEFT = 0; // Index to get search input left image
+
+    /**
+     * Adapter to populate map and pager
+     */
+    protected MapPagerAdapter mapAdapter;
+
+    /**
+     * Markers detail view pager
+     */
+    protected MapViewPager viewPager;
+
+    /**
+     * Pager listener with navigation logic
+     */
+    protected MapNavigator mapNavigator;
+
+    /**
+     * Current item and zoom selected
+     */
+    protected int selectedItem = 0;
+    private float selectedZoom = DEFAULT_MAP_ZOOM;
+
+    /**
+     * Clusters manager and renderer
+     */
+    protected ClusterManager<MapMarkerViewModel> clusterManager;
+    protected ClusterRenderer clusterRenderer;
+
+    /**
+     * Previously selected marker
+     */
+    protected MapMarkerViewModel selectedMarker;
+
+    /**
+     * Marker model for located or searched location
+     */
+    protected MapMarkerViewModel centerMarker;
+
+    /**
+     * In map marker for located or searched location
+     */
+    protected Marker centerMapMarker;
+
+
+    private boolean hasPendingCameraAnimation;
+    private Cluster<MapMarkerViewModel> cluster;
+
 
     public NearestDinersFragment() {
         // Required empty public constructor
@@ -144,6 +212,39 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
             mMapView.getMapAsync(this);
         }
 
+        addSearchToMap();
+
+        mapAdapter = createMapAdapter(new ArrayList<MapMarkerViewModel>());
+        viewPager = (MapViewPager) mView.findViewById(R.id.map_pager);
+        viewPager.setAdapter(mapAdapter); // set empty adapter
+        viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.map_pager_margin));
+
+        mMapView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (hasPendingCameraAnimation && cluster != null) {
+                    explodeCluster();
+                    hasPendingCameraAnimation = false;
+                }
+            }
+        });
+    }
+
+
+    private void explodeCluster() {
+        final LatLngBounds.Builder builder = LatLngBounds.builder();
+        final Collection<MapMarkerViewModel> clusterItems = cluster.getItems();
+        for (MapMarkerViewModel marker : clusterItems) {
+            builder.include(marker.getPosition());
+        }
+        final LatLngBounds bounds = builder.build();
+
+        mGoogleMap.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(bounds, 0),
+                MapNavigator.CAMERA_ANIM_TIME, null);
+    }
+
+    private void addSearchToMap() {
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -204,6 +305,20 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         MapsInitializer.initialize(mView.getContext());
         mGoogleMap = googleMap;
 
+        boolean hasMultiTouchSupport = mView.getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_TOUCHSCREEN_MULTITOUCH);
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(!hasMultiTouchSupport);
+        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+
+        // setup the cluster manager
+        setUpClusterer();
+
+        if (mapAdapter.getCount() == 0) {
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getInitPosition(), DEFAULT_MAP_ZOOM), MapNavigator.CAMERA_ANIM_TIME, null);
+
+        } else {
+            displayMarkers(); // The map is ready now and we had some markers to apply
+        }
+
         if (getterTask == null) {
             initializeGetterTask();
         }
@@ -260,11 +375,75 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
     }
 
 
+    /**
+     * Creates cluster manager, its renderer, and sets its listeners
+     */
+    private void setUpClusterer() {
+        clusterManager = getClusterManager(mView.getContext(), mGoogleMap);
+        mGoogleMap.setOnCameraIdleListener(clusterManager);
+        clusterRenderer = new ClusterRenderer(mView.getContext(), mGoogleMap, clusterManager);
+        clusterManager.setRenderer(clusterRenderer);
+        mGoogleMap.setOnMarkerClickListener(clusterManager);
+        // This "opens" a cluster to show its markers
+        // Same functionality is achieved by default double tapping cluster
+        clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MapMarkerViewModel>() {
+            @Override
+            public boolean onClusterClick(Cluster<MapMarkerViewModel> cluster) {
+                NearestDinersFragment.this.cluster = cluster;
+                // Checks if map has undergone layout.
+                if (mMapView != null && mMapView.getRight() > 0) {
+                    LatLngBounds.Builder builder = LatLngBounds.builder();
+                    final Collection<MapMarkerViewModel> iterator = cluster.getItems();
+                    for (MapMarkerViewModel marker : iterator) {
+                        builder.include(marker.getPosition());
+                    }
+                    final LatLngBounds bounds = builder.build();
+
+                    mGoogleMap.animateCamera(
+                            CameraUpdateFactory.newLatLngBounds(bounds, 0),
+                            MapNavigator.CAMERA_ANIM_TIME, null);
+                    return true;
+                }
+                hasPendingCameraAnimation = true;
+                return false;
+            }
+        });
+    }
+
+    protected ClusterManager<MapMarkerViewModel> getClusterManager(Context context, final GoogleMap mGoogleMap) {
+        clusterManager = new ClusterManager<MapMarkerViewModel>(context, mGoogleMap) {
+            @Override
+            public void onCameraIdle() {
+                CameraPosition position = mGoogleMap.getCameraPosition();
+                if (position != null && hasLocation(position)) {
+                    super.onCameraIdle();
+                }
+            }
+
+            private boolean hasLocation(@NonNull CameraPosition position) {
+                final LatLng target = position.target;
+                return target != null && target.latitude + target.longitude != 0;
+            }
+
+        };
+        return clusterManager;
+    }
+
     private void initializeGetterTask(){
         getterTask = new GetNearestDinersMarkers(mView.getContext(), mGoogleMap);
         getterTask.setTaskListener(new TaskListener() {
             @Override
             public void onComplete() {
+                getterTask = null;
+            }
+
+            @Override
+            public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+                if(markers.size() > 0){
+                    setMarkers(markers.get(0), markers);
+                    displayMarkers();
+                }
+
                 getterTask = null;
             }
         });
@@ -295,6 +474,49 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public boolean isPointVisible(Point point) {
+        return false;
+    }
+
+    @Override
+    public int getPaddingMap() {
+        return 0;
+    }
+
+    /**
+     * Sets this list of markers to show when map is ready
+     *
+     * @param center  the center marker view model
+     * @param markers the list of marker view models to render in the map
+     */
+    public void setMarkers(@NonNull MapMarkerViewModel center, @NonNull List<MapMarkerViewModel> markers) {
+        mapAdapter = createMapAdapter(markers);
+        centerMarker = center;
+        selectedZoom = DEFAULT_MAP_ZOOM;
+        selectedItem = getCurrentItem();
+    }
+    @Override
+    public boolean onClusterItemClick(MapMarkerViewModel mapMarkerViewModel) {
+//Prevent reselection current item
+        int selectedItemPosition = mapAdapter.getPositionForMarker(mapMarkerViewModel);
+        if (selectedItemPosition != getCurrentItem()) {
+            selectedItem = selectedItemPosition;
+            viewPager.setCurrentItem(selectedItem);
+        }
+
+        return true;
+    }
+
+    public LatLng getInitPosition() {
+        String latitude = ARGENTINA.get("latitude");
+        String longitude = ARGENTINA.get("longitude");
+        location = new Location("");
+        location.setLatitude(Double.parseDouble(latitude));
+        location.setLongitude(Double.parseDouble(longitude));
+        return new LatLng(location.getLatitude(),location.getLongitude());
     }
 
     /**
@@ -357,4 +579,225 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         //visible radius is (smaller distance) / 2:
         return (distanceWidth[0] < distanceHeight[0]) ? distanceWidth[0] / 2 : distanceHeight[0] / 2;
     }
+
+    public static class ClusterRenderer extends DefaultClusterRenderer<MapMarkerViewModel> {
+
+        public static final double PIN_SCALE = 0.8f;
+        public static final float PIN_ANCHOR_CENTER = 0.5f;
+        public static final float PIN_ANCHOR_BOTTOM = 1f;
+
+        private final Map<Integer, BitmapDescriptor> pinDescriptors;
+        private final Map<Integer, BitmapDescriptor> largePinDescriptors;
+        private final int meliBlue;
+        private final Context context;
+
+        private MapMarkerViewModel selectedItem;
+
+        private MapNavigator mapNavigator;
+
+        ClusterRenderer(Context context, GoogleMap map, ClusterManager<MapMarkerViewModel> clusterManager) {
+            super(context, map, clusterManager);
+            this.pinDescriptors = new HashMap<>();
+            this.largePinDescriptors = new HashMap<>();
+            this.meliBlue = ContextCompat.getColor(context, R.color.ui_suc_blue);
+            this.context = context;
+        }
+
+        /**
+         * Load the pin asset for each marker
+         *
+         * @param item          the marker model
+         * @param markerOptions the inner map marker options
+         */
+        @Override
+        protected void onBeforeClusterItemRendered(MapMarkerViewModel item, MarkerOptions markerOptions) {
+            super.onBeforeClusterItemRendered(item, markerOptions);
+
+            BitmapDescriptor pin = pinDescriptors.get(item.getPinId());
+            if (pin == null) {
+                if (item.getPinId() == 0) {
+                    pin = BitmapDescriptorFactory.defaultMarker();
+                    largePinDescriptors.put(item.getPinId(), pin);
+                } else {
+                    if (item.isCenterMarker()) {
+                        pin = BitmapDescriptorFactory.fromResource(item.getPinId());
+                    } else {
+                        pin = BitmapDescriptorFactory.fromBitmap(createBitmapPin(item.getPinId()));
+                    }
+                    largePinDescriptors.put(item.getPinId(), BitmapDescriptorFactory.fromResource(item.getPinId()));
+                }
+                pinDescriptors.put(item.getPinId(), pin);
+            }
+
+            float vAnchor = item.isCenterMarker() ? PIN_ANCHOR_CENTER : PIN_ANCHOR_BOTTOM;
+
+            markerOptions.icon(pin).anchor(PIN_ANCHOR_CENTER, vAnchor);
+        }
+
+        @Override
+        protected int getColor(int clusterSize) {
+            return meliBlue;
+        }
+
+        public BitmapDescriptor getLargePin(@DrawableRes int id) {
+            return largePinDescriptors.get(id);
+        }
+
+        public BitmapDescriptor getSmallPin(@DrawableRes int id) {
+            return pinDescriptors.get(id);
+        }
+
+        private Bitmap createBitmapPin(@DrawableRes int id) {
+            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), id);
+            Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (bmp.getWidth() * PIN_SCALE), (int) (bmp.getHeight() * PIN_SCALE), false);
+
+            ColorFilter filter = new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.map_pin_alpha), PorterDuff.Mode.SRC_ATOP);
+            Paint markerPaint = new Paint();
+            markerPaint.setColorFilter(filter);
+            markerPaint.setAntiAlias(true);
+            Canvas canvas = new Canvas(result);
+            canvas.drawBitmap(result, 0, 0, markerPaint);
+
+            return result;
+        }
+
+        /**
+         * Listener method useful to mark points as selected in some strange cases.
+         * Like when user zooms out, causing a marker to hide in a cluster, and then zomming in again, causing the marker to be shawn again.
+         */
+        protected void onClusterItemRendered(MapMarkerViewModel clusterItem, Marker marker) {
+            super.onClusterItemRendered(clusterItem, marker);
+            if (clusterItem.equals(selectedItem)) {
+                mapNavigator.setSelectedMarker(marker);
+            }
+        }
+
+        public void setSelectedItem(MapMarkerViewModel selectedItem) {
+            this.selectedItem = selectedItem;
+        }
+
+        public void setMapNavigator(MapNavigator mapNavigator) {
+            this.mapNavigator = mapNavigator;
+        }
+    }
+
+    /**
+     * Creates the map adapter
+     * @param markers the list of marker view models to render in the map
+     */
+    protected MapPagerAdapter createMapAdapter(@NonNull List<MapMarkerViewModel> markers) {
+        return new MapPagerAdapter(markers, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onCardClicked(v.getTag());
+            }
+        });
+    }
+
+    /**
+     * Action to execute when a pager card is clicked
+     */
+    protected void onCardClicked(Object ref){
+        viewPager.setCurrentItem(getCurrentItem());
+        //Not implemented
+    }
+
+    /**
+     * Removes center marker from map. Needed because this marker goes outside the cluster manager.
+     */
+    protected void clearCenterMarkerFromMap() {
+        if (centerMapMarker != null) {
+            centerMapMarker.remove();
+        }
+    }
+
+    /**
+     * Display this list of markers in the map
+     */
+    public void displayMarkers() {
+        clearCenterMarkerFromMap();
+        MarkerOptions locationMarker = new MarkerOptions().position(centerMarker.getPosition())
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_local_dining_black_24dp));
+        centerMapMarker = mGoogleMap.addMarker(locationMarker); // Adds location marker
+
+        clusterManager.clearItems();
+        clusterManager.addItems(mapAdapter.getMarkers()); // Adds points markers
+        clusterManager.setOnClusterItemClickListener(this);
+
+        // If the map is already loaded, display the markers
+        goToLocation(getPointToShow());
+    }
+    /**
+     * Moves camera to location centered
+     */
+    private void goToLocation(MapMarkerViewModel location) {
+        if (mapAdapter != null) {
+            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location.getPosition(), selectedZoom),
+                    MapNavigator.CAMERA_ANIM_TIME, new GoogleMap.CancelableCallback() {
+                        @Override
+                        public void onFinish() {
+                            // This is here otherwise the pager is not shown the first time
+                            setupMapPager();
+                            // This is here otherwise the markers are not shown the first time, and
+                            // navigator keeps zooming in for ever because it never find marker in renderer
+                            clusterManager.cluster();
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            // Not to be implemented
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Sets up the items bottom pager
+     */
+    private void setupMapPager() {
+        int initialItem = getCurrentItem();
+        mapNavigator = new MapNavigator(mGoogleMap, mapAdapter, clusterManager, centerMarker, this);
+        clusterRenderer.setMapNavigator(mapNavigator);
+        viewPager.removeAllViews();
+        viewPager.setAdapter(mapAdapter);
+        viewPager.clearOnPageChangeListeners();
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                mapNavigator.setMarkerVisibleAndSelected(position, false); // Redirect event to navigator to show marker
+                selectedItem = position;
+            }
+        });
+        viewPager.setCurrentItem(initialItem);
+        viewPager.init(mMapView);
+        // Selects initial position
+        mapNavigator.setMarkerVisibleAndSelected(initialItem, true);
+    }
+
+
+    /**
+     * Returns position of pre-selected marker, if there is one
+     */
+    @SuppressWarnings({"PMD.NullAssignment", "PMD.ConfusingTernary"})
+    protected int getCurrentItem() {
+        int currentItemPosition = 0;
+        // Pre-selected store (review edit)
+        if (selectedMarker != null) {
+            currentItemPosition = mapAdapter.getPositionForMarker(selectedMarker);
+            selectedMarker = null;
+            // Config change selected store (back from contact)
+        } else if (selectedItem > 0 && selectedItem < mapAdapter.getCount()) {
+            currentItemPosition = selectedItem;
+        }
+        return currentItemPosition;
+    }
+
+    /**
+     * Returns marker of point to show
+     */
+    protected MapMarkerViewModel getPointToShow() {
+        return selectedItem >= 0 && selectedItem < mapAdapter.getCount()
+                ? mapAdapter.getMarkerForPosition(selectedItem) : centerMarker;
+    }
+
 }

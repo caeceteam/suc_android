@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ResourceName">
+
+    <declare-styleable name="SucSmartViewPager">
+        <attr name="sucSmartViewPagerPagingEnabled" format="boolean" />
+    </declare-styleable>
+</resources>

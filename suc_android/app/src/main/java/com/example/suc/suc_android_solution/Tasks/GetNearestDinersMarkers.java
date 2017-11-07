@@ -2,8 +2,10 @@ package com.example.suc.suc_android_solution.Tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Parcel;
 import android.renderscript.ScriptGroup;
 
+import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.Diners;
 import com.example.suc.suc_android_solution.R;
@@ -13,6 +15,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
 
 /**
  * Created by efridman on 4/11/17.
@@ -60,16 +64,24 @@ public class GetNearestDinersMarkers extends AsyncTask<String, Void, Diners> {
 
     @Override
     protected void onPostExecute(Diners diners) {
+        ArrayList<MapMarkerViewModel> markers = new ArrayList<MapMarkerViewModel>();
         if (diners != null && diners.getDiners().size() > 0) {
             for (Diner diner : diners.getDiners()
                     ) {
                 if (diner.getLatitude() != null && diner.getLongitude() != null) {
-                    mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_local_dining_black_24dp))
-                            .position(new LatLng(Double.parseDouble(diner.getLatitude().toString()), Double.parseDouble(diner.getLongitude().toString()))));
+                    MapMarkerViewModel marker = new MapMarkerViewModel(Double.parseDouble(diner.getLatitude().toString()), Double.parseDouble(diner.getLongitude().toString()));
+                    marker.setTitle(diner.getName());
+                    marker.setDescription("Comedor");
+                    marker.setIconId(R.mipmap.ic_local_dining_black_24dp);
+                    marker.setPinId(R.mipmap.ic_local_dining_black_24dp);
+                    marker.setAction("Seguir");
+                    markers.add(marker);
+                    //mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_local_dining_black_24dp))
+                      //      .position(new LatLng(Double.parseDouble(diner.getLatitude().toString()), Double.parseDouble(diner.getLongitude().toString()))));
                 }
             }
         }
-        taskListener.onComplete();
+        taskListener.onMarkersReady(markers);
     }
 }
 
