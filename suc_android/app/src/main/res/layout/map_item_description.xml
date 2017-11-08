@@ -19,35 +19,28 @@ tools:layout_height="match_parent">
     android:tag="tag_page_card"
     tools:ignore="ObsoleteLayoutParam">
 
-    <ImageView
-        android:id="@+id/map_item_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:src="@mipmap/ic_restaurant_black_24dp"
-        android:layout_marginTop="16dp"/>
-
     <TextView
         android:id="@+id/map_item_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/amu_Bubble.TextAppearance.Light"
-        android:textColor="@color/wallet_link_text_light"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorPrimary"
         android:textSize="14sp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="13dp"
-        android:maxLines="1"
-        tools:text="0720 - Ciudad de Mexico D.F."/>
+        android:maxLines="3"
+        tools:text="@string/map_item_description"/>
 
     <TextView
         android:id="@+id/map_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/amu_Bubble.TextAppearance.Light"
-        android:textColor="@color/wallet_link_text_light"
-        android:textSize="15sp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
         android:layout_above="@id/map_item_description"
         android:maxLines="1"
-        tools:text="Dr. García Diego 66"/>
+        tools:text="@string/map_item_title"/>
 
 </RelativeLayout>
 

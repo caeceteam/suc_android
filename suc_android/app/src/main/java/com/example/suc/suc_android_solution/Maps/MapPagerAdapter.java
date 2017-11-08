@@ -88,9 +88,6 @@ public class MapPagerAdapter extends PagerAdapter {
         TextView description = (TextView) markerDetail.findViewById(R.id.map_item_description);
         description.setText(viewModel.getDescription());
 
-        ImageView logo = (ImageView) markerDetail.findViewById(R.id.map_item_logo);
-        logo.setImageResource(viewModel.getIconId());
-
         container.addView(markerDetail);
 
         return markerDetail;

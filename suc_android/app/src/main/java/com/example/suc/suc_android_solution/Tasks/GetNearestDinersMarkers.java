@@ -71,7 +71,7 @@ public class GetNearestDinersMarkers extends AsyncTask<String, Void, Diners> {
                 if (diner.getLatitude() != null && diner.getLongitude() != null) {
                     MapMarkerViewModel marker = new MapMarkerViewModel(Double.parseDouble(diner.getLatitude().toString()), Double.parseDouble(diner.getLongitude().toString()));
                     marker.setTitle(diner.getName());
-                    marker.setDescription("Comedor");
+                    marker.setDescription(getDinerAddress(diner));
                     marker.setIconId(R.mipmap.ic_local_dining_black_24dp);
                     marker.setPinId(R.mipmap.ic_local_dining_black_24dp);
                     marker.setAction("Seguir");
@@ -82,6 +82,10 @@ public class GetNearestDinersMarkers extends AsyncTask<String, Void, Diners> {
             }
         }
         taskListener.onMarkersReady(markers);
+    }
+
+    private String getDinerAddress(Diner diner) {
+        return String.format("Dirección: %s %d - CP: %s \nTel: %s \nMail: %s", diner.getStreet(), diner.getStreetNumber(), diner.getZipcode(), diner.getPhone(), diner.getMail());
     }
 }
 

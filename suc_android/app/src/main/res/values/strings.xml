@@ -80,4 +80,6 @@
     <string name="map_search_again">Buscar en esta área</string>
     <string name="map_geo_search_input_hint">Buscar</string>
     <string name="map_list_header_txt">Borrar</string>
+    <string name="map_item_description">Av de la felicidad 123 - CP: 1234</string>
+    <string name="map_item_title">Comedor La Voz</string>
 </resources>
