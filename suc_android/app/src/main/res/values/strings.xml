@@ -73,4 +73,7 @@
     <string name="home_near_me">Cerca de mí</string>
     <string name="home_more_nedeed">Más necesitados</string>
     <string name="home_button_donate">Quiero donar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

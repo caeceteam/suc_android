@@ -23,12 +23,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.suc.suc_android_solution.Models.Donation;
+
 import org.w3c.dom.Text;
 
 public class SucStart extends AppCompatActivity
         implements MyAccountFragment.OnFragmentInteractionListener,
         ChangePasswordFragment.OnFragmentInteractionListener,
-        MainFragment.OnFragmentInteractionListener
+        MainFragment.OnFragmentInteractionListener,
+        DonationFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout mDrawerLayout;
@@ -76,6 +79,9 @@ public class SucStart extends AppCompatActivity
                         break;
                     case R.id.action_change_password:
                         changePassword();
+                        break;
+                    case R.id.action_donate:
+                        donate();
                         break;
                 }
 
@@ -190,5 +196,18 @@ public class SucStart extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private void donate() {
+
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DonationFragment donationFragment = DonationFragment.newInstance(accounts[0].name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, donationFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
     }
 }
