@@ -7,15 +7,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DonationFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DonationFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Clase para el fragmento que muestra los datos de una donación
+ *
+ * @author Marco.Cupo
  */
 public class DonationFragment extends Fragment {
 
@@ -26,17 +25,22 @@ public class DonationFragment extends Fragment {
     private String mAccountName;
     private String lastActivityTitle;
 
+    private AutoCompleteTextView tvDiner;
+    private AutoCompleteTextView tvTitle;
+    private AutoCompleteTextView tvDescription;
+
+    private Button donateButton;
+
     public DonationFragment() {
         // Required empty public constructor
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * factory method para crear fragmentos del tipo DonationFragment
      *
      * @param accountName nombre del usuario.
      * @param lastTitle página de donde vino.
-     * @return A new instance of fragment DonationFragment.
+     * @return Nueva instancia del fragmento DonationFragment.
      */
 
     public static DonationFragment newInstance(String accountName, String lastTitle) {
