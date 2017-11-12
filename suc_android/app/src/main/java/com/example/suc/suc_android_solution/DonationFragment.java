@@ -1,14 +1,22 @@
 package com.example.suc.suc_android_solution;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.example.suc.suc_android_solution.Models.Donation;
+import com.example.suc.suc_android_solution.Services.DonationService;
+
+import java.math.BigInteger;
 
 
 /**
@@ -24,6 +32,8 @@ public class DonationFragment extends Fragment {
 
     private String mAccountName;
     private String lastActivityTitle;
+
+    private DonationService donationService;
 
     private AutoCompleteTextView tvDiner;
     private AutoCompleteTextView tvTitle;
@@ -59,13 +69,34 @@ public class DonationFragment extends Fragment {
             mAccountName = getArguments().getString(ARG_ACCOUNT_NAME);
             lastActivityTitle = getArguments().getString(ARG_LAST_TITLE);
         }
+
+        Activity activity = getActivity();
+        activity.setTitle(R.string.donation_screen_title);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_donation, container, false);
+
+        //return inflater.inflate(R.layout.fragment_donation, container, false);
+        View view = inflater.inflate(R.layout.fragment_donation, container, false);
+
+        tvDiner         = (AutoCompleteTextView) view.findViewById(R.id.donation_diner);
+        tvTitle         = (AutoCompleteTextView) view.findViewById(R.id.donation_title);
+        tvDescription   = (AutoCompleteTextView) view.findViewById(R.id.donation_description);
+
+        donateButton = (Button) view.findViewById(R.id.donation_save_button);
+
+        donateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveDonationData();
+            }
+        });
+
+        donationService = new DonationService(view.getContext());
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +123,12 @@ public class DonationFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().setTitle(lastActivityTitle);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -105,5 +142,53 @@ public class DonationFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    void saveDonationData() {
+        String[] parameters = new String[3];
+
+        parameters[0] = tvDiner.getText().toString();
+        parameters[1] = tvTitle.getText().toString();
+        parameters[2] = tvDescription.getText().toString();
+
+        new PostDonationTask().execute(parameters);
+    }
+
+    public class PostDonationTask extends AsyncTask<String, Void, Donation>
+    {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Donation doInBackground(String... params) {
+
+            try {
+                Donation newDonation = new Donation.Builder()
+                            .setIdUserSender(BigInteger.valueOf(2))//TODO Obtener el usuario logeado
+                            .setIdDinerReceiver(new BigInteger(params[0]))
+                            .setTitle(params[1])
+                            .setDescription(params[2])
+                            .build();
+
+                Donation savedDonation = donationService.postDonation(newDonation);
+
+                return savedDonation;
+
+            } catch (Exception e){
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Donation donationSaved) {
+            if(donationSaved != null){
+                Toast.makeText(getContext(), "Tu donación se envío correctamente", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getContext(), "Ocurrió un error, volve a intentar", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

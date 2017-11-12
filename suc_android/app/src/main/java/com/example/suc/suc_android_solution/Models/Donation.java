@@ -18,60 +18,71 @@ public class Donation {
 
     public Donation(){}
 
+    public Donation.Builder asBuilder() {
+        return new Donation.Builder()
+                .setIdUserSender(this.idUserSender)
+                .setIdDinerReceiver(this.idDinerReceiver)
+                .setTitle(this.title)
+                .setDescription(this.description);
+    }
 
     public BigInteger getIdDonation() {
         return idDonation;
-    }
-
-    public void setIdDonation(BigInteger idDonation) {
-        this.idDonation = idDonation;
     }
 
     public BigInteger getIdUserSender() {
         return idUserSender;
     }
 
-    public void setIdUserSender(BigInteger idUserSender) {
-        this.idUserSender = idUserSender;
-    }
-
     public BigInteger getIdDinerReceiver() {
         return idDinerReceiver;
-    }
-
-    public void setIdDinerReceiver(BigInteger idDinerReceiver) {
-        this.idDinerReceiver = idDinerReceiver;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public static class Builder{
+        private Donation donationToBuild;
+
+        public Builder() { donationToBuild = new Donation(); }
+
+        public Donation build(){
+            Donation builtDonation = donationToBuild;
+            donationToBuild = new Donation();
+            return builtDonation;
+        }
+
+        public Builder setIdUserSender(BigInteger idUserSender){
+            donationToBuild.idUserSender = idUserSender;
+            return this;
+        }
+
+        public Builder setIdDinerReceiver(BigInteger idDinerReceiver){
+            donationToBuild.idDinerReceiver = idDinerReceiver;
+            return this;
+        }
+
+        public Builder setTitle(String title){
+            donationToBuild.title = title;
+            return this;
+        }
+
+        public Builder setDescription(String description){
+            donationToBuild.description = description;
+            return this;
+        }
     }
 }
