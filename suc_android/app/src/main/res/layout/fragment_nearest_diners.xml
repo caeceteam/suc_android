@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.suc.suc_android_solution.NearestDinersFragment">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/map_nearest_diners"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></com.google.android.gms.maps.MapView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_corner_background"
+        android:orientation="vertical"
+        app:paddingEnd="3dp"
+        app:paddingStart="3dp"
+        android:id="@+id/search_container">
+
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/cho_map_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_below="@+id/search_container"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
+        android:paddingLeft="25dp"
+        android:paddingBottom="10dp"
+        android:paddingRight="25dp"
+        android:gravity="center"
+        android:elevation="4dp"
+        android:text="@string/map_search_again"
+        android:textSize="15sp"
+        android:lines="1"
+        android:textColor="@color/form_input"
+        android:background="@drawable/round_corner_background"
+        android:visibility="gone" />
+    <com.example.suc.suc_android_solution.Maps.MapViewPager
+        android:id="@+id/map_pager"
+        android:layout_below="@+id/map_request"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:layout_marginBottom="30dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:clipToPadding="false"
+        tools:background="@drawable/round_corner_background"
+        tools:layout_marginLeft="24dp"
+        tools:layout_marginRight="24dp" />
+</FrameLayout>

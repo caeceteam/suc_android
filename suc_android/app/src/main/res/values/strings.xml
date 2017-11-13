@@ -15,7 +15,7 @@
     <string name="action_forgot_password_user">Enviarme una nueva contraseña</string>
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_sign_in_short">Ingresar</string>
-    <string name="error_invalid_email">El nombre de usuario es invélido</string>
+    <string name="error_invalid_email">El nombre de usuario es invalido</string>
     <string name="error_invalid_password">La contraseña es muy corta</string>
     <string name="error_incorrect_password">La contraseña es incorrecta</string>
     <string name="error_field_required">Este campo es requerido</string>
@@ -73,4 +73,22 @@
     <string name="home_near_me">Cerca de mí</string>
     <string name="home_more_nedeed">Más necesitados</string>
     <string name="home_button_donate">Quiero donar</string>
+    <string name="action_nearest_diners">Comedores cercanos</string>
+    <string name="searching_position">Buscando úbicacion!</string>
+    <string name="gps_disabled">El GPS se encuentra apagado!</string>
+    <string name="title_nearest_diners">Comedores cercanos</string>
+    <string name="map_search_again">Buscar en esta área</string>
+    <string name="map_geo_search_input_hint">Buscar</string>
+    <string name="map_list_header_txt">Borrar</string>
+    <string name="map_item_description">Av de la felicidad 123 - CP: 1234</string>
+    <string name="map_item_title">Comedor La Voz</string>
+    <string name="map_item_follow">Seguir</string>
+    <string name="map_item_details">Detalles</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="link">Sitio web</string>
+    <string name="zipcode">Código postal</string>
+    <string name="title_diner_details">Detalle de comedor</string>
+    <string name="map_item_unfollow">Dejar de seguir</string>
 </resources>
