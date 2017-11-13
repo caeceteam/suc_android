@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * Created by efridman on 6/11/17.
@@ -27,10 +28,8 @@ public class MapMarkerViewModel implements ClusterItem, Parcelable {
     private String title;
 
     private String description;
-    private BigDecimal price;
-    private String priceDescription;
     private String action;
-    private String alternativeName;
+    private String idDiner;
 
     /**
      * Reference source object for action purposes
@@ -128,35 +127,19 @@ public class MapMarkerViewModel implements ClusterItem, Parcelable {
     }
 
     /**
-     * @return the price value
+     * @return the idDiner value
      */
-    public BigDecimal getPrice() {
-        return price;
+    public String getIdDiner() {
+        return idDiner;
     }
 
     /**
-     * Setter for {@link #price}
+     * Setter for {@link #idDiner}
      *
-     * @param price the price to display
+     * @param idDiner the idDiner to display
      */
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    /**
-     * @return the price description
-     */
-    public String getPriceDescription() {
-        return priceDescription;
-    }
-
-    /**
-     * Setter for {@link #priceDescription}
-     *
-     * @param priceDescription the price description
-     */
-    public void setPriceDescription(String priceDescription) {
-        this.priceDescription = priceDescription;
+    public void setIdDiner(String idDiner) {
+        this.idDiner = idDiner;
     }
 
     /**
@@ -191,21 +174,6 @@ public class MapMarkerViewModel implements ClusterItem, Parcelable {
         this.ref = ref;
     }
 
-    /**
-     * @return the name to use in the alternative name
-     */
-    public String getAlternativeName() {
-        return alternativeName;
-    }
-
-    /**
-     * Setter for {@link #alternativeName}
-     *
-     * @param alternativeName the alternative name to display
-     */
-    public void setAlternativeName(String alternativeName) {
-        this.alternativeName = alternativeName;
-    }
 
     /*********
      * Parcelable Implementation
@@ -217,9 +185,8 @@ public class MapMarkerViewModel implements ClusterItem, Parcelable {
         iconId = parcel.readInt();
         title = parcel.readString();
         description = parcel.readString();
-        price = (BigDecimal) parcel.readSerializable();
         action = parcel.readString();
-        alternativeName = parcel.readString();
+        idDiner = parcel.readString();
     }
 
     public static final Creator<MapMarkerViewModel> CREATOR = new Creator<MapMarkerViewModel>() {
@@ -245,10 +212,9 @@ public class MapMarkerViewModel implements ClusterItem, Parcelable {
         dest.writeInt(iconId);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeSerializable(price);
         dest.writeString(action);
-        dest.writeString(alternativeName);
         dest.writeParcelable(ref, flags);
+        dest.writeString(idDiner.toString());
     }
     /*********************************************/
 

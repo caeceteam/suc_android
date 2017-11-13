@@ -29,7 +29,8 @@ public class SucStart extends AppCompatActivity
         implements MyAccountFragment.OnFragmentInteractionListener,
         ChangePasswordFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
-        NearestDinersFragment.OnFragmentInteractionListener
+        NearestDinersFragment.OnFragmentInteractionListener,
+        DinerDetailsFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout mDrawerLayout;

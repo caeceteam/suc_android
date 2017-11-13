@@ -6,6 +6,7 @@ package com.example.suc.suc_android_solution;
 
 public enum AuthConfig {
     ARG_ACCOUNT_TYPE("ARG_ACCOUNT_TYPE"),
+    ARG_ACCOUNT_ID("ARG_ACCOUNT_ID"),
     ARG_AUTH_TYPE("ARG_AUTH_TYPE"),
     ARG_IS_ADDING_NEW_ACCOUNT("ARG_IS_ADDING_NEW_ACCOUNT"),
     ARG_ACCOUNT_NAME("ARG_ACCOUNT_NAME"),

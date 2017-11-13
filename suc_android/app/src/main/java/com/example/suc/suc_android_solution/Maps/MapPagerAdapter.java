@@ -1,13 +1,20 @@
 package com.example.suc.suc_android_solution.Maps;
 
+import android.accounts.Account;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.suc.suc_android_solution.AuthConfig;
+import com.example.suc.suc_android_solution.MainFragment;
 import com.example.suc.suc_android_solution.R;
 
 import java.util.List;
@@ -80,13 +87,25 @@ public class MapPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View markerDetail = LayoutInflater.from(container.getContext()).inflate(R.layout.map_item_description, container, false);
-        MapMarkerViewModel viewModel = markers.get(position);
+        final MapMarkerViewModel viewModel = markers.get(position);
 
         TextView title = (TextView) markerDetail.findViewById(R.id.map_item_title);
         title.setText(viewModel.getTitle());
 
         TextView description = (TextView) markerDetail.findViewById(R.id.map_item_description);
         description.setText(viewModel.getDescription());
+
+        TextView details = (TextView) markerDetail.findViewById(R.id.map_item_details);
+        details.setText(viewModel.getAction());
+        details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Prueba d", viewModel.getIdDiner());
+                v.setId(Integer.parseInt(viewModel.getIdDiner()));
+                v.setTag(R.id.map_item_details);
+               clickListener.onClick(v);
+            }
+        });
 
         container.addView(markerDetail);
 

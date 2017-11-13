@@ -330,6 +330,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
                 if(authResponse.getResult() == "" || authResponse.getResult() == null){
                     data.putString(AccountManager.KEY_ACCOUNT_NAME, mUserName);
                     data.putString(AccountManager.KEY_ACCOUNT_TYPE, authResponse.getUser().getRole().getRole());
+                    data.putString(AuthConfig.ARG_ACCOUNT_ID.getConfig(), authResponse.getUser().getIdUser().toString());
                     data.putString(AccountManager.KEY_AUTHTOKEN, authResponse.getToken());
                     data.putString(AuthConfig.PARAM_USER_PASS.getConfig(), mPassword);
                 }else{
@@ -387,6 +388,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         boolean added = accountManager.addAccountExplicitly(account, accountPassword, null);
         accountManager.setAuthToken(account, authtokenType, authtoken);
         accountManager.setUserData(account, AuthConfig.ARG_ACCOUNT_TYPE.getConfig(), intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
+        accountManager.setUserData(account, AuthConfig.ARG_ACCOUNT_ID.getConfig(), intent.getStringExtra(AuthConfig.ARG_ACCOUNT_ID.getConfig()));
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
         return added;

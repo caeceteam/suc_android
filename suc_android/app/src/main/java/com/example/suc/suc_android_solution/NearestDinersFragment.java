@@ -1,7 +1,11 @@
 package com.example.suc.suc_android_solution;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +31,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +83,13 @@ import java.util.Map;
  * Use the {@link NearestDinersFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NearestDinersFragment extends Fragment implements OnMapReadyCallback, LocationListener, ClusterManager.OnClusterItemClickListener<MapMarkerViewModel>, MapNavigator.ViewPortChecker {
+public class NearestDinersFragment extends Fragment implements
+        OnMapReadyCallback,
+        LocationListener,
+        ClusterManager.OnClusterItemClickListener<MapMarkerViewModel>,
+        MapNavigator.ViewPortChecker {
+
+    private static final String FRAGMENT_TAG = "NEAREST_DINERS_FRAGMENT";
 
     private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
@@ -100,6 +111,8 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
 
     DinerService dinerService;
     GetNearestDinersMarkers getterTask;
+
+    private AccountManager accountManager;
 
     private OnFragmentInteractionListener mListener;
 
@@ -188,13 +201,26 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
 
         Activity activity = getActivity();
         activity.setTitle(R.string.title_nearest_diners);
+
+        accountManager = AccountManager.get(getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_nearest_diners, container, false);
+
+        if (mView != null) {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (parent != null) {
+                parent.removeView(mView);
+            }
+        }
+        try {
+            mView = inflater.inflate(R.layout.fragment_nearest_diners, container, false);
+        } catch (InflateException e) {
+        /* map is already there, just return view as it is */
+        }
         dinerService = new DinerService(mView.getContext());
 
         fetchLocation();
@@ -256,8 +282,10 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
                 .setTypeFilter(Place.TYPE_COUNTRY)
                 .setCountry("AR")
                 .build();
+
         autocompleteFragment.setFilter(typeFilter);
         autocompleteFragment.setHint(getString(R.string.map_geo_search_input_hint));
+
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -275,6 +303,7 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
     }
 
     @Override
@@ -429,17 +458,17 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         return clusterManager;
     }
 
-    private void initializeGetterTask(){
+    private void initializeGetterTask() {
         getterTask = new GetNearestDinersMarkers(mView.getContext(), mGoogleMap);
         getterTask.setTaskListener(new TaskListener() {
             @Override
-            public void onComplete() {
+            public void onComplete(Object response) {
                 getterTask = null;
             }
 
             @Override
             public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
-                if(markers.size() > 0){
+                if (markers.size() > 0) {
                     setMarkers(markers.get(0), markers);
                     displayMarkers();
                 }
@@ -448,6 +477,7 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
             }
         });
     }
+
     @Override
     public void onLocationChanged(Location location) {
         if (location != null && mGoogleMap != null) {
@@ -498,6 +528,7 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         selectedZoom = DEFAULT_MAP_ZOOM;
         selectedItem = getCurrentItem();
     }
+
     @Override
     public boolean onClusterItemClick(MapMarkerViewModel mapMarkerViewModel) {
 //Prevent reselection current item
@@ -516,7 +547,7 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         location = new Location("");
         location.setLatitude(Double.parseDouble(latitude));
         location.setLongitude(Double.parseDouble(longitude));
-        return new LatLng(location.getLatitude(),location.getLongitude());
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     /**
@@ -683,13 +714,14 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
 
     /**
      * Creates the map adapter
+     *
      * @param markers the list of marker view models to render in the map
      */
     protected MapPagerAdapter createMapAdapter(@NonNull List<MapMarkerViewModel> markers) {
         return new MapPagerAdapter(markers, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCardClicked(v.getTag());
+                onCardClicked(v.getId());
             }
         });
     }
@@ -697,10 +729,20 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
     /**
      * Action to execute when a pager card is clicked
      */
-    protected void onCardClicked(Object ref){
-        viewPager.setCurrentItem(getCurrentItem());
-        //Not implemented
+    protected void onCardClicked(Object ref) {
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DinerDetailsFragment dinerFragment = DinerDetailsFragment.newInstance(accounts[0].name, getActivity().getTitle().toString(), ref.toString());
+        fragmentTransaction.replace(R.id.suc_content, dinerFragment);
+        fragmentTransaction.disallowAddToBackStack();
+
+        //fragmentTransaction.addToBackStack(NearestDinersFragment.class.getName());
+
+        fragmentTransaction.commit();
     }
+
 
     /**
      * Removes center marker from map. Needed because this marker goes outside the cluster manager.
@@ -727,6 +769,7 @@ public class NearestDinersFragment extends Fragment implements OnMapReadyCallbac
         // If the map is already loaded, display the markers
         goToLocation(getPointToShow());
     }
+
     /**
      * Moves camera to location centered
      */

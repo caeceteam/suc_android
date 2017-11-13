@@ -82,4 +82,13 @@
     <string name="map_list_header_txt">Borrar</string>
     <string name="map_item_description">Av de la felicidad 123 - CP: 1234</string>
     <string name="map_item_title">Comedor La Voz</string>
+    <string name="map_item_follow">Seguir</string>
+    <string name="map_item_details">Detalles</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="link">Sitio web</string>
+    <string name="zipcode">Código postal</string>
+    <string name="title_diner_details">Detalle de comedor</string>
+    <string name="map_item_unfollow">Dejar de seguir</string>
 </resources>

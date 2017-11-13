@@ -11,7 +11,8 @@ import java.math.BigInteger;
  */
 
 public class Diner {
-    private BigInteger idDiner;
+    @SerializedName("idDiner")
+    public BigInteger idDiner;
     private String name;
     private DinerStates state;
     private String street;

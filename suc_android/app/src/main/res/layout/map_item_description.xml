@@ -1,47 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:background="@android:color/transparent"
-android:elevation="4dp"
-android:orientation="vertical"
-tools:layout_height="match_parent">
-
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="109dp"
-    android:layout_alignParentBottom="true"
-    android:background="@drawable/round_corner_background"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:tag="tag_page_card"
-    tools:ignore="ObsoleteLayoutParam">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:elevation="4dp"
+    android:orientation="vertical"
+    tools:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/map_item_description"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
+        android:layout_height="135dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="13dp"
-        android:maxLines="3"
-        tools:text="@string/map_item_description"/>
+        android:background="@drawable/round_corner_background"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:tag="tag_page_card"
+        tools:ignore="ObsoleteLayoutParam">
 
-    <TextView
-        android:id="@+id/map_item_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16sp"
-        android:layout_above="@id/map_item_description"
-        android:maxLines="1"
-        tools:text="@string/map_item_title"/>
+        <TextView
+            android:id="@+id/map_item_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/colorLink"
+            android:textSize="14sp"
+            tools:text="@string/map_item_details" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/map_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/map_item_details"
+            android:maxLines="3"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            tools:text="@string/map_item_description" />
+
+        <TextView
+            android:id="@+id/map_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/map_item_description"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="14sp"
+            tools:text="@string/map_item_title"/>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

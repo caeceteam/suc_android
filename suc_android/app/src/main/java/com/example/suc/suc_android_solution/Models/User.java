@@ -12,7 +12,9 @@ import java.util.Date;
  */
 
 public class User {
-    private BigInteger idUser;
+
+    @SerializedName("idUser")
+    public BigInteger idUser;
     private String name;
     private String surname;
     private String phone;

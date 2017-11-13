@@ -9,6 +9,6 @@ import java.util.ArrayList;
  */
 
 public interface TaskListener {
-    void onComplete();
+    void onComplete(Object response);
     void onMarkersReady(ArrayList<MapMarkerViewModel> markers);
 }

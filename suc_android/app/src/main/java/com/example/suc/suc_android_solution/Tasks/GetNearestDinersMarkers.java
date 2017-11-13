@@ -74,7 +74,8 @@ public class GetNearestDinersMarkers extends AsyncTask<String, Void, Diners> {
                     marker.setDescription(getDinerAddress(diner));
                     marker.setIconId(R.mipmap.ic_local_dining_black_24dp);
                     marker.setPinId(R.mipmap.ic_local_dining_black_24dp);
-                    marker.setAction("Seguir");
+                    marker.setAction(mContext.getString(R.string.map_item_details));
+                    marker.setIdDiner(diner.getIdDiner().toString());
                     markers.add(marker);
                     //mGoogleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_local_dining_black_24dp))
                       //      .position(new LatLng(Double.parseDouble(diner.getLatitude().toString()), Double.parseDouble(diner.getLongitude().toString()))));
