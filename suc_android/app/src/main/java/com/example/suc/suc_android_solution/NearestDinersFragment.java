@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
@@ -102,6 +103,7 @@ public class NearestDinersFragment extends Fragment implements
     private String lastActivityTitle;
 
     PlacePicker placePicker;
+    PlaceAutocompleteFragment autocompleteFragment;
     LocationManager locationManager;
     Location location;
 
@@ -224,7 +226,7 @@ public class NearestDinersFragment extends Fragment implements
         dinerService = new DinerService(mView.getContext());
 
         fetchLocation();
-
+        addSearchToMap();
         return mView;
     }
 
@@ -237,8 +239,6 @@ public class NearestDinersFragment extends Fragment implements
             mMapView.onResume();
             mMapView.getMapAsync(this);
         }
-
-        addSearchToMap();
 
         mapAdapter = createMapAdapter(new ArrayList<MapMarkerViewModel>());
         viewPager = (MapViewPager) mView.findViewById(R.id.map_pager);
@@ -271,8 +271,9 @@ public class NearestDinersFragment extends Fragment implements
     }
 
     private void addSearchToMap() {
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        /*autocompleteFragment = (PlaceAutocompleteFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);*/
+        createGooglePlacesSearchComponent();
 
 /*
 * The following code example shows setting an AutocompleteFilter on a PlaceAutocompleteFragment to
@@ -306,6 +307,15 @@ public class NearestDinersFragment extends Fragment implements
 
     }
 
+    private void createGooglePlacesSearchComponent() {
+        autocompleteFragment = new PlaceAutocompleteFragment();
+        autocompleteFragment.onCreateView(LayoutInflater.from(getContext()), (ViewGroup) mView.getParent(), null);
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.search_container, autocompleteFragment);
+        fragmentTransaction.commit();
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -327,6 +337,7 @@ public class NearestDinersFragment extends Fragment implements
     public void onDestroy() {
         super.onDestroy();
         getActivity().setTitle(lastActivityTitle);
+
     }
 
     @Override
@@ -736,9 +747,7 @@ public class NearestDinersFragment extends Fragment implements
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DinerDetailsFragment dinerFragment = DinerDetailsFragment.newInstance(accounts[0].name, getActivity().getTitle().toString(), ref.toString());
         fragmentTransaction.replace(R.id.suc_content, dinerFragment);
-        fragmentTransaction.disallowAddToBackStack();
-
-        //fragmentTransaction.addToBackStack(NearestDinersFragment.class.getName());
+        fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();
     }
@@ -842,5 +851,6 @@ public class NearestDinersFragment extends Fragment implements
         return selectedItem >= 0 && selectedItem < mapAdapter.getCount()
                 ? mapAdapter.getMarkerForPosition(selectedItem) : centerMarker;
     }
+
 
 }

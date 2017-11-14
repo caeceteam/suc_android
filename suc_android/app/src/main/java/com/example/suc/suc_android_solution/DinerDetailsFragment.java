@@ -102,6 +102,7 @@ public class DinerDetailsFragment extends Fragment {
 
         Activity activity = getActivity();
         activity.setTitle(R.string.title_diner_details);
+
     }
 
     @Override
@@ -264,4 +265,5 @@ public class DinerDetailsFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
