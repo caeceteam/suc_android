@@ -1,7 +1,11 @@
 package com.example.suc.suc_android_solution;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +29,7 @@ public class MainFragment extends Fragment {
 
     private String mAccountName;
     private String lastActivityTitle;
+    private AccountManager accountManager;
     private Button donateButton;
 
     private OnFragmentInteractionListener mListener;
@@ -61,6 +66,8 @@ public class MainFragment extends Fragment {
 
         Activity activity = getActivity();
         activity.setTitle(R.string.title_activity_start);
+
+        accountManager = AccountManager.get(getContext());
     }
 
     @Override
@@ -72,7 +79,7 @@ public class MainFragment extends Fragment {
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Debe llevar a DonationFragment
+                goToDonationFragment();
             }
         });
 
@@ -116,5 +123,17 @@ public class MainFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void goToDonationFragment() {
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DonationFragment donationFragment = DonationFragment.newInstance(accounts[0].name, getActivity().getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, donationFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
     }
 }
