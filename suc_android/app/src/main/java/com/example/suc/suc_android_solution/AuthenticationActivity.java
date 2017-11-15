@@ -166,7 +166,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             focusView = mUserNameView;
             cancel = true;
         } else if (!isEmailValid(username)) {
-            mUserNameView.setError(getString(R.string.error_invalid_email));
+            mUserNameView.setError(getString(R.string.error_invalid_user_name));
             focusView = mUserNameView;
             cancel = true;
         }
