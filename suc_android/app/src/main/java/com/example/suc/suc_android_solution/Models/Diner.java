@@ -1,6 +1,7 @@
 package com.example.suc.suc_android_solution.Models;
 
 import com.example.suc.suc_android_solution.Enumerations.DinerStates;
+import com.google.gson.annotations.SerializedName;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -10,16 +11,19 @@ import java.math.BigInteger;
  */
 
 public class Diner {
-    private BigInteger idDiner;
+    @SerializedName("idDiner")
+    public BigInteger idDiner;
     private String name;
     private DinerStates state;
     private String street;
-    private Integer streetNumber;
+    @SerializedName("streetNumber")
+    public Integer streetNumber;
     private String floor;
     private String door;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private String zipcode;
+    @SerializedName("zipCode")
+    public String zipcode;
     private String phone;
     private String description;
     private String link;

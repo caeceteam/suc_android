@@ -31,6 +31,8 @@ public class SucStart extends AppCompatActivity
         implements MyAccountFragment.OnFragmentInteractionListener,
         ChangePasswordFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
+        NearestDinersFragment.OnFragmentInteractionListener,
+        DinerDetailsFragment.OnFragmentInteractionListener,
         DonationFragment.OnFragmentInteractionListener
 {
 
@@ -70,6 +72,9 @@ public class SucStart extends AppCompatActivity
                 switch (selectedId){
                     case R.id.action_main:
                         showMain();
+                        break;
+                    case R.id.action_nearest_diners:
+                        showNearestDiners();
                         break;
                     case R.id.action_logout:
                         logout();
@@ -154,7 +159,19 @@ public class SucStart extends AppCompatActivity
         fragmentTransaction.commit();
 
     }
+    private void showNearestDiners() {
 
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        NearestDinersFragment nearestDinersFragment = NearestDinersFragment.newInstance(accounts[0].name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, nearestDinersFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+    }
     private void changePassword() {
 
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
