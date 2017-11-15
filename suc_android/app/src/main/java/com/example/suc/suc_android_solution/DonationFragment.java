@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +98,7 @@ public class DonationFragment extends Fragment {
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveDonationData();
+                attemptDonate();
             }
         });
 
@@ -149,6 +150,45 @@ public class DonationFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * Valida los campos del formulario
+     */
+    private void attemptDonate() {
+
+        tvDiner.setError(null);
+        tvTitle.setError(null);
+        tvDescription.setError(null);
+
+        String diner        = tvDiner.getText().toString();
+        String title        = tvTitle.getText().toString();
+        String description  = tvDescription.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(diner)) {
+            tvDiner.setError(getString(R.string.error_field_required));
+            focusView = tvDiner;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(title)) {
+            tvTitle.setError(getString(R.string.error_field_required));
+            if(focusView == null) focusView = tvTitle;
+            cancel = true;
+        }
+        if (TextUtils.isEmpty(description)) {
+            tvDescription.setError(getString(R.string.error_field_required));
+            if(focusView == null) focusView = tvDescription;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            saveDonationData();
+        }
     }
 
     void saveDonationData() {

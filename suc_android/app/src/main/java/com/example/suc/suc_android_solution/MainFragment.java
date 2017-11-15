@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -24,6 +25,7 @@ public class MainFragment extends Fragment {
 
     private String mAccountName;
     private String lastActivityTitle;
+    private Button donateButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,8 +66,17 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        donateButton = (Button) view.findViewById(R.id.button_donate);
+        donateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO Debe llevar a DonationFragment
+            }
+        });
+
+        return view;
     }
 
 
