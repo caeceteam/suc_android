@@ -53,10 +53,10 @@
             android:layout_height="wrap_content">
 
             <AutoCompleteTextView
-                android:id="@+id/donation_description"
+                android:id="@+id/donation_item_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/donation_description"
+                android:hint="@string/donation_item_description"
                 android:inputType="text"
                 android:maxLines="3"
                 android:singleLine="true" />

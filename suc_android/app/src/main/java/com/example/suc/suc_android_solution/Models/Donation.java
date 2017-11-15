@@ -1,7 +1,9 @@
 package com.example.suc.suc_android_solution.Models;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Marco Cupo on 5/11/2017.
@@ -15,6 +17,7 @@ public class Donation {
     private String description;
     private Date creationDate;
     private Integer status;
+    private List<DonationItem> items;
 
     public Donation(){}
 
@@ -23,7 +26,8 @@ public class Donation {
                 .setIdUserSender(this.idUserSender)
                 .setIdDinerReceiver(this.idDinerReceiver)
                 .setTitle(this.title)
-                .setDescription(this.description);
+                .setDescription(this.description)
+                .setItems(this.items);
     }
 
     public BigInteger getIdDonation() {
@@ -54,6 +58,10 @@ public class Donation {
         return status;
     }
 
+    public List<DonationItem> getItems() {
+        return items;
+    }
+
     public static class Builder{
         private Donation donationToBuild;
 
@@ -82,6 +90,11 @@ public class Donation {
 
         public Builder setDescription(String description){
             donationToBuild.description = description;
+            return this;
+        }
+
+        public  Builder setItems(List<DonationItem> items){
+            donationToBuild.items = items;
             return this;
         }
     }

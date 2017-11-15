@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.suc.suc_android_solution.Models.Donation;
+import com.example.suc.suc_android_solution.Models.DonationItem;
 import com.example.suc.suc_android_solution.Services.DonationService;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 
 /**
@@ -83,7 +90,7 @@ public class DonationFragment extends Fragment {
 
         tvDiner         = (AutoCompleteTextView) view.findViewById(R.id.donation_diner);
         tvTitle         = (AutoCompleteTextView) view.findViewById(R.id.donation_title);
-        tvDescription   = (AutoCompleteTextView) view.findViewById(R.id.donation_description);
+        tvDescription   = (AutoCompleteTextView) view.findViewById(R.id.donation_item_description);
 
         donateButton = (Button) view.findViewById(R.id.donation_save_button);
 
@@ -165,11 +172,14 @@ public class DonationFragment extends Fragment {
         protected Donation doInBackground(String... params) {
 
             try {
+                DonationItem newDonationItem = new DonationItem.Builder().setDescription(params[2]).build();
+                List<DonationItem> items = new ArrayList<DonationItem>();
+                items.add(newDonationItem);
                 Donation newDonation = new Donation.Builder()
-                            .setIdUserSender(BigInteger.valueOf(2))//TODO Obtener el usuario logeado
+                            .setIdUserSender(BigInteger.valueOf(1))//TODO Obtener el usuario logeado
                             .setIdDinerReceiver(new BigInteger(params[0]))
                             .setTitle(params[1])
-                            .setDescription(params[2])
+                            .setItems(items)
                             .build();
 
                 Donation savedDonation = donationService.postDonation(newDonation);

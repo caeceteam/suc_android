@@ -78,6 +78,6 @@
     <string name="donation_diner">Comedor</string>
     <string name="donation_button">¡Donar!</string>
     <string name="donation_title">Descripcion</string>
-    <string name="donation_description">Dejanos tus datos de contacto</string>
+    <string name="donation_item_description">Dejanos tus datos de contacto</string>
     <string name="donation_screen_title">¿Qué vas a donar?</string>
 </resources>
