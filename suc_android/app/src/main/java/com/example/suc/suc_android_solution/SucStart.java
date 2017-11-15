@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 
 public class SucStart extends AppCompatActivity
         implements MyAccountFragment.OnFragmentInteractionListener,
@@ -53,7 +53,7 @@ public class SucStart extends AppCompatActivity
         setTitle(R.string.title_activity_start);
 
         //iniciamos la app en el main
-        showMain();
+        showMain(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_nav_suc);
         mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
@@ -68,7 +68,7 @@ public class SucStart extends AppCompatActivity
                 int selectedId = item.getItemId();
                 switch (selectedId){
                     case R.id.action_main:
-                        showMain();
+                        showMain(false);
                         break;
                     case R.id.action_nearest_diners:
                         showNearestDiners();
@@ -140,7 +140,7 @@ public class SucStart extends AppCompatActivity
 
     }
 
-    private void showMain() {
+    private void showMain(Boolean starting) {
 
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
 
@@ -148,7 +148,11 @@ public class SucStart extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainFragment mainFragment = MainFragment.newInstance(accounts[0].name, getTitle().toString());
         fragmentTransaction.replace(R.id.suc_content, mainFragment);
-        fragmentTransaction.addToBackStack(null);
+        if(starting){
+            fragmentTransaction.disallowAddToBackStack();
+        }else{
+            fragmentTransaction.addToBackStack(null);
+        }
 
         fragmentTransaction.commit();
 

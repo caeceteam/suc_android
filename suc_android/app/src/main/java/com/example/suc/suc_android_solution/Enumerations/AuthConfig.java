@@ -1,4 +1,4 @@
-package com.example.suc.suc_android_solution;
+package com.example.suc.suc_android_solution.Enumerations;
 
 /**
  * Created by efridman on 27/9/17.

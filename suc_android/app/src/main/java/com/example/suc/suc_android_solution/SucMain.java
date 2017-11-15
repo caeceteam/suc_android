@@ -2,12 +2,11 @@ package com.example.suc.suc_android_solution;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 
 public class SucMain extends AppCompatActivity {
 

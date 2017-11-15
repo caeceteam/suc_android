@@ -36,9 +36,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Maps.MapNavigator;
 import com.example.suc.suc_android_solution.Maps.MapPagerAdapter;
