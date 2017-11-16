@@ -1,7 +1,6 @@
 package com.example.suc.suc_android_solution.Models;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

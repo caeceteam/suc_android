@@ -1,5 +1,7 @@
 package com.example.suc.suc_android_solution;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -48,6 +50,8 @@ public class DonationFragment extends Fragment {
     private AutoCompleteTextView tvDescription;
 
     private Button donateButton;
+    private Context mContext;
+    private AccountManager accountManager;
 
     public DonationFragment() {
         // Required empty public constructor
@@ -216,7 +220,7 @@ public class DonationFragment extends Fragment {
                 List<DonationItem> items = new ArrayList<DonationItem>();
                 items.add(newDonationItem);
                 Donation newDonation = new Donation.Builder()
-                            .setIdUserSender(BigInteger.valueOf(1))//TODO Obtener el usuario logeado
+                            .setIdUserSender(new BigInteger(getLogedUser()))//TODO Obtener el usuario logeado
                             .setIdDinerReceiver(new BigInteger(params[0]))
                             .setTitle(params[1])
                             .setItems(items)
@@ -240,5 +244,16 @@ public class DonationFragment extends Fragment {
                 Toast.makeText(getContext(), "Ocurrió un error, volve a intentar", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private String getLogedUser(){
+        String idUser = new String();
+        accountManager = AccountManager.get(mContext);
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+        if(accounts.length > 0){
+            Account account = accounts[0];
+            idUser = accountManager.getUserData(account, AuthConfig.ARG_ACCOUNT_ID.getConfig());
+        }
+        return idUser;
     }
 }
