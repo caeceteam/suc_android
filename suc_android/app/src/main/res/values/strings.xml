@@ -92,4 +92,6 @@
     <string name="title_diner_details">Detalle de comedor</string>
     <string name="map_item_unfollow">Dejar de seguir</string>
     <string name="error_invalid_mail">El mail ingresado es inválido</string>
+    <string name="popup_close_session_advice">Si continuas se cerrara tu sesión</string>
+    <string name="popup_dont_close_session">Me quedo</string>
 </resources>

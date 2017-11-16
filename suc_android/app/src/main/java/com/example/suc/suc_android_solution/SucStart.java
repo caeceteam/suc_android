@@ -4,8 +4,10 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -204,6 +206,29 @@ public class SucStart extends AppCompatActivity
         });
 
         navigationView.addHeaderView(nav_header);
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getFragmentManager();
+        if(fragmentManager.getBackStackEntryCount() == 0){
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle(R.string.action_logout)
+                    .setMessage(R.string.popup_close_session_advice)
+                    .setPositiveButton(R.string.close, new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            logout();
+                        }
+
+                    })
+                    .setNegativeButton(R.string.popup_dont_close_session, null)
+                    .show();
+        }else{
+            fragmentManager.popBackStack();
+        }
     }
 
     @Override
