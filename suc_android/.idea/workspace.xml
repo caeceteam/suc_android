@@ -12,7 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="c05ebe2a-762b-42c5-afed-9c7db7ffc749" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/AuthenticationActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/AuthenticationActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SignUpActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SignUpActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="Suc_Android_Solution.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,89 +46,56 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="fragment_nearest_diners.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_nearest_diners.xml">
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
+      <file leaf-file-name="AuthenticationActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/AuthenticationActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="57" selection-start-line="5" selection-start-column="57" selection-end-line="5" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fragment_my_account.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_my_account.xml">
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2880">
-              <caret line="192" column="43" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SucStart.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="167" column="39" selection-start-line="167" selection-start-column="39" selection-end-line="167" selection-end-column="39" />
+            <state relative-caret-position="129">
+              <caret line="61" column="21" selection-start-line="61" selection-start-column="21" selection-end-line="61" selection-end-column="21" />
               <folding>
-                <element signature="method#onOptionsItemSelected#0;class#SucStart#0" expanded="false" />
-                <element signature="method#logout#0;class#SucStart#0" expanded="false" />
+                <element signature="e#3062#3423#0" expanded="true" />
+                <element signature="e#3422#3423#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FragmentManager.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/app/FragmentManager.java">
+      <file leaf-file-name="SignUpActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SignUpActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="217">
-              <caret line="226" column="37" selection-start-line="226" selection-start-column="25" selection-end-line="226" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FragmentTransaction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/app/FragmentTransaction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3060">
-              <caret line="213" column="20" selection-start-line="213" selection-start-column="20" selection-end-line="213" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NearestDinersFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/NearestDinersFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2100">
-              <caret line="213" column="0" selection-start-line="213" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
+            <state relative-caret-position="269">
+              <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1782#1990#0" expanded="true" />
+                <element signature="e#1989#1990#0" expanded="true" />
+                <element signature="e#2338#2376#0" expanded="true" />
+                <element signature="e#2513#2555#0" expanded="true" />
+                <element signature="e#2692#2732#0" expanded="true" />
+                <element signature="e#2875#2915#0" expanded="true" />
+                <element signature="e#3054#3094#0" expanded="true" />
+                <element signature="e#3668#3669#0" expanded="true" />
+                <element signature="e#3714#3715#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyAccountFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MyAccountFragment.java">
+      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1710">
-              <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
+            <state relative-caret-position="107">
+              <caret line="20" column="38" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Services/UserService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-14">
+              <caret line="117" column="16" selection-start-line="117" selection-start-column="16" selection-end-line="117" selection-end-column="16" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#onButtonPressed#0;class#MyAccountFragment#0" expanded="false" />
-                <element signature="method#onAttach#0;class#MyAccountFragment#0" expanded="false" />
-                <element signature="method#onDetach#0;class#MyAccountFragment#0" expanded="false" />
-                <element signature="docComment;class#OnFragmentInteractionListener#0;class#MyAccountFragment#0" expanded="false" />
-                <element signature="class#OnFragmentInteractionListener#0;class#MyAccountFragment#0" expanded="false" />
+                <element signature="method#getAllUsers#0;class#UserService#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -2543,6 +2512,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/content_user.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_suc_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucMain.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_user.xml" />
@@ -2579,21 +2549,20 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_account.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_change_password.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/ChangePasswordFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/suc_menu.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MyAccountFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MainFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Models/User.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Models/UserResponse.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Clients/UsersClient.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Services/UserService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_nearest_diners.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Enumerations/AuthConfig.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/AuthenticationActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SignUpActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MyAccountFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/ChangePasswordFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/NearestDinersFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MainFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java" />
       </list>
     </option>
   </component>
@@ -2630,8 +2599,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="Scratches" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2684,13 +2654,12 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="SearchEverywhereHistoryKey" value="myA&#9;FILE&#9;file:///Users/efridman/Proyectos/suc_android/suc_android/app/src/main/res/layout/fragment_my_account.xml&#10;nea&#9;FILE&#9;file:///Users/efridman/Proyectos/suc_android/suc_android/app/src/main/res/layout/fragment_nearest_diners.xml&#10;MailP&#9;FILE&#9;file:///Users/efridman/Proyectos/suc_android/suc_android/app/src/main/java/com/example/suc/suc_android_solution/Models/MailParams.java&#10;UserA&#9;FILE&#9;file:///Users/efridman/Proyectos/suc_android/suc_android/app/src/main/java/com/example/suc/suc_android_solution/UserActivity.java" />
+    <property name="SearchEverywhereHistoryKey" value="MailP&#9;FILE&#9;file:///Users/efridman/Proyectos/suc_android/suc_android/app/src/main/java/com/example/suc/suc_android_solution/Models/MailParams.java&#10;UserA&#9;FILE&#9;file:///Users/efridman/Proyectos/suc_android/suc_android/app/src/main/java/com/example/suc/suc_android_solution/UserActivity.java" />
     <property name="device.picker.selection" value="Nexus_5X_API_25" />
     <property name="DEBUGGABLE_DEVICE" value="emulator-5554" />
     <property name="DEBUGGABLE_PROCESS" value="com.example.suc.suc_android_solution" />
@@ -3045,27 +3014,27 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5032733" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5205479" sideWeight="0.4967267" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3652968" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3652968" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296" sideWeight="0.5032733" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28836834" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39878234" sideWeight="0.49345335" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32876712" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -3292,6 +3261,13 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/os/Bundle.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2580">
+          <caret line="200" column="13" selection-start-line="200" selection-start-column="13" selection-end-line="200" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_suc_main.xml">
       <provider selected="true" editor-type-id="android-designer2">
         <state />
@@ -3310,6 +3286,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Utils/NavigationMenu.java" />
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/app/FragmentTransaction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="27" column="40" selection-start-line="27" selection-start-column="40" selection-end-line="27" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://$USER_HOME$/Library/Android/sdk/extras/android/m2repository/com/android/support/appcompat-v7/25.3.1/appcompat-v7-25.3.1-sources.jar!/android/support/v7/view/menu/MenuItemImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
@@ -3670,6 +3654,35 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="29">
           <caret line="108" column="12" selection-start-line="108" selection-start-column="12" selection-end-line="117" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_my_account.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1514">
+          <caret line="192" column="43" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
+          <folding>
+            <element signature="e#593#626#0" expanded="false" />
+            <element signature="e#655#690#0" expanded="false" />
+            <element signature="e#720#755#0" expanded="false" />
+            <element signature="e#783#816#0" expanded="false" />
+            <element signature="e#1185#1199#0" expanded="false" />
+            <element signature="e#1791#1808#0" expanded="false" />
+            <element signature="e#2398#2413#0" expanded="false" />
+            <element signature="e#3002#3016#0" expanded="false" />
+            <element signature="e#3618#3633#0" expanded="false" />
+            <element signature="e#4185#4201#0" expanded="false" />
+            <element signature="e#4759#4782#0" expanded="false" />
+            <element signature="e#5332#5347#0" expanded="false" />
+            <element signature="e#5896#5910#0" expanded="false" />
+            <element signature="e#6465#6483#0" expanded="false" />
+            <element signature="e#7107#7126#0" expanded="false" />
+            <element signature="e#7525#7553#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3723,6 +3736,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="57" column="17" selection-start-line="14" selection-start-column="4" selection-end-line="57" selection-end-column="17" />
+          <folding>
+            <element signature="e#1585#1607#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3750,6 +3766,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/ChangePasswordFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2937#2967#0" expanded="true" />
+            <element signature="e#5371#5409#0" expanded="true" />
+            <element signature="e#5752#5753#0" expanded="true" />
+            <element signature="e#5796#5797#0" expanded="true" />
+            <element signature="e#6477#6514#0" expanded="true" />
+            <element signature="e#6608#6640#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Utils/Network.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -3768,6 +3800,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MainFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1226">
+          <caret line="84" column="25" selection-start-line="84" selection-start-column="25" selection-end-line="84" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -3780,8 +3819,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Models/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="34" column="20" selection-start-line="34" selection-start-column="20" selection-end-line="34" selection-end-column="20" />
+        <state relative-caret-position="210">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -3806,11 +3845,71 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MyAccountFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="322" column="0" selection-start-line="322" selection-start-column="0" selection-end-line="322" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#onButtonPressed#0;class#MyAccountFragment#0" expanded="false" />
+            <element signature="method#onAttach#0;class#MyAccountFragment#0" expanded="false" />
+            <element signature="method#onDetach#0;class#MyAccountFragment#0" expanded="false" />
+            <element signature="docComment;class#OnFragmentInteractionListener#0;class#MyAccountFragment#0" expanded="false" />
+            <element signature="class#OnFragmentInteractionListener#0;class#MyAccountFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_nearest_diners.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_user.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Enumerations/AuthConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="151">
           <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+          <folding>
+            <element signature="e#600#601#0" expanded="true" />
+            <element signature="e#634#635#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1085">
+          <caret line="75" column="44" selection-start-line="75" selection-start-column="44" selection-end-line="75" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/NearestDinersFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3105">
+          <caret line="280" column="2" selection-start-line="280" selection-start-column="2" selection-end-line="280" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#18214#18215#0" expanded="true" />
+            <element signature="e#18263#18264#0" expanded="true" />
+            <element signature="e#19578#19579#0" expanded="true" />
+            <element signature="e#19606#19607#0" expanded="true" />
+            <element signature="e#19654#19655#0" expanded="true" />
+            <element signature="e#19678#19679#0" expanded="true" />
+            <element signature="e#26083#26084#0" expanded="true" />
+            <element signature="e#26122#26123#0" expanded="true" />
+            <element signature="e#26316#26317#0" expanded="true" />
+            <element signature="e#26369#26370#0" expanded="true" />
+            <element signature="e#27811#27812#0" expanded="true" />
+            <element signature="e#27867#27868#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3818,6 +3917,62 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="390">
           <caret line="51" column="82" selection-start-line="51" selection-start-column="19" selection-end-line="51" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/app/FragmentManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4155">
+          <caret line="327" column="29" selection-start-line="327" selection-start-column="29" selection-end-line="327" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#91474#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#5487#5488#0" expanded="false" />
+            <element signature="e#5528#5529#0" expanded="false" />
+            <element signature="e#14421#14422#0" expanded="false" />
+            <element signature="e#14472#14473#0" expanded="false" />
+            <element signature="e#15126#15127#0" expanded="false" />
+            <element signature="e#15150#15151#0" expanded="false" />
+            <element signature="e#15678#15679#0" expanded="false" />
+            <element signature="e#15739#15740#0" expanded="false" />
+            <element signature="e#18419#18420#0" expanded="false" />
+            <element signature="e#18463#18464#0" expanded="false" />
+            <element signature="e#20848#20849#0" expanded="false" />
+            <element signature="e#20896#20897#0" expanded="false" />
+            <element signature="e#20961#20962#0" expanded="false" />
+            <element signature="e#21004#21005#0" expanded="false" />
+            <element signature="e#21133#21134#0" expanded="false" />
+            <element signature="e#21215#21216#0" expanded="false" />
+            <element signature="e#21600#21601#0" expanded="false" />
+            <element signature="e#21686#21687#0" expanded="false" />
+            <element signature="e#22189#22190#0" expanded="false" />
+            <element signature="e#22275#22276#0" expanded="false" />
+            <element signature="e#22672#22673#0" expanded="false" />
+            <element signature="e#22737#22738#0" expanded="false" />
+            <element signature="e#22811#22812#0" expanded="false" />
+            <element signature="e#22855#22856#0" expanded="false" />
+            <element signature="e#24882#24883#0" expanded="false" />
+            <element signature="e#24915#24916#0" expanded="false" />
+            <element signature="e#32000#32001#0" expanded="false" />
+            <element signature="e#32041#32042#0" expanded="false" />
+            <element signature="e#46482#46483#0" expanded="false" />
+            <element signature="e#46536#46537#0" expanded="false" />
+            <element signature="e#46590#46591#0" expanded="false" />
+            <element signature="e#46641#46642#0" expanded="false" />
+            <element signature="e#80013#80014#0" expanded="false" />
+            <element signature="e#80048#80049#0" expanded="false" />
+            <element signature="e#80588#80589#0" expanded="false" />
+            <element signature="e#80640#80641#0" expanded="false" />
+            <element signature="e#80678#80679#0" expanded="false" />
+            <element signature="e#80730#80731#0" expanded="false" />
+            <element signature="e#80775#80776#0" expanded="false" />
+            <element signature="e#80827#80828#0" expanded="false" />
+            <element signature="e#91358#91359#0" expanded="false" />
+            <element signature="e#91385#91386#0" expanded="false" />
+            <element signature="e#91443#91444#0" expanded="false" />
+            <element signature="e#91470#91471#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3833,8 +3988,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/Services/UserService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="167" column="30" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
+        <state relative-caret-position="-14">
+          <caret line="117" column="16" selection-start-line="117" selection-start-column="16" selection-end-line="117" selection-end-column="16" />
           <folding>
             <element signature="method#getAllUsers#0;class#UserService#0" expanded="false" />
           </folding>
@@ -3856,6 +4011,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="107">
           <caret line="20" column="38" selection-start-line="20" selection-start-column="18" selection-end-line="20" selection-end-column="38" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -3873,106 +4029,6 @@
             <element signature="e#3054#3094#0" expanded="true" />
             <element signature="e#3668#3669#0" expanded="true" />
             <element signature="e#3714#3715#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/java/lang/Integer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="554" column="22" selection-start-line="554" selection-start-column="22" selection-end-line="554" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/ChangePasswordFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="85" column="47" selection-start-line="85" selection-start-column="47" selection-end-line="85" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MainFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="66" column="47" selection-start-line="66" selection-start-column="47" selection-end-line="66" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_my_account.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2880">
-          <caret line="192" column="43" selection-start-line="192" selection-start-column="43" selection-end-line="192" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_nearest_diners.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="57" selection-start-line="5" selection-start-column="57" selection-end-line="5" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/app/FragmentTransaction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3060">
-          <caret line="213" column="20" selection-start-line="213" selection-start-column="20" selection-end-line="213" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/NearestDinersFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2100">
-          <caret line="213" column="0" selection-start-line="213" selection-start-column="0" selection-end-line="213" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/MyAccountFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1710">
-          <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#onButtonPressed#0;class#MyAccountFragment#0" expanded="false" />
-            <element signature="method#onAttach#0;class#MyAccountFragment#0" expanded="false" />
-            <element signature="method#onDetach#0;class#MyAccountFragment#0" expanded="false" />
-            <element signature="docComment;class#OnFragmentInteractionListener#0;class#MyAccountFragment#0" expanded="false" />
-            <element signature="class#OnFragmentInteractionListener#0;class#MyAccountFragment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-25/android/app/FragmentManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="226" column="37" selection-start-line="226" selection-start-column="25" selection-end-line="226" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/suc/suc_android_solution/SucStart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="167" column="39" selection-start-line="167" selection-start-column="39" selection-end-line="167" selection-end-column="39" />
-          <folding>
-            <element signature="method#onOptionsItemSelected#0;class#SucStart#0" expanded="false" />
-            <element signature="method#logout#0;class#SucStart#0" expanded="false" />
           </folding>
         </state>
       </provider>
