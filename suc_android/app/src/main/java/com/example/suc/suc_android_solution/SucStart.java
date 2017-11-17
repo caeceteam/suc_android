@@ -8,12 +8,12 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -30,14 +30,14 @@ public class SucStart extends AppCompatActivity
         ChangePasswordFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
         NearestDinersFragment.OnFragmentInteractionListener,
-        DinerDetailsFragment.OnFragmentInteractionListener
-{
+        DinerDetailsFragment.OnFragmentInteractionListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
     private AccountManager accountManager;
     private NavigationView navigationView;
     private TextView tvToolbarTitle;
+    private Account loggedAccount;
 
 
     @Override
@@ -53,10 +53,10 @@ public class SucStart extends AppCompatActivity
         setTitle(R.string.title_activity_start);
 
         //iniciamos la app en el main
-        showMain(true);
+        showMain();
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_nav_suc);
-        mToogle = new ActionBarDrawerToggle(this,mDrawerLayout,R.string.open, R.string.close);
+        mToogle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(mToogle);
         mToogle.syncState();
@@ -66,9 +66,9 @@ public class SucStart extends AppCompatActivity
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int selectedId = item.getItemId();
-                switch (selectedId){
+                switch (selectedId) {
                     case R.id.action_main:
-                        showMain(false);
+                        showMain();
                         break;
                     case R.id.action_nearest_diners:
                         showNearestDiners();
@@ -92,11 +92,9 @@ public class SucStart extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToogle.onOptionsItemSelected(item)){
+        if (mToogle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -108,80 +106,80 @@ public class SucStart extends AppCompatActivity
         AccountManagerCallback<Boolean> callback = new AccountManagerCallback<Boolean>() {
             @Override
             public void run(AccountManagerFuture<Boolean> future) {
-                if(future.isDone()){
-                    try{
-                        if(future.getResult()){
+                if (future.isDone()) {
+                    try {
+                        if (future.getResult()) {
                             Intent loginIntent = new Intent(getBaseContext(), SucMain.class);
                             startActivity(loginIntent);
-                        }else{
+                        } else {
                             Toast.makeText(getBaseContext(), "Hubo un error cerrando la sesion", Toast.LENGTH_SHORT).show();
                         }
-                    }catch (Exception ex){
+                    } catch (Exception ex) {
                         Toast.makeText(getBaseContext(), "Hubo un error cerrando la sesion", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         };
 
-        accountManager.removeAccount(accounts[0],callback,null);
+        accountManager.removeAccount(accounts[0], callback, null);
     }
 
     private void myAccount() {
-
-        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-
+        String MY_ACCOUNT_TAG = "myAccountTag";
         FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack();
+        /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MyAccountFragment myAccountFragment = MyAccountFragment.newInstance(accounts[0].name, getTitle().toString());
-        fragmentTransaction.replace(R.id.suc_content, myAccountFragment);
+        MyAccountFragment myAccountFragment = MyAccountFragment.newInstance(loggedAccount.name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, myAccountFragment, MY_ACCOUNT_TAG);
         fragmentTransaction.addToBackStack(null);
-
         fragmentTransaction.commit();
-
     }
 
-    private void showMain(Boolean starting) {
-
-        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-
+    private void showMain() {
+        String MAIN_TAG = "mainTag";
         FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack();
+        /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MainFragment mainFragment = MainFragment.newInstance(accounts[0].name, getTitle().toString());
-        fragmentTransaction.replace(R.id.suc_content, mainFragment);
-        if(starting){
-            fragmentTransaction.disallowAddToBackStack();
-        }else{
-            fragmentTransaction.addToBackStack(null);
-        }
-
+        MainFragment mainFragment = MainFragment.newInstance(loggedAccount.name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, mainFragment, MAIN_TAG);
+        fragmentTransaction.disallowAddToBackStack();
         fragmentTransaction.commit();
-
     }
+
     private void showNearestDiners() {
-
-        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-
+        String NEAREST_DINERS_TAG = "nearestDinersTag";
         FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack();
+        /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        NearestDinersFragment nearestDinersFragment = NearestDinersFragment.newInstance(accounts[0].name, getTitle().toString());
-        fragmentTransaction.replace(R.id.suc_content, nearestDinersFragment);
+        NearestDinersFragment nearestDinersFragment = NearestDinersFragment.newInstance(loggedAccount.name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, nearestDinersFragment, NEAREST_DINERS_TAG);
         fragmentTransaction.addToBackStack(null);
-
         fragmentTransaction.commit();
-
     }
+
     private void changePassword() {
-
-        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-
+        String CHANGE_PASSWORD_TAG = "changePasswordTag";
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        ChangePasswordFragment changePasswordFragment = ChangePasswordFragment.newInstance(accounts[0].name, getTitle().toString());
-        fragmentTransaction.replace(R.id.suc_content, changePasswordFragment);
+        ChangePasswordFragment changePasswordFragment = ChangePasswordFragment.newInstance(loggedAccount.name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, changePasswordFragment, CHANGE_PASSWORD_TAG);
         fragmentTransaction.addToBackStack(null);
-
         fragmentTransaction.commit();
-
     }
 
     private void setNavigationHeaderContent() {
@@ -191,9 +189,9 @@ public class SucStart extends AppCompatActivity
         accountManager = AccountManager.get(getBaseContext());
 
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-        Account loggedAccount = accounts[0];
+        loggedAccount = accounts[0];
 
-        String role = accountManager.getUserData(loggedAccount,AuthConfig.ARG_ACCOUNT_TYPE.getConfig());
+        String role = accountManager.getUserData(loggedAccount, AuthConfig.ARG_ACCOUNT_TYPE.getConfig());
         ((TextView) nav_header.findViewById(R.id.tv_header_user_name)).setText(loggedAccount.name);
         ((TextView) nav_header.findViewById(R.id.tv_header_user_role)).setText(role);
 
