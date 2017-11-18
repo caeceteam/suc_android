@@ -4,27 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    android:elevation="4dp"
     android:orientation="vertical"
     tools:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="135dp"
+        android:layout_height="110dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/round_corner_background"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp"
         android:tag="tag_page_card"
         tools:ignore="ObsoleteLayoutParam">
 
+
         <TextView
             android:id="@+id/map_item_details"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:textColor="@color/colorLink"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             tools:text="@string/map_item_details" />
 
@@ -47,8 +48,8 @@
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp"
-            tools:text="@string/map_item_title"/>
+            android:textSize="16sp"
+            tools:text="@string/map_item_title" />
 
 
     </RelativeLayout>

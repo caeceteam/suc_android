@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -97,7 +98,7 @@ public class NearestDinersFragment extends Fragment implements
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
     private static final Map<String, String> ARGENTINA = new HashMap<String, String>() {{
         put("latitude", "-34.6512146");
-        put("longitude", "-59.6421107");
+        put("longitude", "-58.6421107");
     }};
     private static final String TAG = "SARLANGA";
     private String mAccountName;
@@ -867,6 +868,5 @@ public class NearestDinersFragment extends Fragment implements
         return selectedItem >= 0 && selectedItem < mapAdapter.getCount()
                 ? mapAdapter.getMarkerForPosition(selectedItem) : centerMarker;
     }
-
 
 }
