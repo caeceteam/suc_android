@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by efridman on 24/9/17.
@@ -30,7 +31,7 @@ public class Diner {
     private String link;
     private String mail;
 
-    public Collection<DinerRequest> requests;
+    public List<DinerRequest> requests;
 
     public Diner(){}
 

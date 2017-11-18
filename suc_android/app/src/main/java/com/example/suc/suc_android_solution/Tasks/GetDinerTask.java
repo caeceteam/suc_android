@@ -16,7 +16,7 @@ import java.math.BigInteger;
  * Created by efridman on 13/11/17.
  */
 
-public class GetDinerTask extends AsyncTask<String, Void, DinerResponse> {
+public class GetDinerTask extends AsyncTask<String, Void, Diner> {
 
     DinerService dinerService;
     Context mContext;
@@ -38,10 +38,10 @@ public class GetDinerTask extends AsyncTask<String, Void, DinerResponse> {
     }
 
     @Override
-    protected DinerResponse doInBackground(String... params) {
+    protected Diner doInBackground(String... params) {
 
         try {
-            DinerResponse response = dinerService.getDiner(new BigInteger(params[0]));
+            Diner response = dinerService.getDiner(new BigInteger(params[0]));
 
             return response;
 
@@ -52,7 +52,7 @@ public class GetDinerTask extends AsyncTask<String, Void, DinerResponse> {
     }
 
     @Override
-    protected void onPostExecute(DinerResponse diner) {
+    protected void onPostExecute(Diner diner) {
         taskListener.onComplete(diner);
     }
 }

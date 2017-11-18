@@ -94,4 +94,6 @@
     <string name="error_invalid_mail">El mail ingresado es inválido</string>
     <string name="popup_close_session_advice">Si continuas se cerrara tu sesión</string>
     <string name="popup_dont_close_session">Me quedo</string>
+    <string name="diner_name_example">Comedor Asistencia Social para los necesitados</string>
+    <string name="diner_address_example">Direccion: Teniente coronel Cesar Cardoso 3181 Piso: 1 Dpto: 12 - CP: 1712</string>
 </resources>

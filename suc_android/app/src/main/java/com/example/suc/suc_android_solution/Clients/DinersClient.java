@@ -29,7 +29,7 @@ public interface DinersClient {
     Call<Diners> getAll(@Header("x-access-token") String token);
 
     @GET("/api/diners/{idDiner}")
-    Call<DinerResponse> get(@Header("x-access-token") String token, @Path("idDiner") BigInteger idDiner);
+    Call<Diner> get(@Header("x-access-token") String token, @Path("idDiner") BigInteger idDiner);
 
     @GET("/api/diners")
     Call<Diners> getAllWithGeo(@Header("x-access-token") String token,
