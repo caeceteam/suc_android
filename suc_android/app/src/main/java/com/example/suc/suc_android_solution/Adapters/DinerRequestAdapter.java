@@ -2,10 +2,12 @@ package com.example.suc.suc_android_solution.Adapters;
 
 import android.content.Context;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.suc.suc_android_solution.Models.DinerRequest;
@@ -42,7 +44,6 @@ public class DinerRequestAdapter extends RecyclerView.Adapter<DinerRequestAdapte
     @Override
     public DinerRequestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.diner_request_item, parent, false);
-
         return new DinerRequestViewHolder(v);
     }
 
@@ -50,12 +51,16 @@ public class DinerRequestAdapter extends RecyclerView.Adapter<DinerRequestAdapte
     public void onBindViewHolder(DinerRequestViewHolder holder, final int position) {
         holder.dinerRequestTitle.setText(mData.get(position).title + "");
         holder.dinerRequestDescription.setText(mData.get(position).description + "");
+        if(position % 2 != 0){
+            holder.container.setBackground(context.getResources().getDrawable(R.drawable.rv_item_background_dark));
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mClickHandler.onClick(mData.get(position).idDinerRequest);
             }
         });
+
     }
 
     @Override
@@ -81,6 +86,7 @@ public class DinerRequestAdapter extends RecyclerView.Adapter<DinerRequestAdapte
     class DinerRequestViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final TextView dinerRequestTitle;
         final TextView dinerRequestDescription;
+        final ConstraintLayout container;
 
 
 
@@ -89,7 +95,7 @@ public class DinerRequestAdapter extends RecyclerView.Adapter<DinerRequestAdapte
 
             dinerRequestTitle = (TextView) view.findViewById(R.id.diner_request_item_title);
             dinerRequestDescription = (TextView) view.findViewById(R.id.diner_request_item_description);
-
+            container = (ConstraintLayout) view.findViewById(R.id.item_container);
             view.setOnClickListener(this);
         }
 

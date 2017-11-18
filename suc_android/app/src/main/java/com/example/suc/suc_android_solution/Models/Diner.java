@@ -1,5 +1,7 @@
 package com.example.suc.suc_android_solution.Models;
 
+import android.graphics.Bitmap;
+
 import com.example.suc.suc_android_solution.Enumerations.DinerStates;
 import com.google.gson.annotations.SerializedName;
 
@@ -32,7 +34,8 @@ public class Diner {
     private String mail;
 
     public List<DinerRequest> requests;
-
+    public List<DinerPhoto> photos;
+    public Bitmap mainPhoto;
     public Diner(){}
 
     public Diner.Builder asBuilder(){

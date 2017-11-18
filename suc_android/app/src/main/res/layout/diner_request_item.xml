@@ -22,11 +22,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeight"
+    android:id="@+id/item_container"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:background="@color/colorAccent">
+    android:background="@drawable/rv_item_background">
 
     <TextView
         android:id="@+id/diner_request_item_title"
@@ -36,7 +37,7 @@
         android:layout_marginStart="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintLeft_toRightOf="@+id/diner_main_photo"
+        app:layout_constraintLeft_toLeftOf="parent"
         tools:text="Necesito ayuda!!"/>
 
     <TextView
@@ -49,12 +50,13 @@
         app:layout_constraintTop_toTopOf="@+id/guideline"
         tools:text="Manden unos huevos para hacer unas tortillas!!"/>
 
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"/>
+        app:layout_constraintGuide_end="32dp"
+        tools:layout_editor_absoluteY="32dp"
+        tools:layout_editor_absoluteX="0dp" />
 
 </android.support.constraint.ConstraintLayout>

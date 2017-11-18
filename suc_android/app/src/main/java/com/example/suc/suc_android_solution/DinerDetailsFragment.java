@@ -3,6 +3,8 @@ package com.example.suc.suc_android_solution;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,13 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Models.Diner;
-import com.example.suc.suc_android_solution.Models.DinerRequest;
-import com.example.suc.suc_android_solution.Models.DinerResponse;
 import com.example.suc.suc_android_solution.Models.UserDiner;
 import com.example.suc.suc_android_solution.Models.UserDiners;
 import com.example.suc.suc_android_solution.Services.DinerService;
@@ -26,9 +28,9 @@ import com.example.suc.suc_android_solution.Tasks.GetUserDinersTask;
 import com.example.suc.suc_android_solution.Tasks.TaskListener;
 import com.example.suc.suc_android_solution.Tasks.UserDinerFollowTask;
 import com.example.suc.suc_android_solution.Tasks.UserDinerUnFollowTask;
-import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
 
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -68,6 +70,8 @@ public class DinerDetailsFragment extends Fragment {
     private RecyclerView rvDinerRequest;
     private DinerRequestAdapter dinerRequestAdapter;
     private LinearLayout rvContainer;
+
+    private ImageView ivMainPhoto;
 
     public DinerDetailsFragment() {
         // Required empty public constructor
@@ -117,6 +121,7 @@ public class DinerDetailsFragment extends Fragment {
         tvPhone = (TextView) view.findViewById(R.id.diner_detail_phone);
         tvAddress = (TextView) view.findViewById(R.id.diner_address);
         rvDinerRequest = (RecyclerView) view.findViewById(R.id.recyclerview_dinerRequest);
+        ivMainPhoto = (ImageView) view.findViewById(R.id.diner_main_photo);
         rvContainer = (LinearLayout) view.findViewById(R.id.rv_dinerRequest_container);
 
         followButton = (Button) view.findViewById(R.id.diner_follow_button);
@@ -179,6 +184,10 @@ public class DinerDetailsFragment extends Fragment {
                     tvName.setText(diner.getName());
                     tvPhone.setText(String.format("Telefono: %s", diner.getPhone()));
                     tvAddress.setText(buildDinerAddress(diner));
+
+                    Bitmap bmp = BitmapFactory.decodeResource(view.getContext().getResources(), R.mipmap.ic_restaurant_black_24dp);
+                    Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (96), (int) (96), false);
+                    ivMainPhoto.setImageBitmap(result);
 
                     if(diner.requests != null && diner.requests.size() > 0){
                         dinerRequestAdapter = new DinerRequestAdapter(diner.requests, getContext(), new DinerRequestAdapter.DinerRequestAdapterOnClickHandler() {
@@ -289,6 +298,7 @@ public class DinerDetailsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getActivity().setTitle(lastActivityTitle);
     }
 
     /**

@@ -35,10 +35,8 @@
         android:maxWidth="280dp"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintLeft_toLeftOf="@+id/horizontal_middle"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/diner_main_photo"
+        app:layout_constraintTop_toTopOf="@id/diner_main_photo"
         tools:text="@string/diner_name_example" />
 
     <TextView
@@ -49,9 +47,7 @@
         android:maxWidth="280dp"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
-        app:layout_constraintHorizontal_bias="0.45"
-        app:layout_constraintLeft_toLeftOf="@+id/horizontal_middle"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/diner_main_photo"
         app:layout_constraintTop_toBottomOf="@+id/diner_detail_name"
         tools:text="https://www.toptal.com/web/cookie-free-authentication-with-json-web-tokens-an-example-in-laravel-and-angularjs" />
 
@@ -63,10 +59,10 @@
         android:fontFamily="sans-serif-light"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/diner_detail_link"
-        tools:text="@string/diner_address_example" />
+
+        app:layout_constraintTop_toBottomOf="@id/diner_main_photo"
+        tools:text="@string/diner_address_example"
+         />
 
     <TextView
         android:id="@+id/diner_detail_mail"
