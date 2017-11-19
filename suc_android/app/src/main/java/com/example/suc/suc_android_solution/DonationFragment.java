@@ -8,7 +8,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +16,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Models.Donation;
 import com.example.suc.suc_android_solution.Models.DonationItem;
 import com.example.suc.suc_android_solution.Services.DonationService;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
