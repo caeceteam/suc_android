@@ -104,4 +104,7 @@
     <string name="diner_name_example">Comedor Asistencia Social para los necesitados</string>
     <string name="diner_address_example">Direccion: Teniente coronel Cesar Cardoso 3181 Piso: 1 Dpto: 12 - CP: 1712</string>
     <string name="title_diner_list">Listado de comedores</string>
+    <string name="filter">Filtrar</string>
+    <string name="title_activity_diner_filter">DinerFilterActivity</string>
+    <string name="title_filter_diners">Filtrar comedores</string>
 </resources>

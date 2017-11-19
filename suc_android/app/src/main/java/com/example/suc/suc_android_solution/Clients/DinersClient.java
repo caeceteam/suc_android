@@ -29,6 +29,8 @@ import retrofit2.http.Query;
 public interface DinersClient {
     @GET("/api/diners")
     Call<Diners> getAll(@Header("x-access-token") String token, @Nullable @Query("page") Integer page);
+    @GET("/api/diners")
+    Call<Diners> getAll(@Header("x-access-token") String token, @Nullable @Query("page") Integer page, @Nullable @Query("name") String name);
 
     @GET("/api/diners/{idDiner}")
     Call<Diner> get(@Header("x-access-token") String token, @Path("idDiner") BigInteger idDiner);
