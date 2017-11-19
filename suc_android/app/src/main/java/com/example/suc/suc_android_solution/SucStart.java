@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
@@ -24,8 +25,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.suc.suc_android_solution.Models.Donation;
+
 import org.w3c.dom.Text;
+
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 
 public class SucStart extends AppCompatActivity
@@ -142,7 +146,7 @@ public class SucStart extends AppCompatActivity
          * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
          * De tal forma, al hacer back, vuelvo al main.
          */
-        fragmentManager.popBackStack();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MyAccountFragment myAccountFragment = MyAccountFragment.newInstance(loggedAccount.name, getTitle().toString());
@@ -158,7 +162,7 @@ public class SucStart extends AppCompatActivity
          * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
          * De tal forma, al hacer back, vuelvo al main.
          */
-        fragmentManager.popBackStack();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DinersListFragment dinersListFragment = DinersListFragment.newInstance(loggedAccount.name, getTitle().toString());
@@ -174,7 +178,7 @@ public class SucStart extends AppCompatActivity
          * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
          * De tal forma, al hacer back, vuelvo al main.
          */
-        fragmentManager.popBackStack();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MainFragment mainFragment = MainFragment.newInstance(loggedAccount.name, getTitle().toString());
@@ -190,7 +194,7 @@ public class SucStart extends AppCompatActivity
          * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
          * De tal forma, al hacer back, vuelvo al main.
          */
-        fragmentManager.popBackStack();
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         NearestDinersFragment nearestDinersFragment = NearestDinersFragment.newInstance(loggedAccount.name, getTitle().toString());
@@ -202,6 +206,12 @@ public class SucStart extends AppCompatActivity
     private void changePassword() {
         String CHANGE_PASSWORD_TAG = "changePasswordTag";
         FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         ChangePasswordFragment changePasswordFragment = ChangePasswordFragment.newInstance(loggedAccount.name, getTitle().toString());
         fragmentTransaction.replace(R.id.suc_content, changePasswordFragment, CHANGE_PASSWORD_TAG);
@@ -236,13 +246,12 @@ public class SucStart extends AppCompatActivity
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getFragmentManager();
-        if(fragmentManager.getBackStackEntryCount() == 0){
+        if (fragmentManager.getBackStackEntryCount() == 0) {
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(R.string.action_logout)
                     .setMessage(R.string.popup_close_session_advice)
-                    .setPositiveButton(R.string.close, new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             logout();
@@ -251,7 +260,7 @@ public class SucStart extends AppCompatActivity
                     })
                     .setNegativeButton(R.string.popup_dont_close_session, null)
                     .show();
-        }else{
+        } else {
             fragmentManager.popBackStack();
         }
     }
@@ -266,6 +275,13 @@ public class SucStart extends AppCompatActivity
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
 
         FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DonationFragment donationFragment = DonationFragment.newInstance(accounts[0].name, getTitle().toString());
         fragmentTransaction.replace(R.id.suc_content, donationFragment);

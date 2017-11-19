@@ -12,11 +12,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,7 +23,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -312,11 +308,12 @@ public class NearestDinersFragment extends Fragment implements
     }
 
     private void createGooglePlacesSearchComponent() {
+        String PLACE_TAG = "placesTag";
         autocompleteFragment = new PlaceAutocompleteFragment();
         autocompleteFragment.onCreateView(LayoutInflater.from(getContext()), (ViewGroup) mView.getParent(), null);
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.search_container, autocompleteFragment);
+        fragmentTransaction.add(R.id.search_container, autocompleteFragment, PLACE_TAG);
         fragmentTransaction.commit();
     }
 
