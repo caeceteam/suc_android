@@ -17,6 +17,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +26,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -36,9 +38,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Maps.MapNavigator;
 import com.example.suc.suc_android_solution.Maps.MapPagerAdapter;
@@ -96,7 +98,7 @@ public class NearestDinersFragment extends Fragment implements
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
     private static final Map<String, String> ARGENTINA = new HashMap<String, String>() {{
         put("latitude", "-34.6512146");
-        put("longitude", "-59.6421107");
+        put("longitude", "-58.6421107");
     }};
     private static final String TAG = "SARLANGA";
     private String mAccountName;
@@ -170,6 +172,8 @@ public class NearestDinersFragment extends Fragment implements
 
     private boolean hasPendingCameraAnimation;
     private Cluster<MapMarkerViewModel> cluster;
+
+    private int centerItemPinId;
 
 
     public NearestDinersFragment() {
@@ -480,7 +484,9 @@ public class NearestDinersFragment extends Fragment implements
             @Override
             public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
                 if (markers.size() > 0) {
-                    setMarkers(markers.get(0), markers);
+                    MapMarkerViewModel centerMarker = markers.get(0);
+                    centerItemPinId = centerMarker.getPinId();
+                    setMarkers(centerMarker, markers);
                     displayMarkers();
                 }
 
@@ -661,14 +667,10 @@ public class NearestDinersFragment extends Fragment implements
                     pin = BitmapDescriptorFactory.defaultMarker();
                     largePinDescriptors.put(item.getPinId(), pin);
                 } else {
-                    if (item.isCenterMarker()) {
-                        pin = BitmapDescriptorFactory.fromResource(item.getPinId());
-                    } else {
-                        pin = BitmapDescriptorFactory.fromBitmap(createBitmapPin(item.getPinId()));
-                    }
-                    largePinDescriptors.put(item.getPinId(), BitmapDescriptorFactory.fromResource(item.getPinId()));
+                    pin = BitmapDescriptorFactory.fromBitmap(createLargeBitmapPin(item.getPinId()));
+                    largePinDescriptors.put(item.getPinId(), pin);
                 }
-                pinDescriptors.put(item.getPinId(), pin);
+                pinDescriptors.put(item.getPinId(), BitmapDescriptorFactory.fromBitmap(createSmallBitmapPin(item.getPinId())));
             }
 
             float vAnchor = item.isCenterMarker() ? PIN_ANCHOR_CENTER : PIN_ANCHOR_BOTTOM;
@@ -689,13 +691,23 @@ public class NearestDinersFragment extends Fragment implements
             return pinDescriptors.get(id);
         }
 
-        private Bitmap createBitmapPin(@DrawableRes int id) {
+        private Bitmap createLargeBitmapPin(@DrawableRes int id) {
             Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), id);
-            Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (bmp.getWidth() * PIN_SCALE), (int) (bmp.getHeight() * PIN_SCALE), false);
+            Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (150), (int) (150), false);
 
-            ColorFilter filter = new PorterDuffColorFilter(ContextCompat.getColor(context, R.color.map_pin_alpha), PorterDuff.Mode.SRC_ATOP);
             Paint markerPaint = new Paint();
-            markerPaint.setColorFilter(filter);
+            markerPaint.setAntiAlias(true);
+            Canvas canvas = new Canvas(result);
+            canvas.drawBitmap(result, 0, 0, markerPaint);
+
+            return result;
+        }
+
+        private Bitmap createSmallBitmapPin(@DrawableRes int id) {
+            Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), id);
+            Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (150 * PIN_SCALE), (int) (150 * PIN_SCALE), false);
+
+            Paint markerPaint = new Paint();
             markerPaint.setAntiAlias(true);
             Canvas canvas = new Canvas(result);
             canvas.drawBitmap(result, 0, 0, markerPaint);
@@ -767,8 +779,13 @@ public class NearestDinersFragment extends Fragment implements
      */
     public void displayMarkers() {
         clearCenterMarkerFromMap();
+
+        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(centerItemPinId);
+        Bitmap b = bitmapdraw.getBitmap();
+        Bitmap smallMarker = Bitmap.createScaledBitmap(b, 150, 150, false);
+
         MarkerOptions locationMarker = new MarkerOptions().position(centerMarker.getPosition())
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_local_dining_black_24dp));
+                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
         centerMapMarker = mGoogleMap.addMarker(locationMarker); // Adds location marker
 
         clusterManager.clearItems();
@@ -851,6 +868,5 @@ public class NearestDinersFragment extends Fragment implements
         return selectedItem >= 0 && selectedItem < mapAdapter.getCount()
                 ? mapAdapter.getMarkerForPosition(selectedItem) : centerMarker;
     }
-
 
 }

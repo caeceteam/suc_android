@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthCredentials;
 import com.example.suc.suc_android_solution.Models.Authentication.AuthenticationResponse;
 import com.example.suc.suc_android_solution.Services.AuthenticationService;
@@ -68,13 +69,12 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_authentication);
+        accountManager = AccountManager.get(getBaseContext());
 
         validateSession();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_authentication);
-        accountManager = AccountManager.get(getBaseContext());
         // Set up the login form.
         mUserNameView = (AutoCompleteTextView) findViewById(R.id.user_name);
 
@@ -122,7 +122,6 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
     }
 
     private void validateSession() {
-        accountManager = AccountManager.get(getBaseContext());
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
         Intent intent;
         if (accounts.length == 1) { // Si hay un usuario logueado, inicio la app desde el comienzo.
@@ -167,7 +166,7 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
             focusView = mUserNameView;
             cancel = true;
         } else if (!isEmailValid(username)) {
-            mUserNameView.setError(getString(R.string.error_invalid_email));
+            mUserNameView.setError(getString(R.string.error_invalid_user_name));
             focusView = mUserNameView;
             cancel = true;
         }

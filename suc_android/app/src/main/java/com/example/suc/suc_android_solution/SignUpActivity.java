@@ -18,8 +18,6 @@ import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Services.EmailService;
 import com.example.suc.suc_android_solution.Services.UserService;
 
-import java.util.Collection;
-
 public class SignUpActivity extends AppCompatActivity {
 
     Button mSignUpButton;
@@ -52,12 +50,65 @@ public class SignUpActivity extends AppCompatActivity {
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
+                if(validateFields()){
+                    registerUser();
+                }
             }
         });
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_sign_up);
+    }
+
+    private boolean validateFields() {
+        Boolean fieldsOk = true;
+        if(!isEmailValid(mUserMail.getText().toString())){
+            mUserMail.setError(getString(R.string.error_invalid_mail));
+            fieldsOk = false;
+        }
+
+        if(!isPasswordValid(mUserPass.getText().toString())){
+            mUserPass.setError(getString(R.string.error_invalid_password));
+            fieldsOk = false;
+        }
+
+        if(!fieldHasContent(mUserName.getText().toString())){
+            mUserName.setError(getString(R.string.error_field_required));
+            fieldsOk = false;
+        }
+
+        if(!fieldHasContent(mUserSurname.getText().toString())){
+            mUserSurname.setError(getString(R.string.error_field_required));
+            fieldsOk = false;
+        }
+
+        if(!fieldHasContent(mUserAlias.getText().toString())){
+            mUserAlias.setError(getString(R.string.error_field_required));
+            fieldsOk = false;
+        }
+
+        return fieldsOk;
+
+    }
+
+    private boolean isEmailValid(String email) {
+        Boolean isValidMail = false;
+        String[] emailParts = email.split("@");
+        if(emailParts.length == 2){
+            if(emailParts[0].length() > 0 && emailParts[1].length() > 0 ){
+                isValidMail = true;
+            }
+        }
+
+        return isValidMail;
+    }
+
+    private boolean isPasswordValid(String password) {
+        return password.length() >= 8;
+    }
+
+    private boolean fieldHasContent(String fieldValue) {
+        return fieldValue.length() > 0;
     }
 
     private void registerUser(){
@@ -115,15 +166,15 @@ public class SignUpActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(User userRegistered) {
+            Intent intent = getIntent();
             if(userRegistered != null){
-                Intent intent = getIntent();
                 intent.putExtra("username", userRegistered.getName());
                 intent.putExtra("password", passwordStr);
                 setResult(RESULT_OK, intent);
                 finish();
 
             }else{
-                Toast.makeText(getApplicationContext(),"Hubo un error", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(),"Hubo un error", Toast.LENGTH_SHORT).show();
             }
         }
     }

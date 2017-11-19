@@ -9,22 +9,16 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 
-import com.example.suc.suc_android_solution.AuthConfig;
-import com.example.suc.suc_android_solution.Clients.UsersClient;
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Clients.UsersDinersClient;
-import com.example.suc.suc_android_solution.Models.DeleteResponse;
-import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Models.UserDiner;
 import com.example.suc.suc_android_solution.Models.UserDiners;
-import com.example.suc.suc_android_solution.Models.UserResponse;
-import com.example.suc.suc_android_solution.Models.UsersResponse;
 import com.example.suc.suc_android_solution.Utils.Network;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.math.BigInteger;
-import java.util.Collection;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;

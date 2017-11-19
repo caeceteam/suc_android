@@ -8,11 +8,9 @@ package com.example.suc.suc_android_solution.Services;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
-import android.content.SharedPreferences;
 
-import com.example.suc.suc_android_solution.AuthConfig;
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Clients.UsersClient;
-import com.example.suc.suc_android_solution.Enumerations.UserRoles;
 import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Models.UserResponse;

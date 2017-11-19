@@ -16,6 +16,7 @@
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_sign_in_short">Ingresar</string>
     <string name="error_invalid_email">El nombre de usuario es inválido</string>
+
     <string name="error_invalid_password">La contraseña es muy corta</string>
     <string name="error_incorrect_password">La contraseña es incorrecta</string>
     <string name="error_field_required">Este campo es requerido</string>
@@ -80,7 +81,7 @@
     <string name="map_search_again">Buscar en esta área</string>
     <string name="map_geo_search_input_hint">Buscar</string>
     <string name="map_list_header_txt">Borrar</string>
-    <string name="map_item_description">Av de la felicidad 123 - CP: 1234</string>
+    <string name="map_item_description">Av de la felicidad 123 - CP: 1234 \n Direccion: lallaa \n Telefono: laalaal</string>
     <string name="map_item_title">Comedor La Voz</string>
     <string name="map_item_follow">Seguir</string>
     <string name="map_item_details">Detalles</string>
@@ -91,10 +92,14 @@
     <string name="zipcode">Código postal</string>
     <string name="title_diner_details">Detalle de comedor</string>
     <string name="map_item_unfollow">Dejar de seguir</string>
-
     <string name="donation_diner">Comedor</string>
     <string name="donation_button">¡Donar!</string>
     <string name="donation_title">Descripcion</string>
     <string name="donation_item_description">Dejanos tus datos de contacto</string>
     <string name="donation_screen_title">¿Qué vas a donar?</string>
+  
+    <string name="error_invalid_mail">El mail ingresado es inválido</string>
+    <string name="popup_close_session_advice">Si continuas se cerrara tu sesión</string>
+    <string name="popup_dont_close_session">Me quedo</string>
+
 </resources>

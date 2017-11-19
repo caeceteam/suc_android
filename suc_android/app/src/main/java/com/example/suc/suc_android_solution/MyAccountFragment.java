@@ -226,8 +226,13 @@ public class MyAccountFragment extends Fragment {
         parameters[9] = tvDocument.getText().toString();
         parameters[10] = etBornDate.getText().toString();
 
-        new PutUserTask().execute(parameters);
+        if(validateFields()){
+            new PutUserTask().execute(parameters);
+        }
+    }
 
+    private boolean validateFields() {
+        return true;
     }
 
     public class PutUserTask extends AsyncTask<String, Void, User> {
@@ -248,7 +253,7 @@ public class MyAccountFragment extends Fragment {
                         .setMail(params[3])
                         .setPhone(params[4])
                         .setStreet(params[5])
-                        .setStreetNumber(Integer.parseInt(params[6]))
+                        .setStreetNumber(!params[6].equals("") ? Integer.parseInt(params[6]) : null)
                         .setFloor(params[7])
                         .setDoor(params[8])
                         .setDocNumber(params[9])
@@ -256,17 +261,7 @@ public class MyAccountFragment extends Fragment {
                         .build();
 
                 User updatedUser = userService.putUser(getArguments().get(ARG_ACCOUNT_NAME).toString(), newUser);
-
-                /*if(registeredUser != null){
-                    MailParams mailParams = new MailParams();
-                    mailParams.setDestination_email(params[3]);
-                    mailParams.setUserName(params[3]);
-                    mailParams.setPassword(params[4]);
-                    mailParams.setMailType(MailType.NO_VALIDATABLE_REGISTRATION.getValue());
-                    emailService.sendNoValidatableRegistrationMail(mailParams);
-                }*/
-
-
+                
                 return updatedUser;
 
             } catch (Exception e) {
