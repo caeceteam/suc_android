@@ -24,7 +24,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.suc.suc_android_solution.Models.Donation;
+import org.w3c.dom.Text;
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 
 public class SucStart extends AppCompatActivity
@@ -33,7 +34,8 @@ public class SucStart extends AppCompatActivity
         MainFragment.OnFragmentInteractionListener,
         NearestDinersFragment.OnFragmentInteractionListener,
         DinerDetailsFragment.OnFragmentInteractionListener,
-        DinersListFragment.OnFragmentInteractionListener{
+        DinersListFragment.OnFragmentInteractionListener,
+        DonationFragment.OnFragmentInteractionListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
@@ -87,6 +89,9 @@ public class SucStart extends AppCompatActivity
                         break;
                     case R.id.action_change_password:
                         changePassword();
+                        break;
+                    case R.id.action_donate:
+                        donate();
                         break;
                 }
 
@@ -254,5 +259,18 @@ public class SucStart extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    private void donate() {
+
+        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DonationFragment donationFragment = DonationFragment.newInstance(accounts[0].name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, donationFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
     }
 }

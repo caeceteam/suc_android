@@ -15,6 +15,7 @@
     <string name="action_forgot_password_user">Enviarme una nueva contraseña</string>
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_sign_in_short">Ingresar</string>
+    <string name="error_invalid_email">El nombre de usuario es inválido</string>
     <string name="error_invalid_user_name">El nombre de usuario es invalido</string>
     <string name="error_invalid_password">La contraseña es muy corta</string>
     <string name="error_incorrect_password">La contraseña es incorrecta</string>
@@ -91,6 +92,12 @@
     <string name="zipcode">Código postal</string>
     <string name="title_diner_details">Detalle de comedor</string>
     <string name="map_item_unfollow">Dejar de seguir</string>
+    <string name="donation_diner">Comedor</string>
+    <string name="donation_button">¡Donar!</string>
+    <string name="donation_title">Descripcion</string>
+    <string name="donation_item_description">Dejanos tus datos de contacto</string>
+    <string name="donation_screen_title">¿Qué vas a donar?</string>
+
     <string name="error_invalid_mail">El mail ingresado es inválido</string>
     <string name="popup_close_session_advice">Si continuas se cerrara tu sesión</string>
     <string name="popup_dont_close_session">Me quedo</string>
