@@ -165,7 +165,7 @@ public class SucStart extends AppCompatActivity
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        DinersListFragment dinersListFragment = DinersListFragment.newInstance(loggedAccount.name, getTitle().toString());
+        DinersListFragment dinersListFragment = DinersListFragment.newInstance(loggedAccount.name, getTitle().toString(), DinersListFragment.VIEW_TYPE_LIST);
         fragmentTransaction.replace(R.id.suc_content, dinersListFragment, DINERS_LIST_TAG);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
@@ -283,7 +283,7 @@ public class SucStart extends AppCompatActivity
 
         /*****************************/
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        DonationFragment donationFragment = DonationFragment.newInstance(accounts[0].name, getTitle().toString());
+        DinersListFragment donationFragment = DinersListFragment.newInstance(accounts[0].name, getTitle().toString(), DinersListFragment.VIEW_TYPE_FILTER);
         fragmentTransaction.replace(R.id.suc_content, donationFragment);
         fragmentTransaction.addToBackStack(null);
 

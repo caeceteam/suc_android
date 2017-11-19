@@ -26,8 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/donation_diner"
-                android:inputType="number"
+                android:inputType="text"
                 android:maxLines="1"
+                android:enabled="false"
                 android:singleLine="true"
                 android:text="2"/>
 

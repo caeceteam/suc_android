@@ -1,7 +1,11 @@
 package com.example.suc.suc_android_solution;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +24,7 @@ import android.widget.LinearLayout;
 
 import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
 import com.example.suc.suc_android_solution.Adapters.DinersAdapter;
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.Diners;
@@ -50,14 +55,19 @@ import java.util.List;
 public class DinersListFragment extends Fragment {
     private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
+    private static final String ARG_VIEW_TYPE = "VIEW_TYPE";
+
+    public static final String VIEW_TYPE_LIST = "dinersList";
+    public static final String VIEW_TYPE_FILTER = "dinersListFilter";
 
     private String mAccountName;
     private String lastActivityTitle;
+    private String viewType;
 
     private DinerService dinerService;
 
     private OnFragmentInteractionListener mListener;
-
+    private AccountManager accountManager;
 
     private RecyclerView rvDiners;
     private DinersAdapter dinersAdapter;
@@ -75,14 +85,16 @@ public class DinersListFragment extends Fragment {
      *
      * @param accountName nombre de usuario.
      * @param lastTitle   titulo de la actividad/fragmento del que venimos
+     * @param viewType define en que modo se usara este fragmento. si como lista o filtro.
      * @return A new instance of fragment DinersListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DinersListFragment newInstance(String accountName, String lastTitle) {
+    public static DinersListFragment newInstance(String accountName, String lastTitle, String viewType) {
         DinersListFragment fragment = new DinersListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ACCOUNT_NAME, accountName);
         args.putString(ARG_LAST_TITLE, lastTitle);
+        args.putString(ARG_VIEW_TYPE, viewType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,8 +105,9 @@ public class DinersListFragment extends Fragment {
         if (getArguments() != null) {
             mAccountName = getArguments().getString(ARG_ACCOUNT_NAME);
             lastActivityTitle = getArguments().getString(ARG_LAST_TITLE);
+            viewType = getArguments().getString(ARG_VIEW_TYPE);
         }
-
+        accountManager = AccountManager.get(getContext());
         Activity activity = getActivity();
         activity.setTitle(R.string.title_diner_list);
     }
@@ -135,8 +148,14 @@ public class DinersListFragment extends Fragment {
                     if(diners != null && diners.size() > 0){
                         dinersAdapter = new DinersAdapter(diners, getContext(), new DinersAdapter.DinersAdapterOnClickHandler() {
                             @Override
-                            public void onClick(BigInteger idDinerRequest) {
-                                //not implemented yet.
+                            public void onClick(BigInteger idDiner) {
+                                Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
+
+                                if(viewType == VIEW_TYPE_LIST){
+                                    goToDinerDetailsFragment(accounts[0], idDiner);
+                                }else if(viewType == VIEW_TYPE_FILTER){
+                                    goToDonateFragment(accounts[0], idDiner);
+                                }
                             }
                         });
 
@@ -257,5 +276,25 @@ public class DinersListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void goToDinerDetailsFragment(Account account, BigInteger idDiner){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DinerDetailsFragment dinerFragment = DinerDetailsFragment.newInstance(account.name, getActivity().getTitle().toString(), idDiner.toString());
+        fragmentTransaction.replace(R.id.suc_content, dinerFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+    }
+
+    private void goToDonateFragment(Account account, BigInteger idDiner){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DonationFragment donationFragment = DonationFragment.newInstance(account.name, getActivity().getTitle().toString(), idDiner.toString());
+        fragmentTransaction.replace(R.id.suc_content, donationFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
     }
 }
