@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,8 @@ public class DinersListFragment extends Fragment {
     private DinersAdapter dinersAdapter;
     private FrameLayout rvContainer;
 
+
+
     public DinersListFragment() {
         // Required empty public constructor
     }
@@ -105,7 +108,24 @@ public class DinersListFragment extends Fragment {
         rvDiners = (RecyclerView) view.findViewById(R.id.recyclerview_diners);
         rvContainer = (FrameLayout) view.findViewById(R.id.rv_diners_container);
 
-        GetAllDinersTask getAllDinersTask = new GetAllDinersTask(getContext());
+
+
+        final GetAllDinersTask getAllDinersTask = new GetAllDinersTask(getContext());
+        initializeGetAllDinersTask(getAllDinersTask);
+        getAllDinersTask.execute("0");
+
+        return view;
+    }
+
+    private void initializeGetAllDinersTask(final GetAllDinersTask getAllDinersTask) {
+        final int[] page = {0};
+        final int[] previousTotal = {0};
+        final boolean[] loading = {true};
+        final int visibleThreshold = 10;
+        final int[] firstVisibleItem = new int[1];
+        final int[] visibleItemCount = new int[1];
+        final int[] totalItemCount = new int[1];
+
         getAllDinersTask.setTaskListener(new TaskListener() {
             @Override
             public void onComplete(Object response) {
@@ -121,13 +141,58 @@ public class DinersListFragment extends Fragment {
                         });
 
                     /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
-                        LinearLayoutManager layoutManager =
+                        final LinearLayoutManager layoutManager =
                                 new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
                         layoutManager.setAutoMeasureEnabled(true);
                     /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
                         rvDiners.setLayoutManager(layoutManager);
-                        rvDiners.setNestedScrollingEnabled(false);
+
+                        rvDiners.addOnScrollListener(new RecyclerView.OnScrollListener()
+                        {
+                            @Override
+                            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                                super.onScrolled(recyclerView, dx, dy);
+
+                                visibleItemCount[0] = rvDiners.getChildCount();
+                                totalItemCount[0] = layoutManager.getItemCount();
+                                firstVisibleItem[0] = layoutManager.findFirstVisibleItemPosition();
+
+                                if (loading[0]) {
+                                    if (totalItemCount[0] > previousTotal[0]) {
+                                        loading[0] = false;
+                                        previousTotal[0] = totalItemCount[0];
+                                    }
+                                }
+                                if (!loading[0] && (totalItemCount[0] - visibleItemCount[0])
+                                        <= (firstVisibleItem[0] + visibleThreshold)) {
+                                    // End has been reached
+                                    page[0] = page[0] + 1;
+                                    GetAllDinersTask getAllDinersTaskNested = new GetAllDinersTask(getContext());
+                                    getAllDinersTaskNested.setTaskListener(new TaskListener() {
+                                        @Override
+                                        public void onComplete(Object response) {
+                                            List<Diner> diners = ((Diners) response).getDiners();
+                                            dinersAdapter.add(diners);
+                                            dinersAdapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+
+                                        }
+                                    });
+
+                                    getAllDinersTaskNested.execute(String.valueOf(page[0]));
+
+                                    // Do something
+
+                                    loading[0] = true;
+                                }
+                            }
+                        });
+
+                        //rvDiners.setNestedScrollingEnabled(false);
                     /*
                      * Use this setting to improve performance if you know that changes in content do not
                      * change the child layout size in the RecyclerView
@@ -146,9 +211,6 @@ public class DinersListFragment extends Fragment {
 
             }
         });
-        getAllDinersTask.execute("0");
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
