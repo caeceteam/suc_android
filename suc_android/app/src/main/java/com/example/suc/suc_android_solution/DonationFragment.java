@@ -263,7 +263,7 @@ public class DonationFragment extends Fragment {
 
     private String getLogedUser(){
         String idUser = new String();
-        accountManager = AccountManager.get(mContext);
+        accountManager = AccountManager.get(getContext());
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
         if(accounts.length > 0){
             Account account = accounts[0];
