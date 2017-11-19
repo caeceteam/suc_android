@@ -35,7 +35,7 @@ public class GetAllDinersTask extends AsyncTask<String, Void, Diners> {
     protected Diners doInBackground(String... params) {
 
         try {
-            Diners response = dinerService.getAllDiners(Integer.parseInt(params[0]));
+            Diners response = dinerService.getAllDiners(Integer.parseInt(params[0]), params[1]);
             /*try{
                 URL dinerPhotoUrl = new URL(response.photos.get(0).url);
                 Bitmap image = BitmapFactory.decodeStream(dinerPhotoUrl.openConnection().getInputStream());

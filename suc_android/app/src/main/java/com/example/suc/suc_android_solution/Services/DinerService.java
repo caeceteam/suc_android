@@ -65,7 +65,7 @@ public class DinerService {
         }
     }
 
-    public Diners getAllDiners(@Nullable Integer page){
+    public Diners getAllDiners(@Nullable Integer page, @Nullable String dinerName){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -79,7 +79,7 @@ public class DinerService {
 
 
             DinersClient dinersClient = retrofit.create(DinersClient.class);
-            Call<Diners> call = dinersClient.getAll(userToken, page);
+            Call<Diners> call = dinersClient.getAll(userToken, page, dinerName);
 
             Diners diners = call.execute().body();
             return diners;

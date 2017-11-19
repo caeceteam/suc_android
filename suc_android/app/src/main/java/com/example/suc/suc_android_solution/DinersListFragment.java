@@ -7,20 +7,27 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toolbar;
 
 import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
 import com.example.suc.suc_android_solution.Adapters.DinersAdapter;
@@ -37,6 +44,7 @@ import com.example.suc.suc_android_solution.Tasks.GetUserDinersTask;
 import com.example.suc.suc_android_solution.Tasks.TaskListener;
 import com.example.suc.suc_android_solution.Tasks.UserDinerFollowTask;
 import com.example.suc.suc_android_solution.Tasks.UserDinerUnFollowTask;
+import com.example.suc.suc_android_solution.Utils.Notifications;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -57,6 +65,8 @@ public class DinersListFragment extends Fragment {
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
     private static final String ARG_VIEW_TYPE = "VIEW_TYPE";
 
+    private static final Integer REQUEST_FILTER = 0;
+
     public static final String VIEW_TYPE_LIST = "dinersList";
     public static final String VIEW_TYPE_FILTER = "dinersListFilter";
 
@@ -73,6 +83,7 @@ public class DinersListFragment extends Fragment {
     private DinersAdapter dinersAdapter;
     private FrameLayout rvContainer;
 
+    private String dinerNameFilter;
 
 
     public DinersListFragment() {
@@ -85,7 +96,7 @@ public class DinersListFragment extends Fragment {
      *
      * @param accountName nombre de usuario.
      * @param lastTitle   titulo de la actividad/fragmento del que venimos
-     * @param viewType define en que modo se usara este fragmento. si como lista o filtro.
+     * @param viewType    define en que modo se usara este fragmento. si como lista o filtro.
      * @return A new instance of fragment DinersListFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -110,6 +121,24 @@ public class DinersListFragment extends Fragment {
         accountManager = AccountManager.get(getContext());
         Activity activity = getActivity();
         activity.setTitle(R.string.title_diner_list);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.filter, menu);  // Use filter.xml from step 1
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_filter) {
+            Intent filterActivity = new Intent(getContext(), DinerFilterActivity.class);
+            filterActivity.putExtra("dinerName", dinerNameFilter);
+            startActivityForResult(filterActivity, REQUEST_FILTER);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -122,10 +151,9 @@ public class DinersListFragment extends Fragment {
         rvContainer = (FrameLayout) view.findViewById(R.id.rv_diners_container);
 
 
-
         final GetAllDinersTask getAllDinersTask = new GetAllDinersTask(getContext());
         initializeGetAllDinersTask(getAllDinersTask);
-        getAllDinersTask.execute("0");
+        getAllDinersTask.execute("0", dinerNameFilter);
 
         return view;
     }
@@ -145,15 +173,15 @@ public class DinersListFragment extends Fragment {
                 if (response instanceof Diners) {
                     List<Diner> diners = ((Diners) response).getDiners();
 
-                    if(diners != null && diners.size() > 0){
+                    if (diners != null && diners.size() > 0) {
                         dinersAdapter = new DinersAdapter(diners, getContext(), new DinersAdapter.DinersAdapterOnClickHandler() {
                             @Override
                             public void onClick(BigInteger idDiner) {
                                 Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
 
-                                if(viewType == VIEW_TYPE_LIST){
+                                if (viewType == VIEW_TYPE_LIST) {
                                     goToDinerDetailsFragment(accounts[0], idDiner);
-                                }else if(viewType == VIEW_TYPE_FILTER){
+                                } else if (viewType == VIEW_TYPE_FILTER) {
                                     goToDonateFragment(accounts[0], idDiner);
                                 }
                             }
@@ -167,8 +195,7 @@ public class DinersListFragment extends Fragment {
                     /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
                         rvDiners.setLayoutManager(layoutManager);
 
-                        rvDiners.addOnScrollListener(new RecyclerView.OnScrollListener()
-                        {
+                        rvDiners.addOnScrollListener(new RecyclerView.OnScrollListener() {
                             @Override
                             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                                 super.onScrolled(recyclerView, dx, dy);
@@ -202,7 +229,7 @@ public class DinersListFragment extends Fragment {
                                         }
                                     });
 
-                                    getAllDinersTaskNested.execute(String.valueOf(page[0]));
+                                    getAllDinersTaskNested.execute(String.valueOf(page[0]), dinerNameFilter);
 
                                     // Do something
 
@@ -218,7 +245,7 @@ public class DinersListFragment extends Fragment {
                      */
                         rvDiners.setHasFixedSize(true);
                         rvDiners.setAdapter(dinersAdapter);
-                    }else{
+                    } else {
                         rvContainer.removeAllViews();
                     }
 
@@ -278,7 +305,7 @@ public class DinersListFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void goToDinerDetailsFragment(Account account, BigInteger idDiner){
+    private void goToDinerDetailsFragment(Account account, BigInteger idDiner) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DinerDetailsFragment dinerFragment = DinerDetailsFragment.newInstance(account.name, getActivity().getTitle().toString(), idDiner.toString());
@@ -288,7 +315,7 @@ public class DinersListFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void goToDonateFragment(Account account, BigInteger idDiner){
+    private void goToDonateFragment(Account account, BigInteger idDiner) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DonationFragment donationFragment = DonationFragment.newInstance(account.name, getActivity().getTitle().toString(), idDiner.toString());
@@ -296,5 +323,26 @@ public class DinersListFragment extends Fragment {
         fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        final GetAllDinersTask getAllDinersTask = new GetAllDinersTask(getContext());
+        initializeGetAllDinersTask(getAllDinersTask);
+        getAllDinersTask.execute("0", dinerNameFilter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(data != null){
+            dinerNameFilter = data.getStringExtra("filterName") != null && data.getStringExtra("filterName").length() > 0 ?
+                    data.getStringExtra("filterName") : null;
+
+
+            dinersAdapter.clear();
+            dinersAdapter.notifyDataSetChanged();
+        }
     }
 }
