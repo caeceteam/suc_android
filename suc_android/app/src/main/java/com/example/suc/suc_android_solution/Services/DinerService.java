@@ -3,9 +3,11 @@ package com.example.suc.suc_android_solution.Services;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Clients.DinersClient;
+import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.DinerResponse;
 import com.example.suc.suc_android_solution.Models.Diners;
 import com.example.suc.suc_android_solution.Utils.Network;
@@ -39,7 +41,7 @@ public class DinerService {
         }
     }
 
-    public DinerResponse getDiner(BigInteger idDiner){
+    public Diner getDiner(BigInteger idDiner){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -53,9 +55,9 @@ public class DinerService {
 
 
             DinersClient dinersClient = retrofit.create(DinersClient.class);
-            Call<DinerResponse> call = dinersClient.get(userToken, idDiner);
+            Call<Diner> call = dinersClient.get(userToken, idDiner);
 
-            DinerResponse diner = call.execute().body();
+            Diner diner = call.execute().body();
             return diner;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,7 +65,7 @@ public class DinerService {
         }
     }
 
-    public Diners getAllDiners(){
+    public Diners getAllDiners(@Nullable Integer page){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -77,7 +79,7 @@ public class DinerService {
 
 
             DinersClient dinersClient = retrofit.create(DinersClient.class);
-            Call<Diners> call = dinersClient.getAll(userToken);
+            Call<Diners> call = dinersClient.getAll(userToken, page);
 
             Diners diners = call.execute().body();
             return diners;

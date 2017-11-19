@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -130,7 +132,7 @@ public class MainFragment extends Fragment {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        DonationFragment donationFragment = DonationFragment.newInstance(accounts[0].name, getActivity().getTitle().toString());
+        DinersListFragment donationFragment = DinersListFragment.newInstance(accounts[0].name, getActivity().getTitle().toString(), DinersListFragment.VIEW_TYPE_FILTER);
         fragmentTransaction.replace(R.id.suc_content, donationFragment);
         fragmentTransaction.addToBackStack(null);
 

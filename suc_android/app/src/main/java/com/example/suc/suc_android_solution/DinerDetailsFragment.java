@@ -3,21 +3,23 @@ package com.example.suc.suc_android_solution;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
-import android.support.annotation.StringRes;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Models.Diner;
-import com.example.suc.suc_android_solution.Models.DinerResponse;
-import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Models.UserDiner;
 import com.example.suc.suc_android_solution.Models.UserDiners;
 import com.example.suc.suc_android_solution.Services.DinerService;
@@ -28,6 +30,7 @@ import com.example.suc.suc_android_solution.Tasks.UserDinerFollowTask;
 import com.example.suc.suc_android_solution.Tasks.UserDinerUnFollowTask;
 
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -51,15 +54,11 @@ public class DinerDetailsFragment extends Fragment {
 
     private DinerService dinerService;
 
-    private AutoCompleteTextView tvName;
-    private AutoCompleteTextView tvLink;
-    private AutoCompleteTextView tvMail;
-    private AutoCompleteTextView tvPhone;
-    private AutoCompleteTextView tvStreet;
-    private AutoCompleteTextView tvStreetNumber;
-    private AutoCompleteTextView tvFloor;
-    private AutoCompleteTextView tvDoor;
-    private AutoCompleteTextView tvZipCode;
+    private TextView tvName;
+    private TextView tvLink;
+    private TextView tvMail;
+    private TextView tvPhone;
+    private TextView tvAddress;
 
     private Button followButton;
     private OnFragmentInteractionListener mListener;
@@ -67,6 +66,12 @@ public class DinerDetailsFragment extends Fragment {
     private UserDiner userDinerRelationship;
 
     private BigInteger idDiner;
+
+    private RecyclerView rvDinerRequest;
+    private DinerRequestAdapter dinerRequestAdapter;
+    private LinearLayout rvContainer;
+
+    private ImageView ivMainPhoto;
 
     public DinerDetailsFragment() {
         // Required empty public constructor
@@ -77,7 +82,7 @@ public class DinerDetailsFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param accountName nombre de usuario.
-     * @param lastTitle titulo de la actividad/fragmento del que venimos
+     * @param lastTitle   titulo de la actividad/fragmento del que venimos
      * @return A new instance of fragment MyAccountFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -85,8 +90,8 @@ public class DinerDetailsFragment extends Fragment {
         DinerDetailsFragment fragment = new DinerDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ACCOUNT_NAME, accountName);
-        args.putString(ARG_LAST_TITLE,lastTitle);
-        args.putString(ARG_DINER_ID,idDiner);
+        args.putString(ARG_LAST_TITLE, lastTitle);
+        args.putString(ARG_DINER_ID, idDiner);
         fragment.setArguments(args);
         return fragment;
     }
@@ -108,17 +113,16 @@ public class DinerDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_diner_details, container, false);
+        final View view = inflater.inflate(R.layout.fragment_diner_details, container, false);
 
-        tvName = (AutoCompleteTextView) view.findViewById(R.id.diner_name);
-        tvLink = (AutoCompleteTextView) view.findViewById(R.id.diner_link);
-        tvMail = (AutoCompleteTextView) view.findViewById(R.id.diner_mail);
-        tvPhone = (AutoCompleteTextView) view.findViewById(R.id.diner_phone);
-        tvStreet = (AutoCompleteTextView) view.findViewById(R.id.diner_street);
-        tvStreetNumber = (AutoCompleteTextView) view.findViewById(R.id.diner_street_number);
-        tvFloor = (AutoCompleteTextView) view.findViewById(R.id.diner_floor);
-        tvDoor = (AutoCompleteTextView) view.findViewById(R.id.diner_door);
-        tvZipCode = (AutoCompleteTextView) view.findViewById(R.id.diner_zipcode);
+        tvName = (TextView) view.findViewById(R.id.diner_detail_name);
+        tvLink = (TextView) view.findViewById(R.id.diner_detail_link);
+        tvMail = (TextView) view.findViewById(R.id.diner_detail_mail);
+        tvPhone = (TextView) view.findViewById(R.id.diner_detail_phone);
+        tvAddress = (TextView) view.findViewById(R.id.diner_address);
+        rvDinerRequest = (RecyclerView) view.findViewById(R.id.recyclerview_dinerRequest);
+        ivMainPhoto = (ImageView) view.findViewById(R.id.diner_main_photo);
+        rvContainer = (LinearLayout) view.findViewById(R.id.rv_dinerRequest_container);
 
         followButton = (Button) view.findViewById(R.id.diner_follow_button);
         followButton.setText(R.string.map_item_follow);
@@ -126,13 +130,13 @@ public class DinerDetailsFragment extends Fragment {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(userDinerRelationship != null){
+                if (userDinerRelationship != null) {
                     UserDinerUnFollowTask userDinerUnFollowTask = new UserDinerUnFollowTask(getContext());
                     userDinerUnFollowTask.setTaskListener(new TaskListener() {
                         @Override
                         public void onComplete(Object response) {
-                            if(response instanceof Boolean){
-                                if((Boolean) response == Boolean.TRUE){
+                            if (response instanceof Boolean) {
+                                if ((Boolean) response == Boolean.TRUE) {
                                     userDinerRelationship = null;
                                     followButton.setText(R.string.map_item_follow);
                                 }
@@ -146,13 +150,13 @@ public class DinerDetailsFragment extends Fragment {
                     });
 
                     userDinerUnFollowTask.execute(idDiner.toString());
-                }else {
+                } else {
                     UserDinerFollowTask userDinerFollowTask = new UserDinerFollowTask(getContext());
                     userDinerFollowTask.setTaskListener(new TaskListener() {
                         @Override
                         public void onComplete(Object response) {
-                            if(response instanceof UserDiner){
-                                if(((UserDiner) response).getIdDiner() != null){
+                            if (response instanceof UserDiner) {
+                                if (((UserDiner) response).getIdDiner() != null) {
                                     userDinerRelationship = (UserDiner) response;
                                     followButton.setText(R.string.map_item_unfollow);
                                 }
@@ -173,16 +177,44 @@ public class DinerDetailsFragment extends Fragment {
         getDinerTask.setTaskListener(new TaskListener() {
             @Override
             public void onComplete(Object response) {
-                if(response instanceof DinerResponse){
-                    tvLink.setText(((DinerResponse) response).diner.getLink());
-                    tvDoor.setText(((DinerResponse) response).diner.getDoor());
-                    tvFloor.setText(((DinerResponse) response).diner.getFloor());
-                    tvMail.setText(((DinerResponse) response).diner.getMail());
-                    tvName.setText(((DinerResponse) response).diner.getName());
-                    tvPhone.setText(((DinerResponse) response).diner.getPhone());
-                    tvStreet.setText(((DinerResponse) response).diner.getStreet());
-                    tvStreetNumber.setText(((DinerResponse) response).diner.getStreetNumber().toString());
-                    tvZipCode.setText(((DinerResponse) response).diner.getZipcode());
+                if (response instanceof Diner) {
+                    Diner diner = (Diner) response;
+                    tvLink.setText(diner.getLink());
+                    tvMail.setText(String.format("Mail: %s", diner.getMail()));
+                    tvName.setText(diner.getName());
+                    tvPhone.setText(String.format("Telefono: %s", diner.getPhone()));
+                    tvAddress.setText(buildDinerAddress(diner));
+
+                    Bitmap bmp = BitmapFactory.decodeResource(view.getContext().getResources(), R.mipmap.ic_restaurant_black_24dp);
+                    Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (96), (int) (96), false);
+                    ivMainPhoto.setImageBitmap(result);
+
+                    if(diner.requests != null && diner.requests.size() > 0){
+                        dinerRequestAdapter = new DinerRequestAdapter(diner.requests, getContext(), new DinerRequestAdapter.DinerRequestAdapterOnClickHandler() {
+                            @Override
+                            public void onClick(BigInteger idDinerRequest) {
+                                //not implemented yet.
+                            }
+                        });
+
+                    /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
+                        LinearLayoutManager layoutManager =
+                                new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+                        layoutManager.setAutoMeasureEnabled(true);
+                    /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
+                        rvDinerRequest.setLayoutManager(layoutManager);
+                        rvDinerRequest.setNestedScrollingEnabled(false);
+                    /*
+                     * Use this setting to improve performance if you know that changes in content do not
+                     * change the child layout size in the RecyclerView
+                     */
+                        rvDinerRequest.setHasFixedSize(true);
+                        rvDinerRequest.setAdapter(dinerRequestAdapter);
+                    }else{
+                        rvContainer.removeAllViews();
+                    }
+
                 }
             }
 
@@ -197,11 +229,11 @@ public class DinerDetailsFragment extends Fragment {
         getUserDinersTask.setTaskListener(new TaskListener() {
             @Override
             public void onComplete(Object response) {
-                if(response instanceof UserDiners){
+                if (response instanceof UserDiners) {
                     Collection<UserDiner> userDiners = ((UserDiners) response).getUsersDiners();
-                    if(userDiners != null && userDiners.size() > 0){
-                        for (UserDiner userDiner : userDiners){
-                            if(userDiner.getIdDiner().equals(idDiner)){
+                    if (userDiners != null && userDiners.size() > 0) {
+                        for (UserDiner userDiner : userDiners) {
+                            if (userDiner.getIdDiner().equals(idDiner)) {
                                 userDinerRelationship = userDiner;
                                 followButton.setText(R.string.map_item_unfollow);
                                 break;
@@ -220,6 +252,23 @@ public class DinerDetailsFragment extends Fragment {
         getUserDinersTask.execute();
 
         return view;
+    }
+
+    private String buildDinerAddress(Diner diner) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(String.format("Dirección: %s %d", diner.getStreet(),
+                diner.getStreetNumber()));
+
+        if (diner.getDoor() != null && !diner.getDoor().equals("")) {
+            builder.append(String.format(" Puerta: %s", diner.getDoor()));
+        }
+
+        if (diner.getFloor() != null && !diner.getFloor().equals("")) {
+            builder.append(String.format(" Piso: %s", diner.getFloor()));
+        }
+        builder.append(String.format(" - CP: %s", diner.getZipcode()));
+
+        return builder.toString();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -249,6 +298,7 @@ public class DinerDetailsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        getActivity().setTitle(lastActivityTitle);
     }
 
     /**

@@ -16,7 +16,7 @@
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_sign_in_short">Ingresar</string>
     <string name="error_invalid_email">El nombre de usuario es inválido</string>
-
+    <string name="error_invalid_user_name">El nombre de usuario es invalido</string>
     <string name="error_invalid_password">La contraseña es muy corta</string>
     <string name="error_incorrect_password">La contraseña es incorrecta</string>
     <string name="error_field_required">Este campo es requerido</string>
@@ -97,9 +97,11 @@
     <string name="donation_title">Descripcion</string>
     <string name="donation_item_description">Dejanos tus datos de contacto</string>
     <string name="donation_screen_title">¿Qué vas a donar?</string>
-  
+
     <string name="error_invalid_mail">El mail ingresado es inválido</string>
     <string name="popup_close_session_advice">Si continuas se cerrara tu sesión</string>
     <string name="popup_dont_close_session">Me quedo</string>
-
+    <string name="diner_name_example">Comedor Asistencia Social para los necesitados</string>
+    <string name="diner_address_example">Direccion: Teniente coronel Cesar Cardoso 3181 Piso: 1 Dpto: 12 - CP: 1712</string>
+    <string name="title_diner_list">Listado de comedores</string>
 </resources>

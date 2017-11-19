@@ -1,5 +1,7 @@
 package com.example.suc.suc_android_solution.Clients;
 
+import android.support.annotation.Nullable;
+
 import com.example.suc.suc_android_solution.Models.DeleteResponse;
 import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.DinerResponse;
@@ -26,10 +28,10 @@ import retrofit2.http.Query;
 
 public interface DinersClient {
     @GET("/api/diners")
-    Call<Diners> getAll(@Header("x-access-token") String token);
+    Call<Diners> getAll(@Header("x-access-token") String token, @Nullable @Query("page") Integer page);
 
     @GET("/api/diners/{idDiner}")
-    Call<DinerResponse> get(@Header("x-access-token") String token, @Path("idDiner") BigInteger idDiner);
+    Call<Diner> get(@Header("x-access-token") String token, @Path("idDiner") BigInteger idDiner);
 
     @GET("/api/diners")
     Call<Diners> getAllWithGeo(@Header("x-access-token") String token,

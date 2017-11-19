@@ -8,7 +8,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,16 +16,18 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
+import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
+import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.Donation;
 import com.example.suc.suc_android_solution.Models.DonationItem;
 import com.example.suc.suc_android_solution.Services.DonationService;
+import com.example.suc.suc_android_solution.Tasks.GetDinerTask;
+import com.example.suc.suc_android_solution.Tasks.TaskListener;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 /**
@@ -38,10 +39,12 @@ public class DonationFragment extends Fragment {
 
     private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
+    private static final String ARG_DINER_ID = "DINER_ID";
     private OnFragmentInteractionListener mListener;
 
     private String mAccountName;
     private String lastActivityTitle;
+    private BigInteger idDiner;
 
     private DonationService donationService;
 
@@ -53,6 +56,8 @@ public class DonationFragment extends Fragment {
     private Context mContext;
     private AccountManager accountManager;
 
+    private GetDinerTask dinerTask;
+
     public DonationFragment() {
         // Required empty public constructor
     }
@@ -62,14 +67,16 @@ public class DonationFragment extends Fragment {
      *
      * @param accountName nombre del usuario.
      * @param lastTitle página de donde vino.
+     * @param idDiner diner al que se hara la donacion
      * @return Nueva instancia del fragmento DonationFragment.
      */
 
-    public static DonationFragment newInstance(String accountName, String lastTitle) {
+    public static DonationFragment newInstance(String accountName, String lastTitle, String idDiner) {
         DonationFragment fragment = new DonationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ACCOUNT_NAME, accountName);
         args.putString(ARG_LAST_TITLE, lastTitle);
+        args.putString(ARG_DINER_ID, idDiner);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,8 +87,10 @@ public class DonationFragment extends Fragment {
         if (getArguments() != null) {
             mAccountName = getArguments().getString(ARG_ACCOUNT_NAME);
             lastActivityTitle = getArguments().getString(ARG_LAST_TITLE);
+            idDiner = new BigInteger(getArguments().getString(ARG_DINER_ID));
         }
 
+        dinerTask = new GetDinerTask(getContext());
         Activity activity = getActivity();
         activity.setTitle(R.string.donation_screen_title);
     }
@@ -108,6 +117,20 @@ public class DonationFragment extends Fragment {
 
         donationService = new DonationService(view.getContext());
 
+        dinerTask.setTaskListener(new TaskListener() {
+            @Override
+            public void onComplete(Object response) {
+                if(response instanceof Diner){
+                    tvDiner.setText(((Diner) response).getName());
+                }
+            }
+
+            @Override
+            public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+
+            }
+        });
+        dinerTask.execute(idDiner.toString());
         return view;
     }
 
@@ -160,23 +183,15 @@ public class DonationFragment extends Fragment {
      * Valida los campos del formulario
      */
     private void attemptDonate() {
-
-        tvDiner.setError(null);
         tvTitle.setError(null);
         tvDescription.setError(null);
 
-        String diner        = tvDiner.getText().toString();
         String title        = tvTitle.getText().toString();
         String description  = tvDescription.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(diner)) {
-            tvDiner.setError(getString(R.string.error_field_required));
-            focusView = tvDiner;
-            cancel = true;
-        }
         if (TextUtils.isEmpty(title)) {
             tvTitle.setError(getString(R.string.error_field_required));
             if(focusView == null) focusView = tvTitle;
@@ -198,7 +213,7 @@ public class DonationFragment extends Fragment {
     void saveDonationData() {
         String[] parameters = new String[3];
 
-        parameters[0] = tvDiner.getText().toString();
+        parameters[0] = idDiner.toString();
         parameters[1] = tvTitle.getText().toString();
         parameters[2] = tvDescription.getText().toString();
 
