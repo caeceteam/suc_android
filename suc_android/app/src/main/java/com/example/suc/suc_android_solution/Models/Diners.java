@@ -1,19 +1,20 @@
 package com.example.suc.suc_android_solution.Models;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by efridman on 2/11/17.
  */
 
 public class Diners {
-    private Collection<Diner> diners;
+    private List<Diner> diners;
 
-    public Collection<Diner> getDiners() {
+    public List<Diner> getDiners() {
         return diners;
     }
 
-    public void setDiners(Collection<Diner> diners) {
+    public void setDiners(List<Diner> diners) {
         this.diners = diners;
     }
 }

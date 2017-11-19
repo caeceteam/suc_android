@@ -1,0 +1,199 @@
+package com.example.suc.suc_android_solution;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
+import com.example.suc.suc_android_solution.Adapters.DinersAdapter;
+import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
+import com.example.suc.suc_android_solution.Models.Diner;
+import com.example.suc.suc_android_solution.Models.Diners;
+import com.example.suc.suc_android_solution.Models.UserDiner;
+import com.example.suc.suc_android_solution.Models.UserDiners;
+import com.example.suc.suc_android_solution.Services.DinerService;
+import com.example.suc.suc_android_solution.Tasks.GetAllDinersTask;
+import com.example.suc.suc_android_solution.Tasks.GetDinerTask;
+import com.example.suc.suc_android_solution.Tasks.GetUserDinersTask;
+import com.example.suc.suc_android_solution.Tasks.TaskListener;
+import com.example.suc.suc_android_solution.Tasks.UserDinerFollowTask;
+import com.example.suc.suc_android_solution.Tasks.UserDinerUnFollowTask;
+
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link DinersListFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link DinersListFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class DinersListFragment extends Fragment {
+    private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
+    private static final String ARG_LAST_TITLE = "LAST_TITLE";
+
+    private String mAccountName;
+    private String lastActivityTitle;
+
+    private DinerService dinerService;
+
+    private OnFragmentInteractionListener mListener;
+
+
+    private RecyclerView rvDiners;
+    private DinersAdapter dinersAdapter;
+    private FrameLayout rvContainer;
+
+    public DinersListFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param accountName nombre de usuario.
+     * @param lastTitle   titulo de la actividad/fragmento del que venimos
+     * @return A new instance of fragment DinersListFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static DinersListFragment newInstance(String accountName, String lastTitle) {
+        DinersListFragment fragment = new DinersListFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_ACCOUNT_NAME, accountName);
+        args.putString(ARG_LAST_TITLE, lastTitle);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mAccountName = getArguments().getString(ARG_ACCOUNT_NAME);
+            lastActivityTitle = getArguments().getString(ARG_LAST_TITLE);
+        }
+
+        Activity activity = getActivity();
+        activity.setTitle(R.string.title_diner_list);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_diners_list, container, false);
+
+        rvDiners = (RecyclerView) view.findViewById(R.id.recyclerview_diners);
+        rvContainer = (FrameLayout) view.findViewById(R.id.rv_diners_container);
+
+        GetAllDinersTask getAllDinersTask = new GetAllDinersTask(getContext());
+        getAllDinersTask.setTaskListener(new TaskListener() {
+            @Override
+            public void onComplete(Object response) {
+                if (response instanceof Diners) {
+                    List<Diner> diners = ((Diners) response).getDiners();
+
+                    if(diners != null && diners.size() > 0){
+                        dinersAdapter = new DinersAdapter(diners, getContext(), new DinersAdapter.DinersAdapterOnClickHandler() {
+                            @Override
+                            public void onClick(BigInteger idDinerRequest) {
+                                //not implemented yet.
+                            }
+                        });
+
+                    /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
+                        LinearLayoutManager layoutManager =
+                                new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+                        layoutManager.setAutoMeasureEnabled(true);
+                    /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
+                        rvDiners.setLayoutManager(layoutManager);
+                        rvDiners.setNestedScrollingEnabled(false);
+                    /*
+                     * Use this setting to improve performance if you know that changes in content do not
+                     * change the child layout size in the RecyclerView
+                     */
+                        rvDiners.setHasFixedSize(true);
+                        rvDiners.setAdapter(dinersAdapter);
+                    }else{
+                        rvContainer.removeAllViews();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+
+            }
+        });
+        getAllDinersTask.execute("0");
+
+        return view;
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().setTitle(lastActivityTitle);
+
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
+}

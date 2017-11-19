@@ -3,6 +3,7 @@ package com.example.suc.suc_android_solution.Services;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Clients.DinersClient;
@@ -64,7 +65,7 @@ public class DinerService {
         }
     }
 
-    public Diners getAllDiners(){
+    public Diners getAllDiners(@Nullable Integer page){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -78,7 +79,7 @@ public class DinerService {
 
 
             DinersClient dinersClient = retrofit.create(DinersClient.class);
-            Call<Diners> call = dinersClient.getAll(userToken);
+            Call<Diners> call = dinersClient.getAll(userToken, page);
 
             Diners diners = call.execute().body();
             return diners;

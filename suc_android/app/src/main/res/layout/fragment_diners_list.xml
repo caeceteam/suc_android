@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rv_diners_container"
+    tools:context="com.example.suc.suc_android_solution.DinersListFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview_diners"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
+
+</FrameLayout>

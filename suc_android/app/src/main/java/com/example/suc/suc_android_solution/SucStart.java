@@ -32,7 +32,8 @@ public class SucStart extends AppCompatActivity
         ChangePasswordFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
         NearestDinersFragment.OnFragmentInteractionListener,
-        DinerDetailsFragment.OnFragmentInteractionListener {
+        DinerDetailsFragment.OnFragmentInteractionListener,
+        DinersListFragment.OnFragmentInteractionListener{
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
@@ -74,6 +75,9 @@ public class SucStart extends AppCompatActivity
                         break;
                     case R.id.action_nearest_diners:
                         showNearestDiners();
+                        break;
+                    case R.id.action_see_all:
+                        seeAll();
                         break;
                     case R.id.action_logout:
                         logout();
@@ -138,6 +142,22 @@ public class SucStart extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         MyAccountFragment myAccountFragment = MyAccountFragment.newInstance(loggedAccount.name, getTitle().toString());
         fragmentTransaction.replace(R.id.suc_content, myAccountFragment, MY_ACCOUNT_TAG);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    private void seeAll() {
+        String DINERS_LIST_TAG = "seeAllTag";
+        FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack();
+        /*****************************/
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DinersListFragment dinersListFragment = DinersListFragment.newInstance(loggedAccount.name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, dinersListFragment, DINERS_LIST_TAG);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
