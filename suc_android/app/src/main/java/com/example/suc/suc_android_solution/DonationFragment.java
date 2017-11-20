@@ -4,6 +4,8 @@ import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,6 +25,7 @@ import com.example.suc.suc_android_solution.Models.Donation;
 import com.example.suc.suc_android_solution.Models.DonationItem;
 import com.example.suc.suc_android_solution.Services.DonationService;
 import com.example.suc.suc_android_solution.Tasks.GetDinerTask;
+import com.example.suc.suc_android_solution.Tasks.PostDonationTask;
 import com.example.suc.suc_android_solution.Tasks.TaskListener;
 
 import java.math.BigInteger;
@@ -217,58 +220,41 @@ public class DonationFragment extends Fragment {
         parameters[1] = tvTitle.getText().toString();
         parameters[2] = tvDescription.getText().toString();
 
-        new PostDonationTask().execute(parameters);
+        PostDonationTask postDonationTask = new PostDonationTask(getContext());
+
+        postDonationTask.setTaskListener(new TaskListener() {
+            @Override
+            public void onComplete(Object response) {
+                if(response instanceof Donation){
+                    Toast.makeText(getContext(), "Tu donación se envío correctamente", Toast.LENGTH_SHORT).show();
+                    goToDonationsList();
+                }else{
+                    Toast.makeText(getContext(), "Ocurrió un error, volve a intentar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+
+            }
+        });
+
+        postDonationTask.execute(parameters);
     }
 
-    public class PostDonationTask extends AsyncTask<String, Void, Donation>
-    {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Donation doInBackground(String... params) {
-
-            try {
-                DonationItem newDonationItem = new DonationItem.Builder().setDescription(params[2]).build();
-                List<DonationItem> items = new ArrayList<DonationItem>();
-                items.add(newDonationItem);
-                Donation newDonation = new Donation.Builder()
-                            .setIdUserSender(new BigInteger(getLogedUser()))//TODO Obtener el usuario logeado
-                            .setIdDinerReceiver(new BigInteger(params[0]))
-                            .setTitle(params[1])
-                            .setItems(items)
-                            .build();
-
-                Donation savedDonation = donationService.postDonation(newDonation);
-
-                return savedDonation;
-
-            } catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Donation donationSaved) {
-            if(donationSaved != null){
-                Toast.makeText(getContext(), "Tu donación se envío correctamente", Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(getContext(), "Ocurrió un error, volve a intentar", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private String getLogedUser(){
-        String idUser = new String();
-        accountManager = AccountManager.get(getContext());
-        Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
-        if(accounts.length > 0){
-            Account account = accounts[0];
-            idUser = accountManager.getUserData(account, AuthConfig.ARG_ACCOUNT_ID.getConfig());
-        }
-        return idUser;
+    private void goToDonationsList(){
+        String DINERS_LIST_TAG = "seeAllTag";
+        FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        /*****************************/
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DonationsListFragment donationsListFragment = DonationsListFragment.newInstance(mAccountName, lastActivityTitle);
+        fragmentTransaction.replace(R.id.suc_content, donationsListFragment, DINERS_LIST_TAG);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

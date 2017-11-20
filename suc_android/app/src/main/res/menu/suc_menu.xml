@@ -7,13 +7,18 @@
         android:title="@string/action_main"
         app:showAsAction="never" />
     <item
+        android:id="@+id/action_list_donations"
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+        android:title="@string/hone_see_donations"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_donate"
         android:icon="@drawable/ic_pan_tool_black_24dp"
         android:title="@string/home_button_donate"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_see_all"
-        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+        android:icon="@mipmap/ic_restaurant_black_24dp"
         android:title="@string/home_see_all"
         app:showAsAction="never" />
     <item

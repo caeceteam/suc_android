@@ -12,6 +12,7 @@ public class Donation {
     private BigInteger idDonation;
     private BigInteger idUserSender;
     private BigInteger idDinerReceiver;
+    private Diner diner;
     private String title;
     private String description;
     private Date creationDate;
@@ -26,7 +27,8 @@ public class Donation {
                 .setIdDinerReceiver(this.idDinerReceiver)
                 .setTitle(this.title)
                 .setDescription(this.description)
-                .setItems(this.items);
+                .setItems(this.items)
+                .setDiner(this.diner);
     }
 
     public BigInteger getIdDonation() {
@@ -55,6 +57,10 @@ public class Donation {
 
     public Integer getStatus() {
         return status;
+    }
+
+    public Diner getDiner() {
+        return diner;
     }
 
     public List<DonationItem> getItems() {
@@ -89,6 +95,11 @@ public class Donation {
 
         public Builder setDescription(String description){
             donationToBuild.description = description;
+            return this;
+        }
+
+        public Builder setDiner(Diner diner){
+            donationToBuild.diner = diner;
             return this;
         }
 

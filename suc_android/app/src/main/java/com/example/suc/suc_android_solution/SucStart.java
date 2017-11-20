@@ -39,7 +39,8 @@ public class SucStart extends AppCompatActivity
         NearestDinersFragment.OnFragmentInteractionListener,
         DinerDetailsFragment.OnFragmentInteractionListener,
         DinersListFragment.OnFragmentInteractionListener,
-        DonationFragment.OnFragmentInteractionListener {
+        DonationFragment.OnFragmentInteractionListener,
+        DonationsListFragment.OnFragmentInteractionListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToogle;
@@ -81,6 +82,9 @@ public class SucStart extends AppCompatActivity
                         break;
                     case R.id.action_nearest_diners:
                         showNearestDiners();
+                        break;
+                    case R.id.action_list_donations:
+                        seeAllDonations();
                         break;
                     case R.id.action_see_all:
                         seeAll();
@@ -167,6 +171,22 @@ public class SucStart extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DinersListFragment dinersListFragment = DinersListFragment.newInstance(loggedAccount.name, getTitle().toString(), DinersListFragment.VIEW_TYPE_LIST);
         fragmentTransaction.replace(R.id.suc_content, dinersListFragment, DINERS_LIST_TAG);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    protected void seeAllDonations() {
+        String DINERS_LIST_TAG = "seeAllTag";
+        FragmentManager fragmentManager = getFragmentManager();
+        /**
+         * Al agregar esto al principio, logro que no se sume de forma indefinida el mismo fragmento en el stack.
+         * De tal forma, al hacer back, vuelvo al main.
+         */
+        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        /*****************************/
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        DonationsListFragment donationsListFragment = DonationsListFragment.newInstance(loggedAccount.name, getTitle().toString());
+        fragmentTransaction.replace(R.id.suc_content, donationsListFragment, DINERS_LIST_TAG);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
