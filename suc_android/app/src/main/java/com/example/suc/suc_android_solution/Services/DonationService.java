@@ -8,6 +8,7 @@ package com.example.suc.suc_android_solution.Services;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.example.suc.suc_android_solution.Clients.DonationsClient;
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
@@ -33,6 +34,8 @@ public class DonationService {
     private Context mContext;
     private AccountManager accountManager;
     private String userToken;
+    private String idUser;
+
 
     public DonationService(Context context){
         this.mContext = context;
@@ -42,10 +45,11 @@ public class DonationService {
             Account account = accounts[0];
             String type = accountManager.getUserData(account, AuthConfig.ARG_ACCOUNT_TYPE.getConfig());
             userToken = accountManager.peekAuthToken(account, type);
+            idUser = accountManager.getUserData(account, AuthConfig.ARG_ACCOUNT_ID.getConfig());
         }
     }
 
-    public Collection<Donation> getAllDonations(){
+    public DonationsResponse getAllDonations(@Nullable Integer page){
         try {
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -58,10 +62,10 @@ public class DonationService {
                     .build();
 
             DonationsClient donationsClient = retrofit.create(DonationsClient.class);
-            Call<DonationsResponse> call = donationsClient.getAll(userToken);
+            Call<DonationsResponse> call = donationsClient.getAll(userToken, page);
 
             DonationsResponse donationsResponse = call.execute().body();
-            return donationsResponse.getDonations();
+            return donationsResponse;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -103,6 +107,7 @@ public class DonationService {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
 
+            donation = donation.asBuilder().setIdUserSender(new BigInteger(idUser)).build();
             DonationsClient donationsClient = retrofit.create(DonationsClient.class);
             Call<Donation> call = donationsClient.post(userToken,donation);
 

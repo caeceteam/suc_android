@@ -92,7 +92,7 @@
     <string name="zipcode">Código postal</string>
     <string name="title_diner_details">Detalle de comedor</string>
     <string name="map_item_unfollow">Dejar de seguir</string>
-    <string name="donation_diner">Comedor</string>
+    <string name="donation_diner">Comedor:</string>
     <string name="donation_button">¡Donar!</string>
     <string name="donation_title">Descripcion</string>
     <string name="donation_item_description">Dejanos tus datos de contacto</string>
@@ -107,4 +107,6 @@
     <string name="filter">Filtrar</string>
     <string name="title_activity_diner_filter">DinerFilterActivity</string>
     <string name="title_filter_diners">Filtrar comedores</string>
+    <string name="hone_see_donations">Ver donaciones</string>
+    <string name="title_donations_list">Mis donaciones</string>
 </resources>

@@ -4,6 +4,7 @@ import com.example.suc.suc_android_solution.Models.Pagination;
 import com.example.suc.suc_android_solution.Models.User;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by Marco Cupo on 5/11/2017.
@@ -11,7 +12,7 @@ import java.util.Collection;
 
 public class DonationsResponse {
     private Pagination pagination;
-    private Collection<Donation> donations;
+    private List<Donation> donations;
 
 
     public Pagination getPagination() {
@@ -22,7 +23,7 @@ public class DonationsResponse {
         this.pagination = pagination;
     }
 
-    public Collection<Donation> getDonations() {
+    public List<Donation> getDonations() {
         return donations;
     }
 }
