@@ -109,4 +109,5 @@
     <string name="title_filter_diners">Filtrar comedores</string>
     <string name="hone_see_donations">Ver donaciones</string>
     <string name="title_donations_list">Mis donaciones</string>
+    <string name="title_diner_list_filter">A quien quieres donar</string>
 </resources>

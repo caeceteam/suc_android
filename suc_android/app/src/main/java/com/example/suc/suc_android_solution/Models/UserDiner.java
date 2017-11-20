@@ -17,6 +17,8 @@ public class UserDiner {
     @SerializedName("isCollaborator")
     public Boolean isCollaborator;
 
+    private Diner diner;
+
     public BigInteger getIdDiner() {
         return idDiner;
     }
@@ -47,5 +49,13 @@ public class UserDiner {
 
     public void setCollaborator(Boolean collaborator) {
         isCollaborator = collaborator;
+    }
+
+    public Diner getDiner() {
+        return diner;
+    }
+
+    public void setDiner(Diner diner) {
+        this.diner = diner;
     }
 }
