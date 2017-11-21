@@ -19,9 +19,11 @@ import android.widget.Toast;
 import com.example.suc.suc_android_solution.Models.User;
 import com.example.suc.suc_android_solution.Services.UserService;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 
 /**
@@ -325,7 +327,12 @@ public class MyAccountFragment extends Fragment {
                 tvFloor.setText(user.getFloor());
                 tvDoor.setText(user.getDoor());
                 tvDocument.setText(user.getDocNumber());
-                etBornDate.setText(user.getBornDate() != null ? new SimpleDateFormat("dd/MM/yy").format(user.getBornDate()) : "");
+
+                TimeZone tz = TimeZone.getTimeZone("UTC");
+                DateFormat df = new SimpleDateFormat("dd/MM/yy", Locale.getDefault()); // La "Z" indica UTC, sin offset de zona
+                df.setTimeZone(tz);
+
+                etBornDate.setText(user.getBornDate() != null ? df.format(user.getBornDate()) : "");
             }
         }
     }
