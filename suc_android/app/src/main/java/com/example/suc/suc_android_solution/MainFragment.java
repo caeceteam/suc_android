@@ -9,12 +9,25 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
+import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
+import com.example.suc.suc_android_solution.Models.DinerRequest;
+import com.example.suc.suc_android_solution.Models.UserDiner;
+import com.example.suc.suc_android_solution.Models.UserDiners;
+import com.example.suc.suc_android_solution.Tasks.GetUserDinersTask;
+import com.example.suc.suc_android_solution.Tasks.TaskListener;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -33,6 +46,7 @@ public class MainFragment extends Fragment {
     private String lastActivityTitle;
     private AccountManager accountManager;
     private Button donateButton;
+    private TextView tvMainDinerRequests;
 
     private OnFragmentInteractionListener mListener;
 
@@ -78,12 +92,42 @@ public class MainFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         donateButton = (Button) view.findViewById(R.id.button_donate);
+        tvMainDinerRequests = (TextView) view.findViewById(R.id.tv_main_diner_requests);
+
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToDonationFragment();
             }
         });
+
+        GetUserDinersTask getUserDinersTask = new GetUserDinersTask(getContext());
+        getUserDinersTask.setTaskListener(new TaskListener() {
+            @Override
+            public void onComplete(Object response) {
+                if(response instanceof UserDiners){
+                    Collection<UserDiner> userDinersCol = ((UserDiners) response).getUsersDiners();
+                    List<DinerRequest> allDinerRequest = new LinkedList<DinerRequest>();
+                    if(userDinersCol != null && userDinersCol.size() > 0){
+                        for(UserDiner userDiner : userDinersCol){
+                            allDinerRequest.addAll(userDiner.getDiner().requests);
+                        }
+                    }
+
+                    if(allDinerRequest.size() > 0){
+                        tvMainDinerRequests.setText(Html.fromHtml(String.format("Los comedores que estas siguiendo han generado <b>%d</b> solicitudes de ayuda.", allDinerRequest.size())));
+                    }
+
+                }
+            }
+
+            @Override
+            public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+
+            }
+        });
+
+        getUserDinersTask.execute();
 
         return view;
     }

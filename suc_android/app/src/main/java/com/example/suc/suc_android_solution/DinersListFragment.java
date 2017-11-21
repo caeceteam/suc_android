@@ -120,7 +120,12 @@ public class DinersListFragment extends Fragment {
         }
         accountManager = AccountManager.get(getContext());
         Activity activity = getActivity();
-        activity.setTitle(R.string.title_diner_list);
+
+        if(viewType == VIEW_TYPE_FILTER){
+            activity.setTitle(R.string.title_diner_list_filter);
+        }else{
+            activity.setTitle(R.string.title_diner_list);
+        }
         setHasOptionsMenu(true);
     }
 
