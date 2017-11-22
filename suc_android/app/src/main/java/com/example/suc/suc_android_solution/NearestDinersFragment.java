@@ -93,10 +93,10 @@ public class NearestDinersFragment extends Fragment implements
     private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
     private static final Map<String, String> ARGENTINA = new HashMap<String, String>() {{
-        put("latitude", "-34.6512146");
-        put("longitude", "-58.6421107");
+        put("latitude", "-34.609749");
+        put("longitude", "-58.3968693");
     }};
-    private static final String TAG = "SARLANGA";
+    private static final String TAG = "NEAREST_DINERS";
     private String mAccountName;
     private String lastActivityTitle;
 

@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/round_corner_background"
         android:orientation="vertical"
-        app:paddingEnd="3dp"
-        app:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
         android:id="@+id/search_container">
 
     </LinearLayout>
