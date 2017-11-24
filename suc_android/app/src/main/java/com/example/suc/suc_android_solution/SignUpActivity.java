@@ -168,7 +168,7 @@ public class SignUpActivity extends AppCompatActivity {
         protected void onPostExecute(User userRegistered) {
             Intent intent = getIntent();
             if(userRegistered != null){
-                intent.putExtra("username", userRegistered.getName());
+                intent.putExtra("username", userRegistered.getAlias());
                 intent.putExtra("password", passwordStr);
                 setResult(RESULT_OK, intent);
                 finish();

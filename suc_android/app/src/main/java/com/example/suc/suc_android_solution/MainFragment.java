@@ -116,6 +116,7 @@ public class MainFragment extends Fragment {
 
                     if(allDinerRequest.size() > 0){
                         tvMainDinerRequests.setText(Html.fromHtml(String.format("Los comedores que estas siguiendo han generado <b>%d</b> solicitudes de ayuda.", allDinerRequest.size())));
+                        tvMainDinerRequests.setVisibility(View.VISIBLE);
                     }
 
                 }

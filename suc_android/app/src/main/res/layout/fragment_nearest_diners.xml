@@ -26,29 +26,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/round_corner_background"
         android:orientation="vertical"
-        app:paddingEnd="3dp"
-        app:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
         android:id="@+id/search_container">
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/cho_map_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:layout_below="@+id/search_container"
-        android:layout_centerHorizontal="true"
-        android:paddingTop="10dp"
-        android:paddingLeft="25dp"
-        android:paddingBottom="10dp"
-        android:paddingRight="25dp"
-        android:gravity="center"
-        android:elevation="4dp"
-        android:text="@string/map_search_again"
-        android:textSize="15sp"
-        android:lines="1"
-        android:textColor="@color/form_input"
-        android:background="@drawable/round_corner_background"
-        android:visibility="gone" />
 </FrameLayout>

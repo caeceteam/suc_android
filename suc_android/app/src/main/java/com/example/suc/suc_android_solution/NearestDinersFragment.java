@@ -93,10 +93,10 @@ public class NearestDinersFragment extends Fragment implements
     private static final String ARG_ACCOUNT_NAME = "ACCOUNT_NAME";
     private static final String ARG_LAST_TITLE = "LAST_TITLE";
     private static final Map<String, String> ARGENTINA = new HashMap<String, String>() {{
-        put("latitude", "-34.6512146");
-        put("longitude", "-58.6421107");
+        put("latitude", "-34.609749");
+        put("longitude", "-58.3968693");
     }};
-    private static final String TAG = "SARLANGA";
+    private static final String TAG = "NEAREST_DINERS";
     private String mAccountName;
     private String lastActivityTitle;
 
@@ -365,7 +365,6 @@ public class NearestDinersFragment extends Fragment implements
         }
 
         mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-
             @Override
             public void onCameraMove() {
                 float[] distanceArray = new float[3];
@@ -378,16 +377,16 @@ public class NearestDinersFragment extends Fragment implements
                         location.getLatitude(),
                         location.getLongitude(), distanceArray);
                 if (distanceArray[0] > 2000) {
+                    location.setLatitude(actualLatLng.latitude);
+                    location.setLongitude(actualLatLng.longitude);
                     final Snackbar snackbar = Snackbar
-                            .make(mView, "Buscar comedores en esta zona?", BaseTransientBottomBar.LENGTH_INDEFINITE)
+                            .make(mView, "Buscar comedores en esta zona?", BaseTransientBottomBar.LENGTH_SHORT)
                             .setAction("Dale", new View.OnClickListener() {
 
                                 @Override
                                 public void onClick(View view) {
                                     if (getterTask == null) {
                                         initializeGetterTask();
-                                        location.setLatitude(actualLatLng.latitude);
-                                        location.setLongitude(actualLatLng.longitude);
                                         getterTask.execute(String.valueOf(actualLatLng.latitude), String.valueOf(actualLatLng.longitude));
                                     }
                                 }
@@ -398,7 +397,6 @@ public class NearestDinersFragment extends Fragment implements
                 }
             }
         });
-
 
         String latitude = ARGENTINA.get("latitude");
         String longitude = ARGENTINA.get("longitude");
@@ -481,6 +479,7 @@ public class NearestDinersFragment extends Fragment implements
             @Override
             public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
                 if (markers.size() > 0) {
+                    selectedItem = 0;
                     MapMarkerViewModel centerMarker = markers.get(0);
                     centerItemPinId = centerMarker.getPinId();
                     setMarkers(centerMarker, markers);
@@ -702,7 +701,7 @@ public class NearestDinersFragment extends Fragment implements
 
         private Bitmap createSmallBitmapPin(@DrawableRes int id) {
             Bitmap bmp = BitmapFactory.decodeResource(context.getResources(), id);
-            Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (150 * PIN_SCALE), (int) (150 * PIN_SCALE), false);
+            Bitmap result = Bitmap.createScaledBitmap(bmp, (int) (150 ), (int) (150), false);
 
             Paint markerPaint = new Paint();
             markerPaint.setAntiAlias(true);
@@ -837,7 +836,8 @@ public class NearestDinersFragment extends Fragment implements
         viewPager.setCurrentItem(initialItem);
         viewPager.init(mMapView);
         // Selects initial position
-        mapNavigator.setMarkerVisibleAndSelected(initialItem, true);
+
+        //mapNavigator.setMarkerVisibleAndSelected(initialItem, true);
     }
 
 
