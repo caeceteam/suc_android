@@ -18,7 +18,9 @@ import java.util.Scanner;
 public class Network {
     private static final String TAG = Network.class.getSimpleName();
 
-    public static final String STATIC_API_BASE_URL = "http://10.0.2.2:3000";
+    //public static final String STATIC_API_BASE_URL = "http://10.0.2.2:3000";
+    public static final String STATIC_API_BASE_URL = "https://sucapicaece.herokuapp.com";
+
 
     private static final String format = "json";
 
