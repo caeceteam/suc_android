@@ -62,7 +62,7 @@ public class DonationService {
                     .build();
 
             DonationsClient donationsClient = retrofit.create(DonationsClient.class);
-            Call<DonationsResponse> call = donationsClient.getAll(userToken, page);
+            Call<DonationsResponse> call = donationsClient.getAll(userToken, idUser, page);
 
             DonationsResponse donationsResponse = call.execute().body();
             return donationsResponse;
