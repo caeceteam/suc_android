@@ -28,7 +28,7 @@ import retrofit2.http.Query;
 
 public interface DonationsClient {
     @GET("/api/donations")
-    Call<DonationsResponse> getAll(@Header("x-access-token") String token, @Nullable @Query("page") Integer page);
+    Call<DonationsResponse> getAll(@Header("x-access-token") String token,@Query("idUserSender") String idUser, @Nullable @Query("page") Integer page);
 
     @GET("/api/donations/{idDonation}")
     Call<DonationResponse> get(@Header("x-access-token") String token, @Path("idDonation") BigInteger idDonation);
