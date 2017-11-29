@@ -259,7 +259,7 @@ public class MyAccountFragment extends Fragment {
                         .setFloor(params[7])
                         .setDoor(params[8])
                         .setDocNumber(params[9])
-                        .setBornDate(new SimpleDateFormat("dd/MM/yy").parse(params[10]))
+                        .setBornDate(!params[10].equals("") ? new SimpleDateFormat("dd/MM/yy").parse(params[10]) : null)
                         .build();
 
                 User updatedUser = userService.putUser(getArguments().get(ARG_ACCOUNT_NAME).toString(), newUser);
