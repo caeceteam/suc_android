@@ -28,11 +28,11 @@ public class DinerRequest {
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result * this.idDinerRequest.hashCode();
-        result = 31 * result * this.idDiner.hashCode();
-        result = 31 * result * this.title.hashCode();
-        result = 31 * result * this.description.hashCode();
-        result = 31 * result * this.creationDate.hashCode();
+        result = 31 * result + this.idDinerRequest.hashCode();
+        result = 31 * result + this.idDiner.hashCode();
+        result = 31 * result + this.title.hashCode();
+        result = 31 * result + this.description.hashCode();
+        result = 31 * result + this.creationDate.hashCode();
 
         return result;
     }
