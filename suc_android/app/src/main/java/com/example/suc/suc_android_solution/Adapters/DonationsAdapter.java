@@ -14,6 +14,7 @@ import com.example.suc.suc_android_solution.R;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by efridman on 18/11/17.
@@ -71,6 +72,7 @@ public class DonationsAdapter extends RecyclerView.Adapter<DonationsAdapter.Dona
 
     public void add(List<Donation> models) {
         mData.addAll(models);
+        mData = mData.stream().distinct().collect(Collectors.<Donation>toList());
         notifyDataSetChanged();
     }
 

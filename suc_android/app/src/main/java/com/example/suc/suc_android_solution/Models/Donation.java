@@ -108,4 +108,31 @@ public class Donation {
             return this;
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Donation other = (Donation) obj;
+
+        return other.idDonation.equals(this.idDonation) &&
+                other.idUserSender.equals(this.idUserSender) &&
+                other.idDinerReceiver.equals(this.idDinerReceiver) &&
+                other.title.equals(this.title) &&
+                other.description.equals(this.description) &&
+                other.creationDate.equals(this.creationDate) &&
+                other.status.equals(this.status);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + this.idDonation.hashCode();
+        result = 31 * result + this.idUserSender.hashCode();
+        result = 31 * result + this.idDinerReceiver.hashCode();
+        result = 31 * result + this.title.hashCode();
+        result = 31 * result + this.description.hashCode();
+        result = 31 * result + this.creationDate.hashCode();
+        result = 31 * result + this.status.hashCode();
+
+        return result;
+    }
 }
