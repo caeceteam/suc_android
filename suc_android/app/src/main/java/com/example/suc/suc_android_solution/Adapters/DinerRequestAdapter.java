@@ -15,6 +15,7 @@ import com.example.suc.suc_android_solution.R;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by efridman on 18/11/17.
@@ -70,6 +71,7 @@ public class DinerRequestAdapter extends RecyclerView.Adapter<DinerRequestAdapte
 
     public void add(List<DinerRequest> models) {
         mData.addAll(models);
+        mData = mData.stream().distinct().collect(Collectors.<DinerRequest>toList());
         notifyDataSetChanged();
     }
 
