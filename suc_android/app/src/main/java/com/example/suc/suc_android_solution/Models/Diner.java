@@ -207,4 +207,19 @@ public class Diner {
             return this;
         }
     }
+
+    //La igualdad de dos diners esta dependiendo en este momento solamente de su id. SI eventualmente
+    //Se necesitara mejorar esto, va a ser medio jodido, pero habra que extender estos metodos.
+    @Override
+    public boolean equals(Object obj) {
+        Diner other = (Diner) obj;
+        return this.idDiner.equals(other.idDiner);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + idDiner.hashCode();
+        return result;
+    }
 }
