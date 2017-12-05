@@ -1,5 +1,7 @@
 package com.example.suc.suc_android_solution.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -9,12 +11,16 @@ import java.util.List;
  */
 
 public class Donation {
+    @SerializedName("idDonation")
     private BigInteger idDonation;
+    @SerializedName("idUserSender")
     private BigInteger idUserSender;
+    @SerializedName("idDinerReceiver")
     private BigInteger idDinerReceiver;
     private Diner diner;
     private String title;
     private String description;
+    @SerializedName("creationDate")
     private Date creationDate;
     private Integer status;
     private List<DonationItem> items;
@@ -129,8 +135,8 @@ public class Donation {
         result = 31 * result + this.idUserSender.hashCode();
         result = 31 * result + this.idDinerReceiver.hashCode();
         result = 31 * result + this.title.hashCode();
-        result = 31 * result + this.description.hashCode();
-        result = 31 * result + this.creationDate.hashCode();
+        result = this.description != null ? 31 * result + this.description.hashCode() : result;
+        result = this.creationDate != null ? 31 * result + this.creationDate.hashCode(): result;
         result = 31 * result + this.status.hashCode();
 
         return result;

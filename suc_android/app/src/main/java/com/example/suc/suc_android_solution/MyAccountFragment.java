@@ -1,11 +1,15 @@
 package com.example.suc.suc_android_solution;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.suc.suc_android_solution.Models.User;
@@ -60,6 +65,10 @@ public class MyAccountFragment extends Fragment {
 
     private Button updateDataButton;
 
+    private View mProgressView;
+    private View form;
+
+
     public MyAccountFragment() {
         // Required empty public constructor
     }
@@ -75,7 +84,7 @@ public class MyAccountFragment extends Fragment {
         MyAccountFragment fragment = new MyAccountFragment();
         Bundle args = new Bundle();
         args.putString(ARG_ACCOUNT_NAME, accountName);
-        args.putString(ARG_LAST_TITLE,lastTitle);
+        args.putString(ARG_LAST_TITLE, lastTitle);
         fragment.setArguments(args);
         return fragment;
     }
@@ -122,11 +131,51 @@ public class MyAccountFragment extends Fragment {
             }
         });
 
+        mProgressView = (View) getActivity().findViewById(R.id.loading_progress);
+        form = (View) view.findViewById(R.id.my_account_form);
+        showProgress(true);
+
         userService = new UserService(view.getContext());
 
         new GetUserTask().execute();
 
         return view;
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+            form.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    form.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -206,15 +255,15 @@ public class MyAccountFragment extends Fragment {
 
     }
 
-    void updateLabel (Calendar myCalendar) {
+    void updateLabel(Calendar myCalendar) {
         String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("es", "ES"));
 
         etBornDate.setText(sdf.format(myCalendar.getTime()));
     }
 
-    void updateUserData(){
-
+    void updateUserData() {
+        showProgress(true);
         String[] parameters = new String[11];
         parameters[0] = tvAlias.getText().toString();
         parameters[1] = tvName.getText().toString();
@@ -228,7 +277,7 @@ public class MyAccountFragment extends Fragment {
         parameters[9] = tvDocument.getText().toString();
         parameters[10] = etBornDate.getText().toString();
 
-        if(validateFields()){
+        if (validateFields()) {
             new PutUserTask().execute(parameters);
         }
     }
@@ -263,7 +312,7 @@ public class MyAccountFragment extends Fragment {
                         .build();
 
                 User updatedUser = userService.putUser(getArguments().get(ARG_ACCOUNT_NAME).toString(), newUser);
-                
+
                 return updatedUser;
 
             } catch (Exception e) {
@@ -274,9 +323,10 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected void onPostExecute(User userRegistered) {
-            if(userRegistered != null){
+            showProgress(false);
+            if (userRegistered != null) {
                 Toast.makeText(getContext(), getString(R.string.update_successful), Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(getContext(), getString(R.string.update_error), Toast.LENGTH_SHORT).show();
             }
         }
@@ -316,7 +366,7 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected void onPostExecute(User user) {
-            if(user != null){
+            if (user != null) {
                 tvName.setText(user.getName());
                 tvSurname.setText(user.getSurname());
                 tvMail.setText(user.getMail());
@@ -333,6 +383,7 @@ public class MyAccountFragment extends Fragment {
                 df.setTimeZone(tz);
 
                 etBornDate.setText(user.getBornDate() != null ? df.format(user.getBornDate()) : "");
+                showProgress(false);
             }
         }
     }
