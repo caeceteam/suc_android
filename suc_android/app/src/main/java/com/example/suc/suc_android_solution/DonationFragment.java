@@ -2,6 +2,9 @@ package com.example.suc.suc_android_solution;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,6 +12,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -59,6 +63,9 @@ public class DonationFragment extends Fragment {
     private Context mContext;
     private AccountManager accountManager;
 
+    private View form;
+    private View mProgressView;
+
     private GetDinerTask dinerTask;
 
     public DonationFragment() {
@@ -69,8 +76,8 @@ public class DonationFragment extends Fragment {
      * factory method para crear fragmentos del tipo DonationFragment
      *
      * @param accountName nombre del usuario.
-     * @param lastTitle página de donde vino.
-     * @param idDiner diner al que se hara la donacion
+     * @param lastTitle   página de donde vino.
+     * @param idDiner     diner al que se hara la donacion
      * @return Nueva instancia del fragmento DonationFragment.
      */
 
@@ -105,12 +112,15 @@ public class DonationFragment extends Fragment {
         //return inflater.inflate(R.layout.fragment_donation, container, false);
         View view = inflater.inflate(R.layout.fragment_donation, container, false);
 
-        tvDiner         = (AutoCompleteTextView) view.findViewById(R.id.donation_diner);
-        tvTitle         = (AutoCompleteTextView) view.findViewById(R.id.donation_title);
-        tvDescription   = (AutoCompleteTextView) view.findViewById(R.id.donation_item_description);
+        tvDiner = (AutoCompleteTextView) view.findViewById(R.id.donation_diner);
+        tvTitle = (AutoCompleteTextView) view.findViewById(R.id.donation_title);
+        tvDescription = (AutoCompleteTextView) view.findViewById(R.id.donation_item_description);
 
         donateButton = (Button) view.findViewById(R.id.donation_save_button);
 
+        mProgressView = (View) getActivity().findViewById(R.id.loading_progress);
+        form = (View) view.findViewById(R.id.donation_form);
+        showProgress(true);
         donateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,9 +133,10 @@ public class DonationFragment extends Fragment {
         dinerTask.setTaskListener(new TaskListener() {
             @Override
             public void onComplete(Object response) {
-                if(response instanceof Diner){
+                if (response instanceof Diner) {
                     tvDiner.setText(((Diner) response).getName());
                 }
+                showProgress(false);
             }
 
             @Override
@@ -135,6 +146,42 @@ public class DonationFragment extends Fragment {
         });
         dinerTask.execute(idDiner.toString());
         return view;
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+            form.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    form.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -189,20 +236,20 @@ public class DonationFragment extends Fragment {
         tvTitle.setError(null);
         tvDescription.setError(null);
 
-        String title        = tvTitle.getText().toString();
-        String description  = tvDescription.getText().toString();
+        String title = tvTitle.getText().toString();
+        String description = tvDescription.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(title)) {
             tvTitle.setError(getString(R.string.error_field_required));
-            if(focusView == null) focusView = tvTitle;
+            if (focusView == null) focusView = tvTitle;
             cancel = true;
         }
         if (TextUtils.isEmpty(description)) {
             tvDescription.setError(getString(R.string.error_field_required));
-            if(focusView == null) focusView = tvDescription;
+            if (focusView == null) focusView = tvDescription;
             cancel = true;
         }
 
@@ -222,13 +269,15 @@ public class DonationFragment extends Fragment {
 
         PostDonationTask postDonationTask = new PostDonationTask(getContext());
 
+        showProgress(true);
         postDonationTask.setTaskListener(new TaskListener() {
             @Override
             public void onComplete(Object response) {
-                if(response instanceof Donation){
+                showProgress(false);
+                if (response instanceof Donation) {
                     Toast.makeText(getContext(), "Tu donación se envío correctamente", Toast.LENGTH_SHORT).show();
                     goToDonationsList();
-                }else{
+                } else {
                     Toast.makeText(getContext(), "Ocurrió un error, volve a intentar", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -242,7 +291,7 @@ public class DonationFragment extends Fragment {
         postDonationTask.execute(parameters);
     }
 
-    private void goToDonationsList(){
+    private void goToDonationsList() {
         String DINERS_LIST_TAG = "seeAllTag";
         FragmentManager fragmentManager = getFragmentManager();
         /**

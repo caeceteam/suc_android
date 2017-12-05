@@ -1,7 +1,11 @@
 package com.example.suc.suc_android_solution;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +35,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     UserService userService;
     EmailService emailService;
+    private View form;
+    private View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
         mUserMail = (EditText) findViewById(R.id.user_mail) ;
         mUserPass = (EditText) findViewById(R.id.user_password) ;
         mUserAlias = (EditText) findViewById(R.id.user_alias) ;
+        mProgressView = (View) findViewById(R.id.loading_progress);
+        form = (View) findViewById(R.id.user_sign_up_form);
 
         mSignUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +66,42 @@ public class SignUpActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_sign_up);
+    }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+            form.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    form.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 
     private boolean validateFields() {
@@ -113,6 +157,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void registerUser(){
 
+        showProgress(true);
         String[] parameters = new String[5];
         parameters[0] = mUserAlias.getText().toString();
         parameters[1] = mUserName.getText().toString();
@@ -176,6 +221,7 @@ public class SignUpActivity extends AppCompatActivity {
             }else{
                 Toast.makeText(getApplicationContext(),"Hubo un error", Toast.LENGTH_SHORT).show();
             }
+            showProgress(false);
         }
     }
 

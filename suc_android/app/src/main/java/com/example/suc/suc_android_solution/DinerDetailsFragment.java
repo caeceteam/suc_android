@@ -1,11 +1,15 @@
 package com.example.suc.suc_android_solution;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,6 +76,8 @@ public class DinerDetailsFragment extends Fragment {
     private LinearLayout rvContainer;
 
     private ImageView ivMainPhoto;
+    private View mProgressView;
+    private View form;
 
     public DinerDetailsFragment() {
         // Required empty public constructor
@@ -216,6 +222,7 @@ public class DinerDetailsFragment extends Fragment {
                     }
 
                 }
+                showProgress(false);
             }
 
             @Override
@@ -249,10 +256,52 @@ public class DinerDetailsFragment extends Fragment {
             }
         });
 
+        mProgressView = (View) getActivity().findViewById(R.id.loading_progress);
+        form = (View) view.findViewById(R.id.diner_details_container);
+        showProgress(true);
+
+
         getUserDinersTask.execute();
 
         return view;
     }
+
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+    private void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+            form.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    form.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            form.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
+    }
+
 
     private String buildDinerAddress(Diner diner) {
         StringBuilder builder = new StringBuilder();
