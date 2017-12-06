@@ -128,8 +128,7 @@ public class SucStart extends AppCompatActivity
                 if (future.isDone()) {
                     try {
                         if (future.getResult()) {
-                            Intent loginIntent = new Intent(getBaseContext(), SucMain.class);
-                            startActivity(loginIntent);
+                           finish();
                         } else {
                             Toast.makeText(getBaseContext(), "Hubo un error cerrando la sesion", Toast.LENGTH_SHORT).show();
                         }
