@@ -121,12 +121,18 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     private void validateSession() {
         Account[] accounts = accountManager.getAccountsByType(AuthConfig.KEY_ACCOUNT_TYPE.getConfig());
         Intent intent;
         if (accounts.length == 1) { // Si hay un usuario logueado, inicio la app desde el comienzo.
             intent = new Intent(getApplicationContext(), SucStart.class);
             startActivity(intent);
+            showProgress(false);
         }
 
     }
@@ -349,16 +355,15 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         protected void onPostExecute(final Intent intent) {
             if (intent.hasExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig())) {
                 Toast.makeText(getApplicationContext(), intent.getStringExtra(AuthConfig.KEY_ERROR_MESSAGE.getConfig()), Toast.LENGTH_LONG).show();
-                onCancelled();
             } else {
                 if (finishLogin(intent)) {
                     Intent mainIntent = new Intent(getBaseContext(), SucStart.class);
                     startActivity(mainIntent);
                 } else {
                     Toast.makeText(getApplicationContext(), "Ocurrio un error durante el ingreso. Intente nuevamente!", Toast.LENGTH_SHORT).show();
-                    onCancelled();
                 }
             }
+            onCancelled();
         }
 
         @Override
