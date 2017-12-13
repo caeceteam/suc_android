@@ -9,18 +9,8 @@ import java.util.Collection;
  */
 
 public class UserDiners {
-    public Pagination pagination;
     @SerializedName("usersDiners")
     public Collection<UserDiner> usersDiners;
-
-
-    public Pagination getPagination() {
-        return pagination;
-    }
-
-    public void setPagination(Pagination pagination) {
-        this.pagination = pagination;
-    }
 
     public Collection<UserDiner> getUsersDiners() {
         return usersDiners;

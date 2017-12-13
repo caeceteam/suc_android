@@ -555,11 +555,13 @@ public class NearestDinersFragment extends Fragment implements
     }
 
     public LatLng getInitPosition() {
-        String latitude = ARGENTINA.get("latitude");
-        String longitude = ARGENTINA.get("longitude");
-        location = new Location("");
-        location.setLatitude(Double.parseDouble(latitude));
-        location.setLongitude(Double.parseDouble(longitude));
+        if(location == null) {
+            String latitude = ARGENTINA.get("latitude");
+            String longitude = ARGENTINA.get("longitude");
+            location = new Location("");
+            location.setLatitude(Double.parseDouble(latitude));
+            location.setLongitude(Double.parseDouble(longitude));
+        }
         return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
