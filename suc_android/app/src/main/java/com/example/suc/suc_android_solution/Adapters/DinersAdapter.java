@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.DinerRequest;
+import com.example.suc.suc_android_solution.Models.UserDiner;
+import com.example.suc.suc_android_solution.Models.UserDiners;
 import com.example.suc.suc_android_solution.R;
 
 import java.math.BigInteger;
@@ -24,7 +26,7 @@ public class DinersAdapter extends RecyclerView.Adapter<DinersAdapter.DinerViewH
 
     private List<Diner> mData;
     private Context context;
-
+    private UserDiners userDiners;
     final private DinersAdapterOnClickHandler mClickHandler;
 
     /**
@@ -41,6 +43,13 @@ public class DinersAdapter extends RecyclerView.Adapter<DinersAdapter.DinerViewH
 
     }
 
+    public DinersAdapter(List<Diner> mData, Context context, DinersAdapter.DinersAdapterOnClickHandler clickHandler, UserDiners userDiners) {
+        this.mData = mData;
+        this.context = context;
+        this.mClickHandler = clickHandler;
+        this.userDiners = userDiners;
+    }
+
     @Override
     public DinersAdapter.DinerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.diner_item, parent, false);
@@ -49,8 +58,19 @@ public class DinersAdapter extends RecyclerView.Adapter<DinersAdapter.DinerViewH
 
     @Override
     public void onBindViewHolder(DinersAdapter.DinerViewHolder holder, final int position) {
-        holder.dinerName.setText(mData.get(position).getName() + "");
-        holder.dinerAddress.setText(buildDinerAddress(mData.get(position)) + "");
+        Diner actualDiner = mData.get(position);
+        Boolean isFollowing = false;
+        if(userDiners != null) {
+            isFollowing = userDiners.getUsersDiners().stream().filter(userDiner -> userDiner.getIdDiner().equals(actualDiner.getIdDiner())).findAny().isPresent();
+        }
+
+        holder.dinerName.setText(actualDiner.getName() + "");
+        holder.dinerAddress.setText(buildDinerAddress(actualDiner) + "");
+        if(isFollowing == true) {
+            holder.following.setText("Siguiendo");
+            holder.following.setVisibility(View.VISIBLE);
+        }
+
         if (position % 2 != 0) {
             holder.container.setBackground(context.getResources().getDrawable(R.drawable.rv_item_background_dark));
         }
@@ -105,6 +125,7 @@ public class DinersAdapter extends RecyclerView.Adapter<DinersAdapter.DinerViewH
         final TextView dinerName;
         final TextView dinerAddress;
         final ConstraintLayout container;
+        final TextView following;
 
 
         DinerViewHolder(View view) {
@@ -113,6 +134,7 @@ public class DinersAdapter extends RecyclerView.Adapter<DinersAdapter.DinerViewH
             dinerName = (TextView) view.findViewById(R.id.diner_item_name);
             dinerAddress = (TextView) view.findViewById(R.id.diner_item_address);
             container = (ConstraintLayout) view.findViewById(R.id.item_container);
+            following = (TextView) view.findViewById(R.id.following_diner);
             view.setOnClickListener(this);
         }
 

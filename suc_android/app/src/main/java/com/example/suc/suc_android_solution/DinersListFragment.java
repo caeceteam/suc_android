@@ -11,48 +11,32 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toolbar;
 
-import com.example.suc.suc_android_solution.Adapters.DinerRequestAdapter;
 import com.example.suc.suc_android_solution.Adapters.DinersAdapter;
 import com.example.suc.suc_android_solution.Enumerations.AuthConfig;
 import com.example.suc.suc_android_solution.Maps.MapMarkerViewModel;
 import com.example.suc.suc_android_solution.Models.Diner;
 import com.example.suc.suc_android_solution.Models.Diners;
-import com.example.suc.suc_android_solution.Models.UserDiner;
 import com.example.suc.suc_android_solution.Models.UserDiners;
 import com.example.suc.suc_android_solution.Services.DinerService;
 import com.example.suc.suc_android_solution.Tasks.GetAllDinersTask;
-import com.example.suc.suc_android_solution.Tasks.GetDinerTask;
 import com.example.suc.suc_android_solution.Tasks.GetUserDinersTask;
 import com.example.suc.suc_android_solution.Tasks.TaskListener;
-import com.example.suc.suc_android_solution.Tasks.UserDinerFollowTask;
-import com.example.suc.suc_android_solution.Tasks.UserDinerUnFollowTask;
-import com.example.suc.suc_android_solution.Utils.Notifications;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -78,8 +62,6 @@ public class DinersListFragment extends Fragment {
     private String lastActivityTitle;
     private String viewType;
 
-    private DinerService dinerService;
-
     private OnFragmentInteractionListener mListener;
     private AccountManager accountManager;
 
@@ -89,6 +71,8 @@ public class DinersListFragment extends Fragment {
     private View mProgressView;
 
     private String dinerNameFilter;
+
+    private UserDiners userDiners;
 
 
     public DinersListFragment() {
@@ -125,6 +109,22 @@ public class DinersListFragment extends Fragment {
         }
         accountManager = AccountManager.get(getContext());
         Activity activity = getActivity();
+
+        final GetUserDinersTask getUserDinersTask = new GetUserDinersTask(getContext());
+        getUserDinersTask.setTaskListener(new TaskListener() {
+            @Override
+            public void onComplete(Object response) {
+
+                userDiners = (UserDiners) response;
+            }
+
+            @Override
+            public void onMarkersReady(ArrayList<MapMarkerViewModel> markers) {
+
+            }
+        });
+
+        getUserDinersTask.execute();
 
         if(viewType == VIEW_TYPE_FILTER){
             activity.setTitle(R.string.title_diner_list_filter);
@@ -233,7 +233,7 @@ public class DinersListFragment extends Fragment {
                                     goToDonateFragment(accounts[0], idDiner);
                                 }
                             }
-                        });
+                        }, userDiners);
 
                     /* setLayoutManager associates the LayoutManager we created above with our RecyclerView */
                         final LinearLayoutManager layoutManager =

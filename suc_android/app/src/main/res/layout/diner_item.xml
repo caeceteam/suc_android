@@ -41,6 +41,23 @@
         tools:text="Necesito ayuda!!"/>
 
     <TextView
+        android:id="@+id/following_diner"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:padding="2sp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintRight_toRightOf="parent"
+
+        tools:text="Siguiendo"/>
+
+    <TextView
         android:id="@+id/diner_item_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
