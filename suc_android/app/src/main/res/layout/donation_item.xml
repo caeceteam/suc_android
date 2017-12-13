@@ -73,6 +73,36 @@
         app:layout_constraintLeft_toLeftOf="@+id/donation_item_title"
         app:layout_constraintTop_toBottomOf="@+id/donation_item_title"
         tools:text="Manden unos huevos para hacer unas tortillas!!"/>
+    <TextView
+        android:id="@+id/donation_item_creation_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorHint"
+        app:layout_constraintTop_toBottomOf="@+id/donation_item_description"
+        app:layout_constraintLeft_toLeftOf="@+id/donation_item_description"
+        tools:text="Enviada el 20/12/2017"/>
+    <TextView
+        android:id="@+id/donation_item_status_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintTop_toBottomOf="@+id/donation_item_description"
+        app:layout_constraintRight_toLeftOf="@+id/donation_item_status"
+        tools:text="Estado: "/>
+    <TextView
+        android:id="@+id/donation_item_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:background="@color/colorLoginButton"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:padding="2sp"
+        app:layout_constraintTop_toBottomOf="@+id/donation_item_description"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="Aprobada"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"

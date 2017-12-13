@@ -72,7 +72,6 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
         setContentView(R.layout.activity_authentication);
         accountManager = AccountManager.get(getBaseContext());
 
-        validateSession();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.nav_toolbar);
         ((TextView)myToolbar.findViewById(R.id.toolbar_title)).setText(R.string.title_activity_authentication);
         // Set up the login form.
@@ -119,6 +118,8 @@ public class AuthenticationActivity extends AccountAuthenticatorActivity impleme
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        validateSession();
+
     }
 
     @Override
