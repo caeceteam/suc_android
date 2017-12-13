@@ -6,6 +6,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorText">#ffffff</color>
     <color name="colorLink">#0000EE</color>
+    <color name="colorApproved">#4CAF50</color>
+    <color name="colorPending">#ffc107</color>
+    <color name="colorRejected">#F44336</color>
+    <color name="colorHint">#b5b5b5</color>
     <color name="white">#FFFFFF</color>
     <color name="form_input">#333333</color>
     <color name="ui_suc_blue">#483D8B</color>
